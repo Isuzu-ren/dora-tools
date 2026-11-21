@@ -448,7 +448,8 @@ APPENDIX_B = """# 附录 B · 已知陷阱
 
 APPENDIX_C = """# 附录 C · 评测结论摘要
 
-完整报告见主仓库 `my/DORA_工具效果与泛化评测报告.md`，全部数字来自 `outputs/eval_c5/facts.json`。
+完整报告与逐景 CSV 随 DORA 主仓库提供，本仓库只摘结论；下列数字均可在主仓库的
+`outputs/eval_c5/facts.json` 中追溯到具体文件。
 
 ## 三个问题
 

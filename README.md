@@ -56,20 +56,7 @@ pip install -e ".[perception]"
 ## 本仓库不包含什么
 
 - **模型权重**（12 GB）：放在 `$DORA_DATA/checkpoints/`，不进仓库
-- **数据集与评测产物**：在 DORA 主仓库
-- **Agent 与评测框架**：`dora/agent`、`evaluation.py` 未复制，本仓库只有工具层
-
-## 更新方式
-
-1. 用上游最新代码覆盖 `src/dora/tools/`（**不要在副本里改代码**，否则与上游分叉）
-2. `python scripts/extract_tools.py` —— 重新抽取 108 件的签名与说明
-3. `python scripts/build_docs.py` —— 重建 docs/ 与 index/
-4. 人工文案在 `scripts/content.py`（领域导语、逐工具补充、附录），重建时不会被覆盖
-
-## 本仓库不包含什么
-
-- **模型权重**（12 GB）：放在 `$DORA_DATA/checkpoints/`，不进仓库
-- **数据集与评测产物**：在 DORA 主仓库
+- **数据集与评测产物**：随 DORA 主仓库提供，不在本仓库
 - **Agent 与评测框架**：`dora/agent`、`evaluation.py` 未复制，本仓库只有工具层
 
 ## 更新方式
