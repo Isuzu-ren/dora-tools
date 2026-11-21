@@ -1,0 +1,21 @@
+# 纯算法工具的最小依赖（等价于 pip install -e .）
+mcp==1.27.0
+fastmcp==3.2.3
+pydantic==2.12.5
+numpy==2.4.4
+scipy==1.17.1
+pandas==3.0.2
+scikit-image==0.26.0
+pillow==12.2.0
+tifffile==2026.3.3
+imagecodecs==2026.3.6
+matplotlib==3.10.8
+networkx==3.6.1
+shapely==2.1.2
+geopandas==1.1.3
+pyogrio==0.12.1
+pyproj==3.7.2
+rasterio==1.4.4
+
+# 需要跑 13 个感知模型时再装（约 12 GB 权重另放 DORA_DATA/checkpoints）：
+#   pip install -e ".[perception]"
