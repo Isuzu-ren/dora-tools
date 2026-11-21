@@ -108,6 +108,11 @@ def parse_module(path: Path) -> list[dict]:
                 "default": None if d is None else ast.unparse(d),
             })
         doc = (desc or "").strip() or (ast.get_docstring(node) or "").strip()
+        ART = {"mask_path", "output_path", "vector_path", "table_path", "graph_path",
+               "clip_path", "links_geojson", "intersection_path", "route_path"}
+        artifacts = sorted({n.value for n in ast.walk(node)
+                            if isinstance(n, ast.Constant) and isinstance(n.value, str)
+                            and n.value in ART})
         end = (node.end_lineno or node.lineno)
         tools.append({
             "name": mcp_name,
@@ -119,6 +124,7 @@ def parse_module(path: Path) -> list[dict]:
             "signature": ast.unparse(node.args),
             "params": params,
             "docstring": doc,
+            "artifacts": artifacts,
             "guarded": has_guard,
             "body_lines": src[node.lineno - 1:end],
         })

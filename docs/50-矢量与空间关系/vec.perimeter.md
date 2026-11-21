@@ -23,7 +23,10 @@
 
 ## 输出
 
-返回 JSON 字符串，字段见源码；产物路径通常在 `mask_path` / `output_path` / `vector_path` 中。
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `table_path` | str | 产物路径 |
+| `vector_path` | str | 产物路径 |
 
 ## 依赖与运行
 

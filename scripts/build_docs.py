@@ -268,7 +268,17 @@ def render_tool(t: dict, folder: str, folder_by_tool: dict | None = None) -> str
         for r in t["returns_doc"]:
             lines.append(f"| `{r['name']}` | {r['type']} | {esc(r['desc']) or '—'} |")
     else:
-        lines.append("返回 JSON 字符串，字段见源码；产物路径通常在 `mask_path` / `output_path` / `vector_path` 中。")
+        if t.get("artifacts"):
+            lines += ["| 字段 | 类型 | 说明 |", "|---|---|---|"]
+            for a in t["artifacts"]:
+                lines.append(f"| `{a}` | str | 产物路径 |")
+        elif t["module"] == "vis":
+            lines += ["| 字段 | 类型 | 说明 |", "|---|---|---|",
+                      "| `output_path` | str | 生成的图片路径（由调用方通过 `output_path` 参数指定） |"]
+        elif t["module"] == "calculate":
+            lines.append("返回 JSON 标量结果（如 `area_m2` / `score` / `volume`），**不产生文件产物**。")
+        else:
+            lines.append("返回 JSON 字符串，字段见源码。")
     paths = [r["name"] for r in t["returns_doc"] if r["name"].endswith("_path")]
     if paths:
         lines += ["", f"**落盘产物**：`{'`、`'.join(paths)}`（位于 `--temp_dir` 下，文件名带 6 位哈希）"]

@@ -16,6 +16,7 @@
       }
     ],
     "docstring": "Segment bridges from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary bridge mask (255 = bridge)\n- classes (dict): {7: bridge}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "B（0.5–1 m）",
@@ -74,6 +75,9 @@
       }
     ],
     "docstring": "Description:\nSegment building damage from pre/post disaster optical satellite images.\nUses difference-based detection to classify buildings into damage levels.\nSpatial resolution: 0.8m.\nThe input pre and post image requires 3-bands.\n\nParameters:\n- pre_image_path (str): Path to pre-disaster image\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to the saved damage mask image\n- classes (dict): Mapping of class values to damage levels\n  * 1: intact\n  * 2: partially damaged\n  * 3: totally destroyed",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "B（≤1.6 m）",
@@ -137,6 +141,7 @@
       }
     ],
     "docstring": "Segment building-major-damage areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to building_damage mask (255 = building_damage)\n- classes (dict): {2: \"building_damage\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
@@ -195,6 +200,9 @@
       }
     ],
     "docstring": "Description:\nSegment building damage from pre-disaster optical and post-disaster SAR satellite images.\nUses difference-based detection to classify buildings into damage levels.\nSpatial resolution: 0.8m.\nThe input pre and post image requires 3-bands.\n\nParameters:\n- pre_image_path (str): Path to pre-disaster image\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to the saved damage mask image\n- classes (dict): Mapping of class values to damage levels\n  * 1: intact\n  * 2: partially damaged\n  * 3: totally destroyed",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "B（需 SAR 预处理）",
@@ -257,6 +265,7 @@
       }
     ],
     "docstring": "Segment totally damaged building areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to building_total_damage mask (255 = building_total_damage)\n- classes (dict): {3: \"building_total_damage\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
@@ -309,6 +318,7 @@
       }
     ],
     "docstring": "Segment building-no-damage areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to building_no_damage mask (255 = building_no_damage)\n- classes (dict): {1: \"building_no_damage\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
@@ -361,6 +371,9 @@
       }
     ],
     "docstring": "Description:\nSegment building areas from single temporal low-resolution optical satellite image.\nSpatial resolution: 3.46m.\n\nParameters:\n- image_path (str): Path to single temporal satellite image\n\nReturns:\n- mask_path (str): Path to binary building mask (255 = building)",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★",
     "transfer": "B（3.46 m 专用）",
@@ -411,6 +424,7 @@
       }
     ],
     "docstring": "Segment harbors from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary harbor mask (255 = harbor)\n- classes (dict): {15: harbor}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★",
     "transfer": "B（0.5–1 m）",
@@ -469,6 +483,9 @@
       }
     ],
     "docstring": "Description:\nSegment buildings under reconstruction from a pre-disaster optical image and a\npost-disaster recovery-phase optical image (bi-temporal change detection).\nSpatial resolution: 0.8m.\nThe input pre and post image requires 3-bands.\n\nParameters:\n- pre_image_path (str): Path to pre-disaster image\n- post_image_path (str): Path to the recovery-phase image, e.g. *_phase2.png.\n\nReturns:\n- mask_path (str): Path to the saved building-under-reconstruction mask image\n- classes (dict): Mapping of class values\n  * 0: not_under_reconstruction\n  * 255: building_under_reconstruction",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★",
     "transfer": "B（未实测）",
@@ -534,6 +551,9 @@
       }
     ],
     "docstring": "Description:\nSegment road damage from pre/post disaster optical satellite images.\nDetects flooded and blocked road segments.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- pre_image_path (str): Path to pre-disaster image\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to the saved road damage mask\n- classes (dict): Mapping of class values to road conditions\n  * 1: intact\n  * 2: flooded\n  * 3: debris blocked",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "B（≤1.6 m）",
@@ -596,6 +616,7 @@
       }
     ],
     "docstring": "Segment debris-covered road areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to road_debris_covered mask (255 = road_debris_covered)\n- classes (dict): {6: \"road_debris_covered\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "C（0.03 m 航拍）",
@@ -648,6 +669,7 @@
       }
     ],
     "docstring": "Segment intact road areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to road_no_damage mask (255 = road_no_damage)\n- classes (dict): {5: \"road_no_damage\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
@@ -700,6 +722,7 @@
       }
     ],
     "docstring": "Segment storage tanks from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary storage tank mask (255 = storage_tank)\n- classes (dict): {12: storage_tank}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★",
     "transfer": "B（0.5–1 m）",
@@ -752,6 +775,7 @@
       }
     ],
     "docstring": "Segment trapped vehicle areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to vehicle_trapped mask (255 = vehicle_trapped)\n- classes (dict): {10: \"vehicle_trapped\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "C（0.03 m 航拍）",
@@ -828,6 +852,7 @@
       }
     ],
     "docstring": "Use LLM to generate a summary of disaster analysis results.\n\nParameters:\n- task_question (str): The original task question\n- trajectory (list[dict]): List of trajectory steps with obs results from previous tool calls\n- image_paths (list[str], optional): Variable-length list of raw or derived images to summarize jointly with the trajectory\n- final_answer_template (dict, optional): Template for the final answer\n- model (str, optional): Gemini model to use (default: gemini-3-pro-preview)\n\nReturns:\n- summary (str): Natural language summary\n- image_observations (list): Short visual observations\n- key_findings (list): List of key findings\n- statistics (dict): Key statistics\n- recommendations (list): Optional recovery or response actions\n- confidence (str): Confidence level",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "B（换 LLM 端点）",
@@ -949,6 +974,7 @@
       }
     ],
     "docstring": "Extract structured evidence from intermediate mask outputs in a trajectory.\n\nParameters:\n- trajectory (list[dict]): List of trajectory steps with obs results\n- pixel_size_m (float, optional): Pixel size in meters for area computation\n- include_empty_masks (bool, optional): Whether to keep masks with zero nonzero pixels\n\nReturns:\n- total_evidence_items\n- evidence_items\n- tool_rollup\n- timeline\n- peak_timestamp\n- trend\n- errors",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -1056,6 +1082,7 @@
       }
     ],
     "docstring": "Add title, legend, north arrow, and scale bar to an image.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -1152,6 +1179,7 @@
       }
     ],
     "docstring": "Generate a bar chart from category statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -1212,6 +1240,7 @@
       }
     ],
     "docstring": "Generate a before/after comparison panel.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -1297,6 +1326,7 @@
       }
     ],
     "docstring": "Generate a standard damage assessment map.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -1394,6 +1424,7 @@
       }
     ],
     "docstring": "Description:\nRender a 2D heatmap visualizing the spatial density of input points or polygon\ncentroids. Uses Gaussian kernel density estimation and a color-mapped overlay.\nIf the input vector contains polygons (e.g., building damage outlines), their\ncentroids are computed automatically.\n\nParameters:\n- points_path (str): Path to GeoJSON containing points, polygons, or mixed geometries\n- base_image_path (str, optional): Background image to overlay on\n- bandwidth (float, optional): Gaussian kernel bandwidth. Default auto.\n- colormap (str, optional): Matplotlib colormap. Default \"hot\".\n\nOutput file is written to a managed location and returned as heatmap_path.\n\nReturns:\n- heatmap_path (str): Path to rendered heatmap image\n- point_count (int): Number of points used (polygon centroids count as points)",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -1473,6 +1504,7 @@
       }
     ],
     "docstring": "Generate a line chart from ordered statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -1539,6 +1571,7 @@
       }
     ],
     "docstring": "Overlay a segmentation mask on top of a base image.\nInputs:\n- image_path: base raster image\n- mask_path: segmentation mask path\n- alpha: overlay opacity\n- class_labels: optional class label dict\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -1607,6 +1640,7 @@
       }
     ],
     "docstring": "Generate a pie chart from category statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -1679,6 +1713,7 @@
       }
     ],
     "docstring": "Compose a one-page disaster report from map, chart, summary, and statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -1808,6 +1843,7 @@
       }
     ],
     "docstring": "Render a shortest-path route on a base image, optionally with a damage-mask overlay.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -1937,6 +1973,7 @@
       }
     ],
     "docstring": "Generate a multi-temporal panel from multiple image paths.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -2008,6 +2045,7 @@
       }
     ],
     "docstring": "Description:\nAdd two numbers.\n\nParameters:\n- a (float): first value\n- b (float): second value\n\nReturns:\n- sum (float): a + b",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2068,6 +2106,7 @@
       }
     ],
     "docstring": "Description:\nCompute absolute difference between two numbers.\n\nParameters:\n- a (float): first value\n- b (float): second value\n\nReturns:\n- diff (float): |a - b|",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2128,6 +2167,7 @@
       }
     ],
     "docstring": "Description:\nDivide two numbers.\n\nParameters:\n- a (float): numerator\n- b (float): denominator\n\nReturns:\n- ratio (float): a / b",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2188,6 +2228,7 @@
       }
     ],
     "docstring": "Description:\nCompare two numbers and return whether a > b.\n\nParameters:\n- a (float): left-hand value\n- b (float): right-hand value\n\nReturns:\n- value (int): 1 if a > b else 0\n- result (bool): True if a > b else False",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2253,6 +2294,7 @@
       }
     ],
     "docstring": "Description:\nMultiply two numbers.\n\nParameters:\n- a (float): first value\n- b (float): second value\n\nReturns:\n- product (float): a * b",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2319,6 +2361,7 @@
       }
     ],
     "docstring": "Description:\nCompute straight-line distance between two pixel coordinates.\n\nParameters:\n- point_a (list[float]): [row, col]\n- point_b (list[float]): [row, col]\n- pixel_size_m (float): pixel size in meters\n\nReturns:\n- distance_px (float): Euclidean distance in pixels\n- distance_m (float): Euclidean distance in meters",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2391,6 +2434,7 @@
       }
     ],
     "docstring": "Description:\nSubtract two numbers.\n\nParameters:\n- a (float): minuend\n- b (float): subtrahend\n\nReturns:\n- difference (float): a - b",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2451,6 +2495,7 @@
       }
     ],
     "docstring": "Description:\nCalculate volume from area and depth.\nVolume = Area × Depth\n\nParameters:\n- area_m2 (float): Area in square meters\n- depth_m (float): Depth/height in meters\n\nReturns:\n- volume_m3 (float): Volume in cubic meters",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2517,6 +2562,7 @@
       }
     ],
     "docstring": "Description:\nCompute a weighted sum over a list of numeric values (multi-criteria\naggregation). Commonly used for composite severity indices, e.g.,\ncombining building damage, flood depth, and road disruption into one score.\n\nParameters:\n- values (list[float]): Input values, same length as weights\n- weights (list[float]): Weights (need not sum to 1)\n- normalize (bool, optional): If True, normalize weights to sum to 1. Default False.\n\nReturns:\n- score (float): Weighted sum\n- normalized (bool): Whether weights were normalized",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2595,6 +2641,7 @@
       }
     ],
     "docstring": "Description:\nRank a list of items (e.g., affected districts, damaged facilities) by a\npriority score computed as a weighted combination of criteria. Returns the\nitems sorted from highest to lowest priority. Used to support emergency\ndispatch decisions.\n\nParameters:\n- items (list[dict]): Candidate items, each a dict of numeric fields\n- criteria (dict[str, float]): Mapping from field name to weight\n- top_k (int, optional): If set, return only the top_k items\n\nReturns:\n- ranked (list[dict]): Items sorted by priority score (descending), each\n  augmented with a \"priority_score\" field\n- count (int): Number of items returned",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2673,6 +2720,7 @@
       }
     ],
     "docstring": "Description:\nAllocate a limited resource (e.g., rescue teams, medical supplies) across\nmultiple demand sites in proportion to their priority/need. Uses a greedy\nlargest-share-first scheme with per-site capacity caps.\n\nParameters:\n- demands (list[dict]): Each dict has {\"id\": ..., \"need\": float, \"cap\": float (optional)}\n- total_supply (float): Total units available\n- min_per_site (float, optional): Minimum allocation per site. Default 0.\n\nReturns:\n- allocations (list[dict]): Per-site allocation {\"id\", \"need\", \"allocated\"}\n- allocated_total (float): Total units actually allocated\n- unallocated (float): Units left over",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2750,6 +2798,7 @@
       }
     ],
     "docstring": "Description:\nCalculate the number of truck trips needed to transport a given volume.\nTrips = ceil(Volume / Capacity)\n\nParameters:\n- volume_m3 (float): Total volume to transport in cubic meters\n- capacity_m3 (float): Truck capacity in cubic meters\n\nReturns:\n- trips_required (int): Number of truck trips needed",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -2858,6 +2907,7 @@
       }
     ],
     "docstring": "Description:\nBuild chart-ready key/value data from a list of records or a dict of records.\nUseful for converting loop outputs or feature statistics into dynamic inputs for vis.bar_chart / vis.line_chart.\n\nParameters:\n- values (list[dict] | dict): source records\n- value_field (str): nested field path containing the numeric value\n- label_field (str, optional): nested field path for the primary label\n- fallback_label_field (str, optional): fallback nested field path when label_field is empty\n- fallback_label_prefix (str, optional): prefix for fallback label\n- label_template (str, optional): template such as \"r{item.row_idx}c{item.col_idx}\"\n- sort_by (str, optional): nested field path to sort by; if omitted, preserves input order\n- descending (bool, optional): sort order, default True\n- top_k (int, optional): keep only top k records\n- round_digits (int, optional): round numeric values for chart display\n\nReturns:\n- data (dict): ordered chart-ready mapping\n- records (list[dict]): ordered label/value records\n- source_count (int)\n- kept_count (int)",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -3009,6 +3059,7 @@
       }
     ],
     "docstring": "Description:\nLoop over a list of items and execute a sequence of tool calls for each item.\nSupports per-item binding and simple step-result references.\n\nParameters:\n- calls (list[dict]): [{tool: str, args: dict}, ...]\n- loop_over (list[dict]): items to iterate over (dicts with x1/x2/y1/y2). List windows are accepted and coerced.\n- bind (dict, optional): map arg_name -> item_key to inject into args\n- grid_n (int, optional): if loop_over items are windows, provide n to compute row/col\n- return_all (bool, optional): return per-iteration results\n\nReturns:\n- results (list, optional): per-iteration outputs if return_all true",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -3113,6 +3164,7 @@
       }
     ],
     "docstring": "Description:\nReduce a list of dicts by a numeric field.\n\nParameters:\n- values (list[dict]): items to reduce\n- field (str): dotted path, e.g. \"a.b.c\"\n- mode (str): \"max\", \"min\", or \"mean\"\n\nReturns:\n- best_value (float|None): for max/min\n- best_index (int|None): for max/min\n- best_item (dict|None): for max/min\n- mean_value (float|None): for mean",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -3197,6 +3249,9 @@
       }
     ],
     "docstring": "Description:\nSegment volcano lava from pre/post disaster optical satellite images.\nSpatial resolution: 0.8m.\nThe input pre and post image requires 3-bands.\n\nParameters:\n- pre_image_path (str): Path to pre-disaster image\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to the saved lava mask image\n- classes (dict): Mapping of class values\n  * 0: non-lava\n  * 255: lava",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3256,6 +3311,7 @@
       }
     ],
     "docstring": "Segment planes from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary plane mask (255 = plane)",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3303,6 +3359,7 @@
       }
     ],
     "docstring": "Segment playground/sports fields from post-disaster optical image.\nClasses: 3 baseball_diamond, 4 tennis_court, 5 basketball_court, 6 ground_track_field, 13 soccer_ball_field.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary playground mask (255 = playground)\n- classes (dict): Mapping of class ids to names",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3355,6 +3412,7 @@
       }
     ],
     "docstring": "Segment pool areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to pool mask (255 = pool)\n- classes (dict): {4: \"pool\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3407,6 +3465,7 @@
       }
     ],
     "docstring": "Segment roundabouts from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary roundabout mask (255 = roundabout)\n- classes (dict): {2: roundabout}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3459,6 +3518,7 @@
       }
     ],
     "docstring": "Segment ships from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary ship mask (255 = ship)\n- classes (dict): {1: ship}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3511,6 +3571,7 @@
       }
     ],
     "docstring": "Segment swimming pools from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary pool mask (255 = swimming_pool)\n- classes (dict): {11: swimming_pool}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3563,6 +3624,7 @@
       }
     ],
     "docstring": "Segment fallen-tree areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to tree_fallen mask (255 = tree_fallen)\n- classes (dict): {7: \"tree_fallen\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
@@ -3615,6 +3677,7 @@
       }
     ],
     "docstring": "Segment standing-tree areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to tree_not_fallen mask (255 = tree_not_fallen)\n- classes (dict): {8: \"tree_not_fallen\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3667,6 +3730,7 @@
       }
     ],
     "docstring": "Segment vehicles (large and small) from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary vehicle mask (255 = vehicle)\n- classes (dict): {8: large_vehicle, 9: small_vehicle}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3719,6 +3783,7 @@
       }
     ],
     "docstring": "Segment non-trapped vehicle areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to vehicle_not_trapped mask (255 = vehicle_not_trapped)\n- classes (dict): {9: \"vehicle_not_trapped\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "○",
     "transfer": "D（业务无关）",
@@ -3807,6 +3872,7 @@
       }
     ],
     "docstring": "Join damage and population feature statistics for POIs and rank exposed locations.\nUseful for identifying high-population POIs whose damage score exceeds a threshold.\n\nParameters:\n- damage_feature_stats (list[dict]): Damage stats per POI\n- population_feature_stats (list[dict]): Population stats per POI\n- damage_threshold (float, optional): Minimum damage value to keep\n- damage_field (str, optional): Field name for damage values\n- population_field (str, optional): Field name for population values\n- join_field (str, optional): Shared key used to join the two tables\n- allowed_types (list[str], optional): Restrict to POI types if provided\n\nReturns:\n- total_exposed (int): Number of POIs above the damage threshold\n- exposed_pois (list): Ranked exposed POIs with damage and population values\n- top_exposed_poi (dict|None): Highest-priority exposed POI",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -3921,6 +3987,7 @@
       }
     ],
     "docstring": "Filter POI results by attribute values.\nUseful for keeping only specific POI types (e.g., commercial facilities like restaurants, cafes, banks).\n\nParameters:\n- data (list[dict]): List of tool.loop results containing item and last_obs\n- attribute_name (str): The attribute field to filter on (e.g., \"types\" for POI types)\n- allowed_values (list[str]): List of allowed values to keep (e.g., [\"restaurant\", \"cafe\", \"bank\"])\n\nReturns:\n- total_input (int): Total number of input items\n- total_filtered (int): Number of items after filtering\n- attribute_name (str): The attribute field used for filtering\n- allowed_values (list): The allowed values used for filtering\n- filtered_results (list): Filtered results matching the allowed values",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -4008,6 +4075,7 @@
       }
     ],
     "docstring": "Filter POI results to only include those located in damaged buildings.\nTakes the output from tool.loop and filters items where damage_class >= 2 (partially damaged or totally destroyed).\n\nParameters:\n- data (list[dict]): List of tool.loop results containing item and last_obs\n- min_damage_class (int, optional): Minimum damage class to include (default: 2)\n\nReturns:\n- total_input (int): Total number of input items\n- total_filtered (int): Number of items after filtering\n- total_damaged (int): Number of damaged items found\n- filtered_results (list): Filtered results with damage_class >= min_damage_class",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -4077,6 +4145,7 @@
       }
     ],
     "docstring": "Filter POI results to only include those located in intact buildings.\nTakes the output from tool.loop and keeps items where damage_class == 1.\n\nParameters:\n- data (list[dict]): List of tool.loop results containing item and last_obs\n\nReturns:\n- total_input (int): Total number of input items\n- total_intact (int): Number of intact items found\n- filtered_results (list): Filtered results with damage_class == 1",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★",
     "transfer": "A",
@@ -4158,6 +4227,7 @@
       }
     ],
     "docstring": "Group a list of dictionaries by a field and calculate statistics.\n\nParameters:\n- data (list[dict]): List of dictionaries to group\n- group_field (str): Field name to group by\n- count_field (str, optional): Field to sum (for weighted counts)\n- return_item_details (bool, optional): Whether to include items in groups (default: False)\n- return_sum (bool, optional): Whether to include sum of count_field (default: False)\n\nReturns:\n- group_field (str): The field used for grouping\n- total_items (int): Total number of input items\n- total_groups (int): Number of unique groups\n- groups (dict): Dictionary of {group_value: {count}} or {count, sum, items} based on options",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -4260,6 +4330,7 @@
       }
     ],
     "docstring": "Search for POI (Points of Interest) by name in a GeoJSON file.\nSupports both exact and fuzzy matching.\n\nParameters:\n- geojson_path (str): Path to GeoJSON file containing POI data\n- name (str): Name to search for (case-insensitive fuzzy matching)\n- exact (bool): Whether to use exact matching (default: false)\n\nReturns:\n- search_name (str): The search term used\n- features (list): The found POI features\n- total_found (int): Number of POIs matching the search\n- results (list): List of matching POIs with name, coordinates, and properties",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★",
     "transfer": "A",
@@ -4348,6 +4419,7 @@
       }
     ],
     "docstring": "Convert POI (Points of Interest) from GeoJSON/Shapefile to a vector GeoJSON file.\nOptionally filter by name.\n\nParameters:\n- geojson_path (str): Path to input GeoJSON or Shapefile\n- name (str, optional): Filter POI by name (fuzzy matching)\n- exact (bool): Whether to use exact name matching (default: false)\n\nReturns:\n- vector_path (str): Path to output vector GeoJSON\n- count (int): Number of features in output\n- name_filter (str): The name filter used",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -4425,6 +4497,7 @@
       }
     ],
     "docstring": "Transform GeoJSON POI coordinates from geographic CRS (WGS84) to the pixel coordinate system of a reference raster image.\nPoints that fall outside the image bounds are filtered out.\nThe output GeoJSON contains the original properties plus pixel coordinates (pixel_row, pixel_col, utm_x, utm_y).\n\nParameters:\n- geojson_path (str): Path to input GeoJSON file with Point geometries (WGS84)\n- raster_path (str): Path to reference raster image (GeoTIFF) to define the target pixel coordinate system\n\nReturns:\n- output_path (str): Path to transformed GeoJSON\n- total_points (int): Total input POI count\n- valid_points (int): Number of POIs within image bounds\n- filtered_points (int): Number of POIs filtered out (outside image)\n- image_bounds (dict): Image bounds (left, right, bottom, top)\n- image_size (list): [width, height] of the reference image",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -4510,6 +4583,7 @@
       }
     ],
     "docstring": "Description:\nCompose multiple binary masks into a single multiclass raster mask.\nEach input mask contributes one class value, and any positive pixel in a mask\nis assigned to that class in the output raster.\n\nParameters:\n- mask_paths (list[str]): Paths to binary mask rasters\n- class_values (list[int]): Class ids aligned with mask_paths\n\nOutput file is written to a managed location; its path is returned as mask_path.\n\nReturns:\n- mask_path (str): Path to the composed multiclass raster\n- class_values (list[int]): Class ids written into the output\n- classes (dict): Class label mapping for the output mask",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -4586,6 +4660,7 @@
       }
     ],
     "docstring": "Description:\nCalculate the area of regions in a mask.\nOnly supports pixel-based masks.\n\nParameters:\n- mask_path (str): Path to the mask image file\n- pixel_size_m (float): Size of each pixel in meters\n- classes (list[int], optional): List of class values to include. If not provided, counts all non-zero pixels.\n\nReturns:\n- area_m2 (float): Total area in square meters\n- pixel_count (int): Number of pixels counted",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -4679,6 +4754,9 @@
       }
     ],
     "docstring": "Description:\nClip a raster by a pixel window [x1:x2, y1:y2], where x is row (top→bottom) and y is column (left→right).\nPreserves georeferencing if the input has it (GeoTIFF/COG/etc.).\n\nParameters:\n- image_path (str): Path to raster (GeoTIFF/COG/PNG/JPG…)\n- x1 (int), x2 (int): row range (Python slicing semantics, x2 exclusive)\n- y1 (int), y2 (int): col range (y2 exclusive)\n\nReturns:\n- output_path (str): Path to clipped raster in TEMP_DIR\n- window (dict): {x1, x2, y1, y2} actually used\n- out_shape (list[int,int]): [height, width]\n- bands (int), dtype (str)\n- crs (str|null), transform (list[float]|null)\n- clamped (bool): whether input window was clamped to image bounds",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -4775,6 +4853,9 @@
       }
     ],
     "docstring": "Description:\nConcatenate multiple rasters along the band/channel dimension into a single GeoTIFF.\nAll inputs must have identical height/width and, if present, the same CRS and transform.\n\nParameters:\n- image_path_list (list[str]): list of raster paths (GeoTIFF/COG/…)\n- dim (str): only \"bands\" or \"channels\" is supported for now\n\nReturns:\n- output_path (str): Path to the concatenated GeoTIFF in TEMP_DIR\n- height (int), width (int)\n- bands (int): total bands in the output\n- dtype (str)\n- crs (str|null), transform (list[float]|null)\n- band_map (list[dict]): [{path, in_bands, out_start_band, out_end_band}]\n- note (str)",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -4848,6 +4929,7 @@
       }
     ],
     "docstring": "Description:\nCount pixels for specified classes in a mask image.\n\nParameters:\n- mask_path (str): Path to the mask image file\n- classes (list[int]): List of class values to count\n\nReturns:\n- counts (dict): Pixel counts per class\n- total (int): Total pixel count for all specified classes",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -4925,6 +5007,9 @@
       }
     ],
     "docstring": "Description:\nSubtract raster B from raster A band by band and save the difference raster.\nUseful for deriving relative height such as DSM - DEM.\n\nParameters:\n- image_a_path (str): Path to raster A\n- image_b_path (str): Path to raster B\n- band_a (int, optional): Band index for raster A. Default is 1\n- band_b (int, optional): Band index for raster B. Default is 1\n\nReturns:\n- output_path (str): Path to the difference raster in TEMP_DIR\n- min (float|None): Minimum valid difference\n- max (float|None): Maximum valid difference\n- mean (float|None): Mean valid difference\n- valid_pixels (int): Number of valid pixels used",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -5040,6 +5125,9 @@
       }
     ],
     "docstring": "Description:\nCompute focal (moving-window) statistics over a raster. For each pixel,\naggregate the values inside a square window of side `window_size` centred\non the pixel (odd window sizes recommended). Typical uses: smooth a damage\ndensity map, detect local hotspots, extract local roughness from a DEM,\nor pre-process a change map before thresholding. This is the local\ncounterpart of global zonal statistics and is orthogonal to\n`vec.raster_stats` (which aggregates by vector zones).\n\nParameters:\n- raster_path (str): Path to the input raster (band 1 is used).\n- statistic (str, optional): One of \"mean\", \"sum\", \"min\", \"max\", \"std\".\n  Default \"mean\".\n- window_size (int, optional): Odd integer window side in pixels.\n  Default 5 (i.e. a 5x5 window).\n- nodata (float, optional): Value to treat as nodata. Defaults to the\n  raster's own nodata if present; otherwise pixels are all valid.\n\nReturns (JSON string with fields):\n- tool: \"ras.focal_stats\"\n- output_path (str): Path to the resulting focal-stat raster.\n- statistic (str): Which statistic was applied.\n- window_size (int): Window side used.\n- shape (list[int]): Output raster shape (rows, cols).",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -5115,6 +5203,7 @@
       }
     ],
     "docstring": "Description:\nSplit a raster image into a uniform n×n grid and return pixel windows.\nIndexing uses image[x1:x2, y1:y2] where x is row (top→bottom), y is column (left→right).\nIf H or W is not divisible by n, the last row/col expands to the image boundary.\n\nParameters:\n- image_path (str): Path to raster (GeoTIFF/COG/PNG/JPG…)\n- n (int): number of splits per axis (n >= 1)\n\nReturns:\n- windows (list[list[int]]): [[x1,x2,y1,y2], ...] in row-major order\n- image_shape (list[int]): [height, width]\n- base_tile_px (list[int]): [floor(H/n), floor(W/n)]\n- count (int): n*n\n- note (str)",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -5202,6 +5291,9 @@
       }
     ],
     "docstring": "Description:\nReproject a raster from its current CRS to a target CRS. Useful for aligning\nmulti-source data (e.g., optical + SAR, DEM + damage mask) so downstream\noperations can be performed in a common coordinate system.\n\nParameters:\n- raster_path (str): Path to the input raster\n- dst_crs (str): Target CRS as an EPSG code (e.g., \"EPSG:32636\")\n- resampling (str, optional): \"nearest\" | \"bilinear\" | \"cubic\". Default \"bilinear\".\n- out_path (str, optional): Output GeoTIFF path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- output_path (str): Path to the reprojected raster\n- src_crs (str): Original CRS\n- dst_crs (str): New CRS\n- shape (list[int]): [height, width]",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -5303,6 +5395,9 @@
       }
     ],
     "docstring": "Description:\nResample a raster to a new pixel size. Useful for harmonizing resolution\nbetween multi-source data (e.g., resampling a coarser grid to a finer target resolution).\n\nParameters:\n- raster_path (str): Path to input raster\n- target_pixel_size_m (float): Desired pixel size in meters\n- resampling (str, optional): \"nearest\" | \"bilinear\" | \"cubic\". Default \"bilinear\".\n- out_path (str, optional): Output GeoTIFF path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- output_path (str): Path to the resampled raster\n- src_pixel_size_m (float): Original pixel size\n- dst_pixel_size_m (float): New pixel size\n- shape (list[int]): [height, width]",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -5401,6 +5496,7 @@
       }
     ],
     "docstring": "Description:\nSample pixel value at a specific (row, col) location in a raster image.\n\nParameters:\n- image_path (str): Path to raster image file\n- row (int): Pixel row (y coordinate)\n- col (int): Pixel column (x coordinate)\n\nReturns:\n- row (int): Input row coordinate\n- col (int): Input column coordinate\n- pixel_values (dict): Pixel value for each band (1-indexed)\n- is_inside (bool): Whether the coordinates are within image bounds",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -5483,6 +5579,7 @@
       }
     ],
     "docstring": "Description:\nSample pixel values at multiple locations in a raster image.\n\nParameters:\n- image_path (str): Path to raster image file\n- points (list[dict]): List of {row, col} objects\n\nReturns:\n- total_points (int): Number of input points\n- results (list): List of {row, col, pixel_values, is_inside} for each point",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -5554,6 +5651,7 @@
       }
     ],
     "docstring": "Description:\nCompute summary statistics for one raster band while ignoring nodata values.\n\nParameters:\n- image_path (str): Path to raster image\n- band (int, optional): 1-indexed band number. Default is 1\n- ignore_nodata (bool, optional): Ignore nodata and NaN values. Default is true\n\nReturns:\n- min (float|None): Minimum valid value\n- max (float|None): Maximum valid value\n- mean (float|None): Mean valid value\n- std (float|None): Standard deviation of valid values\n- valid_pixels (int): Number of valid pixels used\n- band (int): Band index used\n- nodata (float|None): Raster nodata value",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -5675,6 +5773,9 @@
       }
     ],
     "docstring": "Description:\nCreate a binary mask by thresholding one raster band.\n\nParameters:\n- image_path (str): Path to raster image\n- threshold (float): Threshold value\n- op (str, optional): One of >=, >, <=, <, ==. Default is >=\n- band (int, optional): 1-indexed band number. Default is 1\n- true_value (int, optional): Pixel value for selected pixels. Default is 255\n- false_value (int, optional): Pixel value for non-selected pixels. Default is 0\n\nReturns:\n- mask_path (str): Path to threshold mask in TEMP_DIR\n- selected_pixels (int): Number of pixels passing the threshold\n- threshold (float): Input threshold\n- op (str): Comparison operator used",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -5787,6 +5888,9 @@
       }
     ],
     "docstring": "Description:\nVectorize a raster mask to extract polygons for specified classes.\nConverts pixel-based mask to vector polygons with area statistics and saves GeoJSON.\nThis tool facilitates the later vector-based processing.\n\nParameters:\n- mask_path (str): Path to the mask image file\n- classes (list[int]): List of class values to vectorize\n- pixel_size_m (float, optional): Pixel size (meters) to compute area_m2\n\nReturns:\n- vector_path (str): Path to the saved vector GeoJSON\n- polygons (list): List of polygon properties (id/class/pixel_count/area_m2)\n- count (int): Number of polygons extracted\n- total_pixels (int): Total pixel count for the classes\n- total_area_m2 (float|None): Total area in m2 if pixel_size_m provided",
+    "artifacts": [
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -5895,6 +5999,7 @@
       }
     ],
     "docstring": "Description:\nCompute a hillshade image from a Digital Elevation Model (DEM) raster,\nrevealing terrain relief. Uses the standard Horn (1981) formulation with\nconfigurable sun azimuth and altitude angles. Useful for landslide and\ndebris-flow susceptibility mapping.\n\nParameters:\n- dem_path (str): Path to DEM GeoTIFF (single-band elevation raster)\n- azimuth (float, optional): Sun azimuth in degrees, clockwise from north. Default 315.\n- altitude (float, optional): Sun altitude in degrees above horizon. Default 45.\n- z_factor (float, optional): Vertical exaggeration factor. Default 1.0.\n- out_path (str, optional): Output GeoTIFF path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- hillshade_path (str): Path to the generated hillshade image\n- shape (list[int]): [height, width] of the output\n- stats (dict): min, max, mean of hillshade values (0-255)",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -5992,6 +6097,7 @@
       }
     ],
     "docstring": "Description:\nCompute a slope map in degrees from a DEM raster. Slope is derived via\nthe Horn (1981) gradient formulation and converted from radians to degrees.\nCommonly used as input for landslide susceptibility and terrain stability.\n\nParameters:\n- dem_path (str): Path to DEM GeoTIFF\n- units (str, optional): \"degrees\" (default) or \"percent\"\n- out_path (str, optional): Output GeoTIFF path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- slope_path (str): Path to the generated slope raster\n- units (str): Units of the output values\n- stats (dict): min, max, mean slope",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -6069,6 +6175,9 @@
       }
     ],
     "docstring": "Description:\nSegment landslide from pre/post disaster optical satellite images (bi-temporal change detection).\nSpatial resolution: 0.59m.\n\nParameters:\n- pre_image_path (str): Path to pre-disaster image\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to the saved landslide mask image\n- classes (dict): Mapping of class values\n  * 0: non-landslide\n  * 255: landslide",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "B（未实测）",
@@ -6131,6 +6240,9 @@
       }
     ],
     "docstring": "Description:\nSegment landslide from post-disaster multi-modal data: multi-spectral optical + DEM + slope.\nSpatial resolution: 10m.\nIMPORTANT: The input image MUST have exactly 14 bands (12-band multi-spectral + DEM: 1 band + Slope: 1 band).\nIf your data has separate multi-spectral, DEM, and slope files, use ras.concat to merge them first.\n\nParameters:\n- post_image_path (str): Path to 14-band concatenated image (multi-spectral + dem + slope)\n\nReturns:\n- mask_path (str): Path to the saved landslide mask image\n- classes (dict): Mapping of class values\n  * 0: non-landslide\n  * 255: landslide",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "C（14 波段归一化）",
@@ -6187,6 +6299,9 @@
       }
     ],
     "docstring": "Description:\nSegment vegetation areas from single temporal optical satellite image.\nDetects trees, shrub and agriculture land.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- image_path (str): Path to single temporal satellite image\n\nReturns:\n- mask_path (str): Path to binary vegetation mask (255 = vegetation)",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "B（仅单期）",
@@ -6243,6 +6358,9 @@
       }
     ],
     "docstring": "Description:\nCreate a buffer around all geometries in a vector file.\nThe distance is interpreted in the CRS units (meters if CRS is metric).\n\nParameters:\n- vector_path (str): Path to input vector GeoJSON\n- meter (float): Buffer distance\n\nReturns:\n- buffer_path (str): Path to buffered GeoJSON",
+    "artifacts": [
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -6297,6 +6415,9 @@
       }
     ],
     "docstring": "Description:\nBuild a road graph from centerline GeoJSON. Nodes are endpoints of each line, edges carry pixel coordinates and length.\n\nParameters:\n- centerline_path (str): Path to centerline GeoJSON (LineString geometries, pixel space)\n\nReturns:\n- graph_path (str): Path to saved graph pickle (networkx graphml)\n- node_count (int)\n- edge_count (int)",
+    "artifacts": [
+      "graph_path"
+    ],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -6359,6 +6480,7 @@
       }
     ],
     "docstring": "Description:\nCalculate the centroid of a polygon or point feature in a vector file.\nUseful for finding the center point of the largest damaged area (explosion center).\n\nParameters:\n- vector_path (str): Path to input vector GeoJSON\n- feature_idx (int): Index of feature to get centroid for (default: 0, the first feature; use -1 for the largest)\n- raster_path (str, optional): reference GeoTIFF; for a georeferenced vector, also return the centroid's\n  pixel_row / pixel_col in this raster's grid\n\nReturns:\n- feature_idx (int): The feature index used\n- geometry_type (str): Type of the original geometry\n- If vector has CRS: latitude (float), longitude (float) in WGS84\n- If vector has no CRS: pixel_row (float), pixel_col (float) in pixel coordinates\n- If vector has CRS and raster_path is given: also pixel_row, pixel_col in the raster's grid",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -6431,6 +6553,9 @@
       }
     ],
     "docstring": "Clip input vectors by ROI vectors.\n\n    Parameters:\n    - vector_path (str): Path to input vector GeoJSON (any geometry type)\n    - roi_vector_path (str): Path to ROI vector GeoJSON (Polygon/MultiPolygon recommended)\n\n    Returns:\n    - clip_path (str): Path to clipped GeoJSON\n    - input_count (int): number of input features\n    - output_count (int): number of output features",
+    "artifacts": [
+      "clip_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -6495,6 +6620,10 @@
       }
     ],
     "docstring": "Description:\nSummarize the connected components based on vector GeoJSON or a raster mask.\n\nParameters:\n- vector_path (str): Path to the vector GeoJSON\n\nReturns:\n- count (int): Number of polygons/components\n- vector_path or mask_path (str): Echo of the input path",
+    "artifacts": [
+      "mask_path",
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -6548,6 +6677,9 @@
       }
     ],
     "docstring": "Description:\nCompute the convex hull of a set of polygons or points in a GeoJSON file.\nUseful for estimating the spatial envelope of a damage cluster or hazard\nspread footprint.\n\nParameters:\n- vector_path (str): Path to input GeoJSON\n- out_path (str, optional): Output GeoJSON path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- output_path (str): Path to convex hull GeoJSON\n- area_m2 (float): Area of the hull (if CRS is projected)\n- vertex_count (int): Number of vertices in the hull",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -6624,6 +6756,9 @@
       }
     ],
     "docstring": "Description:\nDissolve (merge) overlapping or adjacent polygons into larger ones, optionally\ngrouping by an attribute field. Useful for consolidating fragmented damage\npatches into contiguous impact zones.\n\nParameters:\n- vector_path (str): Path to input polygon GeoJSON\n- by (str, optional): Attribute field to group by before dissolving\n- out_path (str, optional): Output GeoJSON path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- output_path (str): Path to dissolved GeoJSON\n- input_count (int): Number of input features\n- output_count (int): Number of features after dissolve",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -6707,6 +6842,9 @@
       }
     ],
     "docstring": "Description:\nRemove polygons smaller than threshold; useful for cleaning noise.\n\nParameters:\n- vector_path (str)\n- min_area_m2 (float)\n- pixel_size_m (float): meters per pixel for pixel-space vectors\n\nReturns:\n- vector_path (str)",
+    "artifacts": [
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -6774,6 +6912,9 @@
       }
     ],
     "docstring": "Description:\nFilter vector features by attribute values. This is useful when a vector file\ncontains mixed feature types and the task only wants a semantic subset, such as\nhospitals or commercial POIs based on the `types` attribute.\n\nParameters:\n- vector_path (str)\n- attribute_name (str): attribute/column to inspect, such as `types`\n- allowed_values (list[str]): accepted token values, such as `[\"hospital\"]`\n\nReturns:\n- vector_path (str)\n- total_input (int)\n- total_filtered (int)",
+    "artifacts": [
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -6847,6 +6988,7 @@
       }
     ],
     "docstring": "Filter vector features by distance from a center point (WGS84).\n\n    Parameters:\n    - vector_path (str): Path to vector GeoJSON/Shapefile\n    - center_lat (float): Center point latitude (WGS84)\n    - center_lon (float): Center point longitude (WGS84)\n    - max_distance_m (float): Maximum distance in meters\n\n    Returns:\n    - vector_path (str): Path to filtered vector\n    - total_input (int): Number of input features\n    - total_filtered (int): Number of features within distance\n    - nearest_distance_m (float): Distance to nearest feature\n    - farthest_distance_m (float): Distance to farthest feature",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -6959,6 +7101,7 @@
       }
     ],
     "docstring": "Description:\nFind shortest path on an intact-road graph.\n\nParameters:\n- graph_path (str): Path to graph graphml produced by vec.build_graph\n- start (list[int]): [row, col] start point (pixel coordinates)\n- end (list[int]): [row, col] end point (pixel coordinates)\n- pixel_size_m (float, optional): Pixel size in meters for distance conversion\n\nReturns:\n- distance_px (float|null): Shortest path length in pixels (null if no path)\n- distance_m (float|null): Shortest path length in meters (null if no path)\n- path_pixels (list): List of [row, col] along path\n- path_geojson (str|null): Path to saved path GeoJSON (null if no path)\n- snapped_start/end (list|None): Snapped coordinates on centerline",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -7061,6 +7204,9 @@
       }
     ],
     "docstring": "Description:\nFind intersection between two vector datasets (GeoJSON) using vector overlay. Features of one layer\nthat overlap each other (e.g. per-feature buffers) are merged first, so nothing is counted or\nmeasured twice.\n\nParameters:\n- vector_a_path (str): Path to first vector GeoJSON\n- vector_b_path (str): Path to second vector GeoJSON\n- pixel_size_m (float, optional): Pixel size to compute area_m2 if geometry area is in pixel units\n\nReturns:\n- intersection_count (int): Number of intersection pieces (one per pair of intersecting features)\n- intersecting_a_count (int): Number of features of the first dataset that intersect the second\n  (e.g. buildings hit by a flood layer passed second)\n- intersecting_b_count (int): Number of features of the second dataset that intersect the first\n- intersection_area_m2 (float): Total intersection area in square meters\n- intersection_path (str): Path to intersection GeoJSON",
+    "artifacts": [
+      "intersection_path"
+    ],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -7148,6 +7294,9 @@
       }
     ],
     "docstring": "Description:\nCreate multiple buffers for given distances around geometries in a vector file.\nThe distances are interpreted in CRS units (meters if CRS is metric).\n\nParameters:\n- vector_path (str): Path to input vector GeoJSON\n- meters (list[float]): Distances for buffering\n\nReturns:\n- buffers (list): List of {distance, buffer_path}",
+    "artifacts": [
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -7208,6 +7357,10 @@
       }
     ],
     "docstring": "Description:\nCompute total length (m) for LineString features.\n\nParameters:\n- vector_path (str)\n- pixel_size_m (float): meters per pixel for pixel-space vectors\n\nReturns:\n- total_length_m (float)\n- table_path (str): CSV with {id, length_m}",
+    "artifacts": [
+      "table_path",
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -7274,6 +7427,9 @@
       }
     ],
     "docstring": "Description:\nFind the largest polygon(s) from existing vector data based on area.\n\nParameters:\n- vector_path (str): Path to the vector GeoJSON\n- pixel_size_m (float, optional): Pixel size to compute area_m2 if geometry units are pixel\n- topk (int, optional): Number of top polygons to return. Default is 1.\n\nReturns:\n- max_area_m2 (float): Area of the largest polygon in square meters\n- max_pixel_count (int): Pixel count of the largest polygon (if available)\n- topk_polygons (list): Top-k polygons by area\n- total_polygons (int): Total polygons found\n- vector_path (str): Echo of input",
+    "artifacts": [
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -7373,6 +7529,10 @@
       }
     ],
     "docstring": "For each feature in vector A, find the nearest feature(s) in vector B\n    using Euclidean (straight-line) distance in pixel space.\n\n    Parameters:\n    - vector_a_path (str): Path to vector A GeoJSON\n    - vector_b_path (str): Path to vector B GeoJSON\n    - pixel_size_m (float, optional): meters per pixel\n    - topk (int, optional): number of nearest neighbors per A (default 1)\n\n    Returns:\n    - table_path (str): CSV with nearest pairs and distances\n    - links_geojson (str|None): GeoJSON of A–B nearest connectors\n    - pair_count (int)\n    - pixel_size_m (float|None)\n    - distance_px / distance_m (float): distance of the closest pair overall (minimum over all A)\n    - nearest_a_id / nearest_b_id (int): ids of that closest pair",
+    "artifacts": [
+      "links_geojson",
+      "table_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -7452,6 +7612,10 @@
       }
     ],
     "docstring": "Description:\nCompute perimeters (m) for polygon features.\n\nParameters:\n- vector_path (str)\n- pixel_size_m (float): meters per pixel for pixel-space vectors\n\nReturns:\n- total_perimeter_m (float)\n- table_path (str)",
+    "artifacts": [
+      "table_path",
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -7512,6 +7676,7 @@
       }
     ],
     "docstring": "Description:\nConvert pixel coordinates to world coordinates (WGS84) using a reference GeoTIFF.\n\nParameters:\n- raster_path (str): Path to the reference GeoTIFF (e.g., post-disaster image)\n- pixel_row (int): Pixel row coordinate (y)\n- pixel_col (int): Pixel column coordinate (x)\n\nReturns:\n- latitude (float): Y coordinate in WGS84\n- longitude (float): X coordinate in WGS84\n- pixel_row (int): Input pixel row\n- pixel_col (int): Input pixel col",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -7600,6 +7765,7 @@
       }
     ],
     "docstring": "Description:\nFor each input point, test whether it lies inside any polygon of a polygon\nlayer. Returns the matching polygon id(s) if any. Useful for filtering POIs\nto those located within damaged zones.\n\nParameters:\n- points_path (str): Path to point GeoJSON\n- polygons_path (str): Path to polygon GeoJSON\n- polygon_id_field (str, optional): Attribute field used as polygon identifier\n\nReturns:\n- matches (list[dict]): List of {point_index, polygon_ids} for inside points\n- inside_count (int): Number of points located inside at least one polygon",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "A",
@@ -7702,6 +7868,9 @@
       }
     ],
     "docstring": "Description:\nSample raster values under vector geometries and compute summary statistics.\nSupports point, line, and polygon geometries. For points, the raster value at the\npoint pixel is used. For non-point geometries, the raster is sampled over covered pixels.\n\nParameters:\n- vector_path (str): Path to vector GeoJSON/Shapefile\n- raster_path (str): Path to raster image\n- stats (list[str], optional): Any of mean, min, max, std. Default is [mean, min, max]\n- band (int, optional): Raster band to use. Default is 1\n- return_features (bool, optional): Whether to include per-feature statistics. Default is true\n- min_pixels (int, optional): Minimum covered pixels required to keep a feature. Default is 1\n- all_touched (bool, optional): Whether to rasterize vectors with all_touched=True. Default is false\n\nReturns:\n- feature_count (int): Number of features retained after min_pixels filtering\n- feature_stats (list[dict], optional): Per-feature statistics\n- output_vector_path (str): GeoJSON with attached statistics for retained features\n- mean/min/max/std (float|None): Aggregate stats over the union of retained features",
+    "artifacts": [
+      "vector_path"
+    ],
     "guarded": true,
     "relevance": "★★★",
     "transfer": "A",
@@ -7822,6 +7991,7 @@
       }
     ],
     "docstring": "Description:\nGiven a road graph with some edges marked as damaged/blocked, find the minimum\nset of edges that must be repaired so that a shortest path between source and\ntarget nodes becomes possible. The solution minimises the number of repairs\nfirst and breaks ties by total path length.\n\nThe graph may be provided as a NetworkX .graphml file (output of vec.build_graph)\nor as a JSON file with {\"nodes\": [...], \"edges\": [...]}. If source/target are not\ngiven or do not exist in the graph, the function automatically selects two nodes\nfrom the largest connected component: a node near the centroid of the component\nas source and its farthest reachable node as target.\n\nParameters:\n- graph_path (str): Path to a graph file (.graphml or .json/.geojson)\n- source (str | int, optional): Source node id (e.g., a rescue base). If omitted\n  or not found, an auto-selection is performed.\n- target (str | int, optional): Target node id (e.g., a hospital). Same rule.\n- blocked_attr (str, optional): Edge attribute marking a damaged/blocked edge.\n  Defaults to \"damaged\" (native attribute from vec.build_graph); \"blocked\" is\n  also accepted.\n\nReturns:\n- repair_edges (list): Edge endpoints that must be repaired, e.g. [[u, v], ...]\n- repair_count (int): Minimum number of repairs needed on the optimal path\n- path_length_m (float): Total length of the post-repair path (metres)\n- source (int): Source node id actually used\n- target (int): Target node id actually used\n- auto_selected (bool): Whether source/target were auto-selected",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -7929,6 +8099,7 @@
       }
     ],
     "docstring": "Description:\nExtract road centerlines directly from a road mask by skeletonizing and outputting\ncenterlines as GeoJSON LineStrings. The caller must supply the class-id lists\ncorresponding to intact vs damaged road pixels (look them up in the upstream\nsegmentation tool's returned `classes` dict).\n\nParameters:\n- mask_path (str): Path to road mask\n- intact_classes (list[int], optional): Class ids treated as intact road\n- damaged_classes (list[int], optional): Class ids treated as damaged road\n\nReturns:\n- centerline_path (str): Path to centerline GeoJSON",
+    "artifacts": [],
     "guarded": true,
     "relevance": "★★",
     "transfer": "A",
@@ -8008,6 +8179,9 @@
       }
     ],
     "docstring": "Description:\nSimplify polygon or line geometries using the Douglas-Peucker algorithm.\nReduces the number of vertices while preserving overall shape, producing\nlighter outputs suitable for visualization or downstream computation.\n\nParameters:\n- vector_path (str): Path to input GeoJSON\n- tolerance (float): Simplification tolerance in CRS units (meters for projected)\n- preserve_topology (bool, optional): Default True\n- out_path (str, optional): Output GeoJSON path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- output_path (str): Path to simplified GeoJSON\n- input_vertex_count (int): Total vertices in input\n- output_vertex_count (int): Total vertices in output",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★★",
     "transfer": "A",
@@ -8098,6 +8272,9 @@
       }
     ],
     "docstring": "Description:\nCompute a Voronoi diagram (service-area partition) from a set of input points.\nEach resulting polygon contains all locations closer to its seed point than to\nany other. Useful for assigning hospital/firestation service areas.\n\nParameters:\n- points_path (str): Path to input points GeoJSON\n- boundary_path (str, optional): Optional boundary polygon to clip the diagram\n- out_path (str, optional): Output GeoJSON path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- output_path (str): Path to Voronoi polygons GeoJSON\n- cell_count (int): Number of Voronoi cells generated",
+    "artifacts": [
+      "output_path"
+    ],
     "guarded": false,
     "relevance": "★",
     "transfer": "A",
@@ -8170,6 +8347,9 @@
       }
     ],
     "docstring": "Description:\nSegment flood areas from pre/post disaster optical satellite images.\nDetects standing water and flooded regions.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- pre_image_path (str): Path to pre-disaster image\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary flooding mask (255 = flooding)",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "C（跨分辨率失效）",
@@ -8228,6 +8408,9 @@
       }
     ],
     "docstring": "Description:\nSegment reservoirs from multi-modal data: multi-spectral optical + DEM + slope.\nSpatial resolution: 10m.\nIMPORTANT: The input image MUST have exactly 14 bands (12-band multi-spectral + DEM: 1 band + Slope: 1 band).\nIf your data has separate multi-spectral, DEM, and slope files, use ras.concat to merge them first.\n\nParameters:\n- post_image_path (str): Path to 14-band concatenated image (multi-spectral + dem + slope)\n\nReturns:\n- mask_path (str): Path to the saved binary reservoir mask\n- classes (dict): Mapping of class values to semantic labels\n  * 0: background\n  * 255: reservoir",
+    "artifacts": [
+      "mask_path"
+    ],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "C（14 波段归一化）",
@@ -8284,6 +8467,7 @@
       }
     ],
     "docstring": "Segment water areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to water mask (255 = water)\n- classes (dict): {11: \"water\"}",
+    "artifacts": [],
     "guarded": false,
     "relevance": "★★★",
     "transfer": "C（0.03 m 航拍）",

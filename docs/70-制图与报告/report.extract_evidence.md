@@ -25,7 +25,7 @@
 
 ## 输出
 
-返回 JSON 字符串，字段见源码；产物路径通常在 `mask_path` / `output_path` / `vector_path` 中。
+返回 JSON 字符串，字段见源码。
 
 ## 依赖与运行
 
