@@ -309,6 +309,9 @@ def render_tool(t: dict, folder: str, folder_by_tool: dict | None = None) -> str
         lines.append(f"- {t['boundary']}")
     else:
         lines.append(f"- {fallback_boundary(t)}")
+        if t["domain"] in content.DOMAIN_TABLES:
+            lines.append("- 本域统一的输入口径（分辨率 / 时相 / 是否实测）见 "
+                         "[README 的「实测口径」表](README.md#实测口径)")
     lines.append("")
 
     if t["pitfall"] or t["tip"]:
@@ -336,9 +339,11 @@ def render_tool(t: dict, folder: str, folder_by_tool: dict | None = None) -> str
 
 
 def render_domain(key: str, folder: str, tools: list[dict]) -> str:
-    lines = [f"# {folder}", "", content.DOMAIN_INTRO[key].strip(), "",
-             f"## 工具速查（{len(tools)} 件）", "",
-             "| 工具 | 相关性 | 可迁移性 | 用途 |", "|---|---|---|---|"]
+    lines = [f"# {folder}", "", content.DOMAIN_INTRO[key].strip(), ""]
+    if key in content.DOMAIN_TABLES:
+        lines += [content.DOMAIN_TABLES[key].strip(), ""]
+    lines += [f"## 工具速查（{len(tools)} 件）", "",
+              "| 工具 | 相关性 | 可迁移性 | 用途 |", "|---|---|---|---|"]
     for t in sorted(tools, key=lambda x: (REL_ORDER.get(x["relevance"], 9), x["name"])):
         lines.append(f"| [`{t['name']}`]({t['name']}.md) | {t['relevance']} | {t['transfer']} | {esc(t['desc_cn'])} |")
     lines += ["", "## 相关但不在本域", ""]
