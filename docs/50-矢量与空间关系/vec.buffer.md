@@ -14,6 +14,10 @@
 
 > Create a buffer around all geometries in a vector file. The distance is interpreted in the CRS units (meters if CRS is metric).
 
+## 这个工具做什么
+
+沿着一条线或一个点，向外画出一圈指定宽度的影响带。溃堤口 500 米内、河道两侧 100 米，都是这么圈出来的。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

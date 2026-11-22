@@ -14,6 +14,10 @@
 
 > Sample pixel values at multiple locations in a raster image.
 
+## 这个工具做什么
+
+一次查很多个点，返回一张表。适合把几十上百个站点的值一次取出来。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

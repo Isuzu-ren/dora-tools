@@ -14,6 +14,10 @@
 
 > For each feature in vector A, find the nearest feature(s) in vector B using Euclidean (straight-line) distance in pixel space.
 
+## 这个工具做什么
+
+给一个点，找出离它最近的另一类设施——受灾点最近的安置点、最近的物资库。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

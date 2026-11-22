@@ -78,6 +78,20 @@ def main() -> int:
         if not t.get("relevance") or not t.get("transfer"):
             warns.append(f"{t['name']} 缺相关性或可迁移性标签")
 
+    # 5b. ★★ 及以上必须有大白话说明
+    need = [t["name"] for t in tools if t["relevance"] in ("★★★", "★★")]
+    missing_plain = [n for n in need if n not in content.PLAIN]
+    if missing_plain:
+        errors.append(f"{len(missing_plain)} 件 ★★ 以上工具缺大白话说明：{missing_plain[:8]}")
+    extra = [n for n in content.PLAIN if n not in {t["name"] for t in tools}]
+    if extra:
+        errors.append(f"PLAIN 里有不存在的工具名：{extra}")
+    for t in tools:
+        if t["name"] in content.PLAIN:
+            page = DOCS / folder_of[t["domain"]] / f"{t['name']}.md"
+            if page.exists() and "## 这个工具做什么" not in page.read_text(encoding="utf-8"):
+                errors.append(f"{t['name']} 页缺「这个工具做什么」小节")
+
     # 6. 未写「适用边界」补充说明的工具（不算错，提示）
     no_note = [t["name"] for t in tools if not t.get("boundary") and not t.get("pitfall") and not t.get("tip")]
     if no_note:

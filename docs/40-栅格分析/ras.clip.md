@@ -14,6 +14,10 @@
 
 > Clip a raster by a pixel window [x1:x2, y1:y2], where x is row (top→bottom) and y is column (left→right). Preserves georeferencing if the input has it (GeoTIFF/COG/etc.).
 
+## 这个工具做什么
+
+按一块矩形范围裁图，只留下关心的那一块，后面的计算就不用管全图。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Count pixels for specified classes in a mask image.
 
+## 这个工具做什么
+
+数一数某类区域占了多少个像素。面积就是它乘上每个像素代表的平方米数。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

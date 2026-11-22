@@ -14,6 +14,10 @@
 
 > Extract road centerlines directly from a road mask by skeletonizing and outputting centerlines as GeoJSON LineStrings. The caller must supply the class-id lists corresponding to intact vs damaged road pixels (look them up in the upstream segmentation tool's returned `classes` dict).
 
+## 这个工具做什么
+
+从道路范围图里抽出一条条中心线，把「一片路面」变成「可以走的线」。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

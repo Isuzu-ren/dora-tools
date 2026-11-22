@@ -14,6 +14,10 @@
 
 > Overlay a segmentation mask on top of a base image. Inputs: - image_path: base raster image - mask_path: segmentation mask path - alpha: overlay opacity - class_labels: optional class label dict Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+把彩色范围半透明地压在卫星底图上，一眼看出「淹的是哪片地」。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

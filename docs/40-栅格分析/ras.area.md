@@ -14,6 +14,10 @@
 
 > Calculate the area of regions in a mask. Only supports pixel-based masks.
 
+## 这个工具做什么
+
+算某类区域有多少平方米。淹没多少亩、受旱多少平方公里，最后都落到这一个数上。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

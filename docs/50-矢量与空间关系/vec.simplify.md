@@ -14,6 +14,10 @@
 
 > Simplify polygon or line geometries using the Douglas-Peucker algorithm. Reduces the number of vertices while preserving overall shape, producing lighter outputs suitable for visualization or downstream computation.
 
+## 这个工具做什么
+
+在形状不失真的前提下减少顶点数，让数据变小、加载更快。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Find the largest polygon(s) from existing vector data based on area.
 
+## 这个工具做什么
+
+从一堆图斑里挑出最大的那几块，用来定位主灾区。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

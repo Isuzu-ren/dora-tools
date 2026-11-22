@@ -14,6 +14,10 @@
 
 > Summarize the connected components based on vector GeoJSON or a raster mask.
 
+## 这个工具做什么
+
+数一数范围图里有多少个互不相连的块。有几片独立积水、几处独立损毁，靠它数。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

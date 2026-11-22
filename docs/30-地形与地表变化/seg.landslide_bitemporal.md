@@ -14,6 +14,10 @@
 
 > Segment landslide from pre/post disaster optical satellite images (bi-temporal change detection). Spatial resolution: 0.59m.
 
+## 这个工具做什么
+
+只靠灾前灾后两张普通影像找出滑坡，不需要高程数据，适合没有地形资料的地区。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

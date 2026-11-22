@@ -14,6 +14,10 @@
 
 > Segment buildings under reconstruction from a pre-disaster optical image and a post-disaster recovery-phase optical image (bi-temporal change detection). Spatial resolution: 0.8m. The input pre and post image requires 3-bands.
 
+## 这个工具做什么
+
+对比灾前和重建期的影像，看哪些房子重新盖起来了，用来跟踪恢复进度。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

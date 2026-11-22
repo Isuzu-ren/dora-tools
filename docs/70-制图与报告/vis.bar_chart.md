@@ -14,6 +14,10 @@
 
 > Generate a bar chart from category statistics. Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+画柱状图，比较不同县、不同时段的数量。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

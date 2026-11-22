@@ -14,6 +14,10 @@
 
 > Subtract raster B from raster A band by band and save the difference raster. Useful for deriving relative height such as DSM - DEM.
 
+## 这个工具做什么
+
+把两张同一位置的图逐点相减，得到变化量。两期高程相减就是填挖或淤积的厚度，两期影像相减就是地表变没变。它只会减，不会除。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

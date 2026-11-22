@@ -14,6 +14,10 @@
 
 > Resample a raster to a new pixel size. Useful for harmonizing resolution between multi-source data (e.g., resampling a coarser grid to a finer target resolution).
 
+## 这个工具做什么
+
+把影像缩放到指定分辨率。模型对「一像素代表多少米」很敏感，喂进去之前基本都要这一步。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

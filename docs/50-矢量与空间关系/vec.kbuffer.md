@@ -14,6 +14,10 @@
 
 > Create multiple buffers for given distances around geometries in a vector file. The distances are interpreted in CRS units (meters if CRS is metric).
 
+## 这个工具做什么
+
+一次生成多层缓冲带，比如 100 / 500 / 1000 米三圈，用来分轻重影响区。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

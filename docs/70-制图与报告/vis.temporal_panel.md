@@ -14,6 +14,10 @@
 
 > Generate a multi-temporal panel from multiple image paths. Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+把多个时间的影像拼成一组，看变化过程——涨水、峰值、退水一条线看下来。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

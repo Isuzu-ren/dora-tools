@@ -252,6 +252,10 @@ def render_tool(t: dict, folder: str, folder_by_tool: dict | None = None) -> str
     if t["desc_raw"] and t["desc_raw"] != t["desc_cn"]:
         lines += ["## 源码中的原话", "", f"> {t['desc_raw']}", ""]
 
+    plain = content.PLAIN.get(t["name"])
+    if plain:
+        lines += ["## 这个工具做什么", "", plain, ""]
+
     lines += ["## 输入", ""]
     if t["params_doc"]:
         lines += ["| 参数 | 类型 | 必填 | 默认 | 说明 |", "|---|---|:-:|---|---|"]
@@ -439,6 +443,7 @@ function pick(i) {{
     <div><span class="tag">${{esc(DOMAINS[t.domain])}}</span><span class="tag">相关性 ${{t.relevance}}</span>
     <span class="tag">可迁移 ${{t.transfer}}</span><span class="tag">${{esc(t.module)}}</span></div>
     <p>${{esc(t.desc_cn)}}</p>`;
+  if (t.plain) h += `<h3>这个工具做什么</h3><p>${{esc(t.plain)}}</p>`;
   if (t.desc_raw) h += `<h3>源码原话</h3><p>${{esc(t.desc_raw)}}</p>`;
   if (t.params.length) {{
     h += `<h3>输入</h3><table><tr><th>参数</th><th>类型</th><th>必填</th><th>默认</th><th>说明</th></tr>`
@@ -490,6 +495,7 @@ def render_html(tools: list[dict]) -> str:
             "i": i, "name": t["name"], "module": t["module"], "domain": t["domain"],
             "relevance": t["relevance"], "transfer": t["transfer"],
             "desc_cn": t["desc_cn"], "desc_raw": t["desc_raw"][:300] if t["desc_raw"] != t["desc_cn"] else "",
+            "plain": content.PLAIN.get(t["name"], ""),
             "dep": t["dep"], "guard_text": guard_text(t),
             "params": [{"name": p["name"], "type": short_type(p["type"]), "required": p["required"],
                         "default": p["default"], "desc": p["desc"]} for p in t["params_doc"]],

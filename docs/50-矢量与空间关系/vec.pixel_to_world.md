@@ -14,6 +14,10 @@
 
 > Convert pixel coordinates to world coordinates (WGS84) using a reference GeoTIFF.
 
+## 这个工具做什么
+
+把图上的行列号换算成经纬度，方便上报和在地图上定位。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

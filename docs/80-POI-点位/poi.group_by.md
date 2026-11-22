@@ -14,6 +14,10 @@
 
 > Group a list of dictionaries by a field and calculate statistics.
 
+## 这个工具做什么
+
+按某个字段把点位分组计数，比如各县有多少个安置点。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

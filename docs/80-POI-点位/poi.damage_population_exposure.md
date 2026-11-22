@@ -14,6 +14,10 @@
 
 > Join damage and population feature statistics for POIs and rank exposed locations. Useful for identifying high-population POIs whose damage score exceeds a threshold.
 
+## 这个工具做什么
+
+把受损建筑和人口数据叠在一起，排出「哪个点受影响的人最多」，用于优先处置。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

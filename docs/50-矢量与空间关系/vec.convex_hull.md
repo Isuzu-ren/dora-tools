@@ -14,6 +14,10 @@
 
 > Compute the convex hull of a set of polygons or points in a GeoJSON file. Useful for estimating the spatial envelope of a damage cluster or hazard spread footprint.
 
+## 这个工具做什么
+
+把一堆点或面用最小的凸多边形包起来，快速得到「大致影响范围」。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

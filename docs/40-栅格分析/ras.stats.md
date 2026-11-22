@@ -14,6 +14,10 @@
 
 > Compute summary statistics for one raster band while ignoring nodata values.
 
+## 这个工具做什么
+
+给一张图算几个基本数字：最小、最大、平均、以及起伏有多大。用来快速判断这片区域整体什么情况，比如全县平均降雨、平均地表温度。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

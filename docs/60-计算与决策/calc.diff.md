@@ -14,6 +14,10 @@
 
 > Compute absolute difference between two numbers.
 
+## 这个工具做什么
+
+两个数相减后取绝对值，只关心差了多少。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

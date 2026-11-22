@@ -14,6 +14,10 @@
 
 > Convert POI (Points of Interest) from GeoJSON/Shapefile to a vector GeoJSON file. Optionally filter by name.
 
+## 这个工具做什么
+
+把一张表格里的点位转成地图上能用的点数据。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

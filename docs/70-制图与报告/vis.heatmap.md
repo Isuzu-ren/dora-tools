@@ -14,6 +14,10 @@
 
 > Render a 2D heatmap visualizing the spatial density of input points or polygon centroids. Uses Gaussian kernel density estimation and a color-mapped overlay. If the input vector contains polygons (e.g., building damage outlines), their centroids are computed automatically.
 
+## 这个工具做什么
+
+把点的密集程度画成热力图，一眼看出隐患点、报汛站哪里最集中。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

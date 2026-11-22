@@ -14,6 +14,10 @@
 
 > Use LLM to generate a summary of disaster analysis results.
 
+## 这个工具做什么
+
+让大模型根据前面的图和数字写一段灾情简报文字，可以带图。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Calculate volume from area and depth. Volume = Area × Depth
 
+## 这个工具做什么
+
+面积乘以深度得到体积。多少水、多少土方，一句话算出来。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

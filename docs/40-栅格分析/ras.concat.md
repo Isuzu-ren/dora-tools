@@ -14,6 +14,10 @@
 
 > Concatenate multiple rasters along the band/channel dimension into a single GeoTIFF. All inputs must have identical height/width and, if present, the same CRS and transform.
 
+## 这个工具做什么
+
+把几张不同来源的图按波段叠成一张多层图。有些模型要求一次吃十几个波段（可见光 + 高程 + 坡度），只能靠它拼出来。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

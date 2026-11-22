@@ -14,6 +14,10 @@
 
 > Generate a before/after comparison panel. Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+把灾前灾后两张图并排摆好，做成一张对比图。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Compute a slope map in degrees from a DEM raster. Slope is derived via the Horn (1981) gradient formulation and converted from radians to degrees. Commonly used as input for landslide susceptibility and terrain stability.
 
+## 这个工具做什么
+
+用高程数据算坡度，回答「哪里陡、哪里平」。滑坡易发区判定、水往哪儿流，都要从这里起步。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

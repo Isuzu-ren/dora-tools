@@ -14,6 +14,10 @@
 
 > Sample raster values under vector geometries and compute summary statistics. Supports point, line, and polygon geometries. For points, the raster value at the point pixel is used. For non-point geometries, the raster is sampled over covered pixels.
 
+## 这个工具做什么
+
+按行政边界、流域或任意多边形，把图里的数值汇总成一个数。「这个县平均降雨多少」「这个灌区受旱面积多大」都是它算的。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

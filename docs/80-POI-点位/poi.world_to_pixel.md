@@ -14,6 +14,10 @@
 
 > Transform GeoJSON POI coordinates from geographic CRS (WGS84) to the pixel coordinate system of a reference raster image. Points that fall outside the image bounds are filtered out. The output GeoJSON contains the original properties plus pixel coordinates (pixel_row, pixel_col, utm_x, utm_y).
 
+## 这个工具做什么
+
+把经纬度换算成影像上的行列号，让业务点位和卫星图对齐。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

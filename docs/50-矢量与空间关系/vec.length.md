@@ -14,6 +14,10 @@
 
 > Compute total length (m) for LineString features.
 
+## 这个工具做什么
+
+量线有多长。河道多长、被淹的路段多长，都是它算。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

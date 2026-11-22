@@ -14,6 +14,10 @@
 
 > Compute perimeters (m) for polygon features.
 
+## 这个工具做什么
+
+量面一圈有多长。水域岸线多长、淹没区边界多曲折，用它。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

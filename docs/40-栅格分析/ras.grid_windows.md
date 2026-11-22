@@ -14,6 +14,10 @@
 
 > Split a raster image into a uniform n×n grid and return pixel windows. Indexing uses image[x1:x2, y1:y2] where x is row (top→bottom), y is column (left→right). If H or W is not divisible by n, the last row/col expands to the image boundary.
 
+## 这个工具做什么
+
+把一张图切成 n×n 的小格，方便一格一格统计。找「最热的街区」「最旱的片区」，就是先切格再排序。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

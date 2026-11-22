@@ -14,6 +14,10 @@
 
 > Loop over a list of items and execute a sequence of tool calls for each item. Supports per-item binding and simple step-result references.
 
+## 这个工具做什么
+
+把同一套操作在一个列表上挨个跑一遍，不用手写几十次。按网格、按县逐个统计就靠它。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

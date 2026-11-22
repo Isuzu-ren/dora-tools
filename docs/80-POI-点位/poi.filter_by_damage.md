@@ -14,6 +14,10 @@
 
 > Filter POI results to only include those located in damaged buildings. Takes the output from tool.loop and filters items where damage_class >= 2 (partially damaged or totally destroyed).
 
+## 这个工具做什么
+
+筛出正好落在受损建筑里的点位——被淹的学校、医院就是这么找出来的。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

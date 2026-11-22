@@ -14,6 +14,10 @@
 
 > Remove polygons smaller than threshold; useful for cleaning noise.
 
+## 这个工具做什么
+
+把太小的碎块删掉。模型输出常有零星噪点，几百平方米以下的一律当噪声清掉。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

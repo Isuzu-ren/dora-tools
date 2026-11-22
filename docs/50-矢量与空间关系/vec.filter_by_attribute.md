@@ -14,6 +14,10 @@
 
 > Filter vector features by attribute values. This is useful when a vector file contains mixed feature types and the task only wants a semantic subset, such as hospitals or commercial POIs based on the `types` attribute.
 
+## 这个工具做什么
+
+按属性表里的字段筛要素，比如只看「耕地」，或只看某个县。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

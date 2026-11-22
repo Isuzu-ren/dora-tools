@@ -14,6 +14,10 @@
 
 > Generate a standard damage assessment map. Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+生成一张规范的灾情专题图：底图、彩色范围、图例、指北针、比例尺一次到位，可以直接发出去。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

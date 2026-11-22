@@ -14,6 +14,10 @@
 
 > Segment building damage from pre/post disaster optical satellite images. Uses difference-based detection to classify buildings into damage levels. Spatial resolution: 0.8m. The input pre and post image requires 3-bands.
 
+## 这个工具做什么
+
+对比灾前灾后两张影像，把每栋建筑判成三档：完好、部分损坏、完全损毁。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

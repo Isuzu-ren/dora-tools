@@ -14,6 +14,10 @@
 
 > Reproject a raster from its current CRS to a target CRS. Useful for aligning multi-source data (e.g., optical + SAR, DEM + damage mask) so downstream operations can be performed in a common coordinate system.
 
+## 这个工具做什么
+
+把影像换到统一的坐标系。国产数据常是 CGCS2000、国际数据多是 WGS84，不统一就没法叠在一张图上。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

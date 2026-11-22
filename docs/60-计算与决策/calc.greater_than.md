@@ -14,6 +14,10 @@
 
 > Compare two numbers and return whether a > b.
 
+## 这个工具做什么
+
+判断一个数有没有超过阈值，返回是或否。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

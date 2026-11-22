@@ -14,6 +14,10 @@
 
 > Given a road graph with some edges marked as damaged/blocked, find the minimum set of edges that must be repaired so that a shortest path between source and target nodes becomes possible. The solution minimises the number of repairs first and breaks ties by total path length. The graph may be provided as a NetworkX .graphml file (output of vec.build_graph) or as a JSON file with {"nodes": [...], "edges": [...]}. If source/target are not given or do not exist in the graph, the function automatically selects two nodes from the largest connected component: a node near the centroid of the componen
 
+## 这个工具做什么
+
+算「最少修哪几段路，就能让所有孤立的点重新连上」，用于断路后的抢通排序。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

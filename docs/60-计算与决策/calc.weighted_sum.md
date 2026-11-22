@@ -14,6 +14,10 @@
 
 > Compute a weighted sum over a list of numeric values (multi-criteria aggregation). Commonly used for composite severity indices, e.g., combining building damage, flood depth, and road disruption into one score.
 
+## 这个工具做什么
+
+把几个指标按权重加起来，得到一个综合分。旱情指数、风险评分都是这么合成的。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

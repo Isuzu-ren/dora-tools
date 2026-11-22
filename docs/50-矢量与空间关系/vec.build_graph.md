@@ -14,6 +14,10 @@
 
 > Build a road graph from centerline GeoJSON. Nodes are endpoints of each line, edges carry pixel coordinates and length.
 
+## 这个工具做什么
+
+把路网变成一张图（节点加连接线），之后才能算「从 A 到 B 怎么走」。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

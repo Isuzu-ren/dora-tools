@@ -14,6 +14,10 @@
 
 > Segment flood areas from pre/post disaster optical satellite images. Detects standing water and flooded regions. Spatial resolution: 0.5m-1.0m.
 
+## 这个工具做什么
+
+给它灾前、灾后两张光学影像，它先分别认出两期的水面，再相减，得到「新淹了哪里」。注意它给的是范围，不含水深。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

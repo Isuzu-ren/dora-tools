@@ -14,6 +14,10 @@
 
 > Compute focal (moving-window) statistics over a raster. For each pixel, aggregate the values inside a square window of side `window_size` centred on the pixel (odd window sizes recommended). Typical uses: smooth a damage density map, detect local hotspots, extract local roughness from a DEM, or pre-process a change map before thresholding. This is the local counterpart of global zonal statistics and is orthogonal to `vec.raster_stats` (which aggregates by vector zones).
 
+## 这个工具做什么
+
+对每个像素看它周围一圈邻居，算平均、最大或波动有多大。用来平滑噪点，或找出「比周围明显异常」的点。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

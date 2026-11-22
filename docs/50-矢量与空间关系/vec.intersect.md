@@ -14,6 +14,10 @@
 
 > Find intersection between two vector datasets (GeoJSON) using vector overlay. Features of one layer that overlap each other (e.g. per-feature buffers) are merged first, so nothing is counted or measured twice.
 
+## 这个工具做什么
+
+两层范围求重叠。淹没范围叠到行政区上，就知道每个县淹了多少；叠到耕地上，就知道多少亩农田受影响。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

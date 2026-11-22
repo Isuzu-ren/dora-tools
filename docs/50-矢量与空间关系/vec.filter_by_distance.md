@@ -14,6 +14,10 @@
 
 > Filter vector features by distance from a center point (WGS84).
 
+## 这个工具做什么
+
+只保留离某个中心点一定距离内的要素，比如水库周边 2 公里内的村庄。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

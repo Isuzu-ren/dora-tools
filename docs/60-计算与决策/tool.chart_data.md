@@ -14,6 +14,10 @@
 
 > Build chart-ready key/value data from a list of records or a dict of records. Useful for converting loop outputs or feature statistics into dynamic inputs for vis.bar_chart / vis.line_chart.
 
+## 这个工具做什么
+
+把一串数值整理成画图要的格式，交给柱状图、折线图去画。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

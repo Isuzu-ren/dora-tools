@@ -14,6 +14,10 @@
 
 > Segment water areas from post-disaster optical airborne image. Spatial resolution: 0.03m.
 
+## 这个工具做什么
+
+在无人机航拍图上精细勾出水体边界。范围小，但边界比卫星清楚得多。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

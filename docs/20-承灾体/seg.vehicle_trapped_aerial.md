@@ -14,6 +14,10 @@
 
 > Segment trapped vehicle areas from post-disaster optical airborne image. Spatial resolution: 0.03m.
 
+## 这个工具做什么
+
+在航拍图上找出被困的车辆，辅助救援定位。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

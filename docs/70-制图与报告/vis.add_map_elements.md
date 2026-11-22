@@ -14,6 +14,10 @@
 
 > Add title, legend, north arrow, and scale bar to an image. Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+给现成的图补上标题、图例、指北针和比例尺，让它看起来像正式产品。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

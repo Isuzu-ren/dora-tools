@@ -14,6 +14,10 @@
 
 > Segment building areas from single temporal low-resolution optical satellite image. Spatial resolution: 3.46m.
 
+## 这个工具做什么
+
+在比较粗糙（约 3 米）的影像上把建筑物轮廓找出来，用于大范围摸底，不求精细。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Filter POI results by attribute values. Useful for keeping only specific POI types (e.g., commercial facilities like restaurants, cafes, banks).
 
+## 这个工具做什么
+
+按点位类型筛，只看医院、学校或水厂。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

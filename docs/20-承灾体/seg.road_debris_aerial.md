@@ -14,6 +14,10 @@
 
 > Segment debris-covered road areas from post-disaster optical airborne image. Spatial resolution: 0.03m.
 
+## 这个工具做什么
+
+在航拍图上识别被泥石、瓦砾堵住的路段。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

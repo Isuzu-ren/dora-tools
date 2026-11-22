@@ -14,6 +14,10 @@
 
 > Compose a one-page disaster report from map, chart, summary, and statistics. Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+把图、表、文字排成一页简报，值班时直接发。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Sample pixel value at a specific (row, col) location in a raster image.
 
+## 这个工具做什么
+
+给一个坐标，返回那里图上的数值。想查某个水文站、某个村口的水深或温度，就用它。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

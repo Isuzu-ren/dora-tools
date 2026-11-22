@@ -14,6 +14,10 @@
 
 > Segment vegetation areas from single temporal optical satellite image. Detects trees, shrub and agriculture land. Spatial resolution: 0.5m-1.0m.
 
+## 这个工具做什么
+
+认出一张影像里的林地、农田等植被覆盖区，用来比较植被是密了还是稀了。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Vectorize a raster mask to extract polygons for specified classes. Converts pixel-based mask to vector polygons with area statistics and saves GeoJSON. This tool facilitates the later vector-based processing.
 
+## 这个工具做什么
+
+把黑白的范围图转成 GIS 里能编辑、能叠加的面数据，每一块还自带面积。要在行政区上算数、要出彩色范围图，都得先走这一步。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

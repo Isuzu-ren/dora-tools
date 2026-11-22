@@ -14,6 +14,10 @@
 
 > Compute straight-line distance between two pixel coordinates.
 
+## 这个工具做什么
+
+算两个点之间的直线距离。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

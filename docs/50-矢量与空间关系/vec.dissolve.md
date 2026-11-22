@@ -14,6 +14,10 @@
 
 > Dissolve (merge) overlapping or adjacent polygons into larger ones, optionally grouping by an attribute field. Useful for consolidating fragmented damage patches into contiguous impact zones.
 
+## 这个工具做什么
+
+把挨在一起的碎块合并成整片。淹没区原本是几十个小斑块，合并后才是「一片洪区」。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

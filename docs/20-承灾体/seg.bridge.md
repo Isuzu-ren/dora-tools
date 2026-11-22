@@ -14,6 +14,10 @@
 
 > Segment bridges from post-disaster optical satellite image. Spatial resolution: 0.5m-1.0m.
 
+## 这个工具做什么
+
+在影像上找出桥梁位置，作为排查「哪座桥被冲毁」的底图。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

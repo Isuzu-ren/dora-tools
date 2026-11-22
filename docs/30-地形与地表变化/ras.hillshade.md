@@ -14,6 +14,10 @@
 
 > Compute a hillshade image from a Digital Elevation Model (DEM) raster, revealing terrain relief. Uses the standard Horn (1981) formulation with configurable sun azimuth and altitude angles. Useful for landslide and debris-flow susceptibility mapping.
 
+## 这个工具做什么
+
+用高程数据做出一张带光影的地形图，山脊、沟谷一眼能看出来，常拿来当底图。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

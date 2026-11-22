@@ -14,6 +14,10 @@
 
 > Calculate the centroid of a polygon or point feature in a vector file. Useful for finding the center point of the largest damaged area (explosion center).
 
+## 这个工具做什么
+
+算每个图斑的中心点，用来标注「灾情中心在哪」。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

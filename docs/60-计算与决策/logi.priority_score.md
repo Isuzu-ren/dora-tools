@@ -14,6 +14,10 @@
 
 > Rank a list of items (e.g., affected districts, damaged facilities) by a priority score computed as a weighted combination of criteria. Returns the items sorted from highest to lowest priority. Used to support emergency dispatch decisions.
 
+## 这个工具做什么
+
+给一批受灾点按多个指标打分排序，决定先救谁。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

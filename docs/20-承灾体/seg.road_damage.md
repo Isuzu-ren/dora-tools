@@ -14,6 +14,10 @@
 
 > Segment road damage from pre/post disaster optical satellite images. Detects flooded and blocked road segments. Spatial resolution: 0.5m-1.0m.
 
+## 这个工具做什么
+
+对比两期影像，把道路判成三种状态：正常、被水淹、被堵断。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

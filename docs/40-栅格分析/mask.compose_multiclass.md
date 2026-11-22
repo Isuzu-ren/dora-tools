@@ -14,6 +14,10 @@
 
 > Compose multiple binary masks into a single multiclass raster mask. Each input mask contributes one class value, and any positive pixel in a mask is assigned to that class in the output raster.
 
+## 这个工具做什么
+
+把几张黑白范围图合成一张分色的图。比如把「常年有水」「新增淹没」「退水后露出的滩地」各给一种颜色，合成一张便于区分。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

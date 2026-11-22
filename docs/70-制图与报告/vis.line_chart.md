@@ -14,6 +14,10 @@
 
 > Generate a line chart from ordered statistics. Output file is written to a managed location; its path is returned in the result dict as output_path.
 
+## 这个工具做什么
+
+画折线图，看水位、面积随时间怎么变。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

@@ -14,6 +14,10 @@
 
 > Calculate the number of truck trips needed to transport a given volume. Trips = ceil(Volume / Capacity)
 
+## 这个工具做什么
+
+用总量除以每车能拉多少，算出要跑多少车次。清淤、运物资都用得上。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

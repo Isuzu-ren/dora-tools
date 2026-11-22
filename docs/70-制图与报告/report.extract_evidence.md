@@ -14,6 +14,10 @@
 
 > Extract structured evidence from intermediate mask outputs in a trajectory.
 
+## 这个工具做什么
+
+从一整段操作记录里，把各步骤算出的面积、时间等关键数字抽出来，汇总成一份清单。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

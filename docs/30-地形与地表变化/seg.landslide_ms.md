@@ -14,6 +14,10 @@
 
 > Segment landslide from post-disaster multi-modal data: multi-spectral optical + DEM + slope. Spatial resolution: 10m. IMPORTANT: The input image MUST have exactly 14 bands (12-band multi-spectral + DEM: 1 band + Slope: 1 band). If your data has separate multi-spectral, DEM, and slope files, use ras.concat to merge them first.
 
+## 这个工具做什么
+
+用多光谱加上高程、坡度，找出影像里哪些地方发生了滑坡。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

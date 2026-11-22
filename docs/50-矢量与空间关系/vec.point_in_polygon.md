@@ -14,6 +14,10 @@
 
 > For each input point, test whether it lies inside any polygon of a polygon layer. Returns the matching polygon id(s) if any. Useful for filtering POIs to those located within damaged zones.
 
+## 这个工具做什么
+
+判断一个点是不是落在某个范围里。村子在不在淹没区、站点在不在风险区，一问就知道。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

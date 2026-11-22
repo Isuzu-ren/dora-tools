@@ -14,6 +14,10 @@
 
 > Allocate a limited resource (e.g., rescue teams, medical supplies) across multiple demand sites in proportion to their priority/need. Uses a greedy largest-share-first scheme with per-site capacity caps.
 
+## 这个工具做什么
+
+把有限的队伍、物资按需求比例分下去。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |

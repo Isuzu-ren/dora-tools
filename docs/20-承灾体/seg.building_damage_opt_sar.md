@@ -14,6 +14,10 @@
 
 > Segment building damage from pre-disaster optical and post-disaster SAR satellite images. Uses difference-based detection to classify buildings into damage levels. Spatial resolution: 0.8m. The input pre and post image requires 3-bands.
 
+## 这个工具做什么
+
+灾前用光学、灾后用雷达，做同样的建筑损毁分级。专为汛期连阴雨、光学卫星拍不到的情况准备。
+
 ## 输入
 
 | 参数 | 类型 | 必填 | 默认 | 说明 |
