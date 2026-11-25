@@ -1,0 +1,11 @@
+{
+  "tool": "vis.temporal_panel",
+  "output_path": "<work>/temporal.png",
+  "labels": [
+    "110h",
+    "110h",
+    "110h",
+    "…（共 4 条，此处省略）"
+  ],
+  "title": "Hurricane Florence - Temporal Comparison"
+}

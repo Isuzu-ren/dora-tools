@@ -1,0 +1,7 @@
+{
+  "tool": "vec.buffer",
+  "buffer_path": "<temp_dir>/buildings_buffer_20.0m_2fbb69.geojson",
+  "distance_input_m": 20.0,
+  "distance_used_units": 20.0,
+  "input_vector": "<work>/fixtures/buildings.geojson"
+}

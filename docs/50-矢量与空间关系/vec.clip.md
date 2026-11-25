@@ -61,6 +61,42 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）；覆盖 buildings 西半幅的矩形，用作裁剪范围
+
+```json
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "roi_vector_path": "<work>/fixtures/roi.geojson"
+}
+```
+
+[![示例输入](../../examples/50-矢量与空间关系/vec.clip/in.webp)](../../examples/50-矢量与空间关系/vec.clip/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.clip",
+  "clip_path": "<temp_dir>/buildings_CLIP_roi.geojson_be9b87_c1a97a.geojson",
+  "input_count": 79,
+  "output_count": 42,
+  "input_vector": "<work>/fixtures/buildings.geojson",
+  "roi_vector": "<work>/fixtures/roi.geojson"
+}
+```
+
+[![示例输出](../../examples/50-矢量与空间关系/vec.clip/out.webp)](../../examples/50-矢量与空间关系/vec.clip/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 裁到流域/行政区边界

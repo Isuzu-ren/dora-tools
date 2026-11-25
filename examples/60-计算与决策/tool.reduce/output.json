@@ -1,0 +1,8 @@
+{
+  "tool": "tool.reduce",
+  "mode": "max",
+  "best_value": null,
+  "best_index": null,
+  "best_item": null,
+  "mean_value": null
+}

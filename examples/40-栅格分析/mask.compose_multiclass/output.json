@@ -1,0 +1,13 @@
+{
+  "tool": "mask.compose_multiclass",
+  "mask_path": "<temp_dir>/compose_multiclass_mask_c2_mask_c3_2_3_45d9ac.tif",
+  "class_values": [
+    2,
+    3
+  ],
+  "classes": {
+    "0": "background",
+    "2": "building_damage",
+    "3": "building_total_damage"
+  }
+}

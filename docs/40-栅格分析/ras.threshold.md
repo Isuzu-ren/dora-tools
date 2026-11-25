@@ -66,6 +66,47 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：Japan_all_14_sentinel.tif 第 7 波段（近红外）
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "threshold": 1200.0,
+  "op": ">",
+  "band": 7
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.threshold",
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "mask_path": "<temp_dir>/Japan_all_14_sentinel_thr_gt_1200.0_7ede90.tif",
+  "threshold": 1200.0,
+  "op": ">",
+  "band": 7,
+  "selected_pixels": 2010844,
+  "true_value": 255,
+  "false_value": 0
+}
+```
+
+[![影像｜阈值掩膜｜叠加（亮像元 > 1200）](../../examples/40-栅格分析/ras.threshold/out.webp)](../../examples/40-栅格分析/ras.threshold/out.webp)
+
+*影像｜阈值掩膜｜叠加（亮像元 > 1200）*（点击图片看原图）
+
+> 阈值法零成本、可解释，但没有语义；找水体/裸土够用，找「滑坡」不行。
+
+耗时 0.11 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 最通用的一招：LST/NDVI/水深/降水栅格都能阈值化

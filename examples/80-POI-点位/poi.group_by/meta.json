@@ -1,0 +1,11 @@
+{
+  "tool": "poi.group_by",
+  "inputs": [
+    "noto 地震 POI 属性表（307 条）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "按设施类型统计数量；属性直接来自 GeoJSON，不是造的。",
+  "status": "real",
+  "wall_time_s": 0.0
+}

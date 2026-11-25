@@ -1,0 +1,30 @@
+{
+  "trajectory": [
+    {
+      "tool": "seg.building_damage",
+      "arguments": {
+        "post_image_path": "post.png"
+      },
+      "result": {
+        "mask_path": "<work>/fixtures/mask_damage.tif"
+      }
+    },
+    {
+      "tool": "ras.area",
+      "arguments": {
+        "mask_path": "m.tif",
+        "pixel_size_m": 0.8
+      },
+      "result": {
+        "area_m2": 16562.0
+      }
+    }
+  ],
+  "pixel_size_m": 0.8,
+  "include_empty_masks": false,
+  "target_classes": [
+    1,
+    2,
+    3
+  ]
+}

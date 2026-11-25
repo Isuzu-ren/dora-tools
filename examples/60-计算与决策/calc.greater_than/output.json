@@ -1,0 +1,7 @@
+{
+  "tool": "calc.greater_than",
+  "value": 0,
+  "result": false,
+  "a": 1.0,
+  "b": 2.0
+}

@@ -59,6 +59,44 @@ print(res)
 }
 ```
 
+## 示例
+
+> ⚠️ **示意输入**：工具确实运行了，但输入与本工具的适用场景不完全对应（如用建筑影像演示滑坡双时相模型），结果只说明「接口怎么用」，不代表精度。
+
+### 示例输入
+
+数据：disasterm3/libya_flood_agent5/libya_flood_pre_4_8.png（灾前）；…/libya_flood_post_4_8.png（灾后，德尔纳洪灾）
+
+```json
+{
+  "pre_image_path": "<DORA_DATA>/images/disasterm3/libya_flood_agent5/libya_flood_pre_4_8.png",
+  "post_image_path": "<DORA_DATA>/images/disasterm3/libya_flood_agent5/libya_flood_post_4_8.png"
+}
+```
+
+[![示例输入](../../examples/10-水体与淹没/seg.flood/in.webp)](../../examples/10-水体与淹没/seg.flood/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.flood",
+  "mask_path": "<temp_dir>/flooding_map_80e187.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 18485.73
+  }
+}
+```
+
+[![上排：灾前｜灾后；下排：灾后影像｜新增淹没（本例为空）｜叠加](../../examples/10-水体与淹没/seg.flood/out.webp)](../../examples/10-水体与淹没/seg.flood/out.webp)
+
+*上排：灾前｜灾后；下排：灾后影像｜新增淹没（本例为空）｜叠加*（点击图片看原图）
+
+> 判的是「灾后是水、灾前不是水」的像元。**本例德尔纳的洪水是浑水，光学水体模型零检出**（掩膜全黑），与 C2 评测里 IoU 0.107、65% 样本零检出是同一件事；要看清能力看 `seg.reservoir`，要稳定的淹没范围先用 SAR 阈值（见 `ras.threshold`）。
+
+耗时 40.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 洪水淹没范围主入口；两次水体推理再相减

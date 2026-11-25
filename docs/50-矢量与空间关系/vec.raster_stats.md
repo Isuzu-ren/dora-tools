@@ -66,6 +66,89 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）；images/heatisland/09LD1638/image_opt.tif（EPSG:6677）
+
+```json
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "raster_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.raster_stats",
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "raster_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif",
+  "output_vector_path": "<temp_dir>/buildings_image_opt_stats_819baf_66ead5.geojson",
+  "band": 1,
+  "stats": [
+    "mean",
+    "min",
+    "max"
+  ],
+  "feature_count": 72,
+  "min_pixels": 1,
+  "pixel_area_m2": 0.04000000000000001,
+  "feature_stats": [
+    {
+      "feature_idx": 0,
+      "geometry_type": "Polygon",
+      "pixel_count": 30246,
+      "sampled_area_m2": 1209.8400000000001,
+      "osm_id": 312900232,
+      "name": "新宿センタービル",
+      "type": null,
+      "mean": 97.21143291674932,
+      "min": 0.0,
+      "max": 192.0
+    },
+    {
+      "feature_idx": 1,
+      "geometry_type": "Polygon",
+      "pixel_count": 2721,
+      "sampled_area_m2": 108.84000000000002,
+      "osm_id": 572498059,
+      "name": null,
+      "type": null,
+      "mean": 77.93421536199926,
+      "min": 51.0,
+      "max": 170.0
+    },
+    {
+      "feature_idx": 2,
+      "geometry_type": "Polygon",
+      "pixel_count": 688,
+      "sampled_area_m2": 27.520000000000007,
+      "osm_id": 573210046,
+      "name": null,
+      "type": null,
+      "mean": 115.83720930232558,
+      "min": 96.0,
+      "max": 157.0
+    },
+    "…（共 72 条，此处省略）"
+  ],
+  "mean": 113.82445874865175,
+  "min": 0.0,
+  "max": 255.0
+}
+```
+
+[![示例输出](../../examples/50-矢量与空间关系/vec.raster_stats/out.webp)](../../examples/50-矢量与空间关系/vec.raster_stats/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.65 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 流域内平均降水、行政区平均 LST、耕地平均 NDVI

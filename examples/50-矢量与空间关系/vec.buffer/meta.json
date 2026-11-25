@@ -1,0 +1,14 @@
+{
+  "tool": "vec.buffer",
+  "inputs": [
+    "images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上：输入影像；下：影像｜掩膜｜叠加",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.23
+}

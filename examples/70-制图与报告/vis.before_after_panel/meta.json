@@ -1,0 +1,13 @@
+{
+  "tool": "vis.before_after_panel",
+  "inputs": [
+    "同一地点的灾前、灾后影像"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "左右对照图，用于人工核对变化",
+  "note": "工具不做配准，错位会直接体现在图面上。",
+  "status": "real",
+  "wall_time_s": 0.15
+}

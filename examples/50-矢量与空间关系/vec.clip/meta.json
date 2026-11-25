@@ -1,0 +1,15 @@
+{
+  "tool": "vec.clip",
+  "inputs": [
+    "images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）",
+    "覆盖 buildings 西半幅的矩形，用作裁剪范围"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.04
+}

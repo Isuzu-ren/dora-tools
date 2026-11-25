@@ -56,6 +56,50 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：损毁掩膜的逐类像元计数
+
+```json
+{
+  "data": {
+    "intact": 1388,
+    "partial": 25886,
+    "destroyed": 2073
+  },
+  "output_path": "<work>/pie.png",
+  "title": "Damage Composition"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.pie_chart",
+  "output_path": "<work>/pie.png",
+  "chart_type": "pie",
+  "statistics": {
+    "intact": 1388,
+    "partial": 25886,
+    "destroyed": 2073
+  },
+  "title": "Damage Composition"
+}
+```
+
+[![占比饼图](../../examples/70-制图与报告/vis.pie_chart/out.webp)](../../examples/70-制图与报告/vis.pie_chart/out.webp)
+
+*占比饼图*（点击图片看原图）
+
+> 类别多于 6 个时颜色会重复，建议先合并小类。
+
+耗时 0.02 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 构成占比

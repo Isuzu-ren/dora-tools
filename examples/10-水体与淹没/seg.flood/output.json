@@ -1,0 +1,8 @@
+{
+  "tool": "seg.flood",
+  "mask_path": "<temp_dir>/flooding_map_80e187.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 18485.73
+  }
+}

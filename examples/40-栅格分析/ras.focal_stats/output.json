@@ -1,0 +1,10 @@
+{
+  "tool": "ras.focal_stats",
+  "output_path": "<temp_dir>/Japan_all_14_sentinel_focal_mean_5.tif",
+  "statistic": "mean",
+  "window_size": 5,
+  "shape": [
+    1384,
+    1922
+  ]
+}

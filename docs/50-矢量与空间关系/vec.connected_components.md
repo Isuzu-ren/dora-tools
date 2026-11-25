@@ -55,6 +55,33 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）
+
+```json
+{
+  "vector_path": "<work>/fixtures/buildings.geojson"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.connected_components",
+  "count": 79,
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "mode": "vector"
+}
+```
+
+耗时 0.01 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 数淹没片数、损毁建筑栋数

@@ -59,6 +59,53 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：同目录 points.geojson（OSM 点要素，已转 EPSG:6677）；images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）
+
+```json
+{
+  "points_path": "<work>/fixtures/points.geojson",
+  "polygons_path": "<work>/fixtures/buildings.geojson"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.point_in_polygon",
+  "matches": [
+    {
+      "point_index": 0,
+      "polygon_ids": [
+        0
+      ]
+    },
+    {
+      "point_index": 1,
+      "polygon_ids": [
+        0
+      ]
+    },
+    {
+      "point_index": 2,
+      "polygon_ids": [
+        0
+      ]
+    },
+    "…（共 46 条，此处省略）"
+  ],
+  "inside_count": 46
+}
+```
+
+耗时 0.07 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 站点/村庄是否位于淹没区或风险区

@@ -1,0 +1,10 @@
+{
+  "tool": "vec.intersect",
+  "intersection_count": 78,
+  "intersecting_a_count": 78,
+  "intersecting_b_count": 1,
+  "intersection_area_px2": null,
+  "intersection_area_m2": 32167.350345048166,
+  "pixel_size_m": null,
+  "intersection_path": "<temp_dir>/buildings_roads_buffer_intersection_dd3949_873e48.geojson"
+}

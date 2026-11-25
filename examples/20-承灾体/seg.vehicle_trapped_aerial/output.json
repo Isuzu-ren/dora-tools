@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_vehicle_trapped_aerial_mask_df7a47.png",
+  "classes": {
+    "10": "vehicle_trapped"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17682.47
+  },
+  "tool": "seg.vehicle_trapped_aerial"
+}

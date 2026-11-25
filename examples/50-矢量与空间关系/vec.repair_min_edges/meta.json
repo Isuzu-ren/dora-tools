@@ -1,0 +1,11 @@
+{
+  "tool": "vec.repair_min_edges",
+  "inputs": [
+    "vec.build_graph 生成的路网图（JSON）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.03
+}

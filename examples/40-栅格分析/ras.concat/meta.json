@@ -1,0 +1,15 @@
+{
+  "tool": "ras.concat",
+  "inputs": [
+    "images/landslide4sense/Japan_all_14_sentinel.tif（12 波段）",
+    "…_slope.tif（坡度）",
+    "…_dem.tif（高程）"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "拼接后的 14 波段结果（预览取 B4/B3/B2）",
+  "note": "三者的尺寸与地理参考必须完全一致；波段顺序按列表顺序落位，13、14 分别是坡度和高程。",
+  "status": "real",
+  "wall_time_s": 1.75
+}

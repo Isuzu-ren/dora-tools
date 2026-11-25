@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_road_debris_aerial_mask_7bd3d1.png",
+  "classes": {
+    "6": "road_debris_covered"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 18098.01
+  },
+  "tool": "seg.road_debris_aerial"
+}

@@ -58,6 +58,46 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：14 波段日本山区影像（ras.concat 产物）——本例场景里没有水库，只看接口
+
+```json
+{
+  "post_image_path": "<work>/fixtures/geo14.tif"
+}
+```
+
+[![示例输入](../../examples/10-水体与淹没/seg.reservoir/in.webp)](../../examples/10-水体与淹没/seg.reservoir/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.reservoir",
+  "mask_path": "<temp_dir>/seg_reservoir_mask_a825ef.tif",
+  "classes": {
+    "0": "background",
+    "255": "reservoir"
+  },
+  "_meta": {
+    "forward_ms": 3745.62
+  }
+}
+```
+
+[![影像｜水库水面｜叠加](../../examples/10-水体与淹没/seg.reservoir/out.webp)](../../examples/10-水体与淹没/seg.reservoir/out.webp)
+
+*影像｜水库水面｜叠加*（点击图片看原图）
+
+> 只出水面范围；库容要靠「水面面积 × 水位—面积曲线」另外算。
+
+耗时 4.75 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 干旱核心：水域面积萎缩监测；需 14 波段输入

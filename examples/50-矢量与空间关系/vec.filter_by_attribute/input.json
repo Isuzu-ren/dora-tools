@@ -1,0 +1,7 @@
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "attribute_name": "type",
+  "allowed_values": [
+    "residential"
+  ]
+}

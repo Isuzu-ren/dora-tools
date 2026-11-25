@@ -1,0 +1,11 @@
+{
+  "tool": "vec.length",
+  "inputs": [
+    "同目录 roads.geojson（193 条道路，已转 EPSG:6677）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.03
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "seg.landslide_ms",
+  "inputs": [
+    "14 波段影像（ras.concat 的产物，日本山区 1922×1384，10 m）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上：输入影像（假彩色拉伸）；下列：影像｜掩膜｜叠加（橙色为滑坡）",
+  "note": "检出的是裸土/扰动像元，不含体积与危险性；10 m 下小于 30×30 m 的滑坡基本漏检。",
+  "status": "real",
+  "wall_time_s": 4.83
+}

@@ -1,0 +1,11 @@
+{
+  "tool": "ras.stats",
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "band": 4,
+  "nodata": 0.0,
+  "min": 265.0,
+  "max": 13001.0,
+  "mean": 668.584420944806,
+  "std": 270.81311003499343,
+  "valid_pixels": 2655360
+}

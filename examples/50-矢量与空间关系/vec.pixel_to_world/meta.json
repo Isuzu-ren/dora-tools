@@ -1,0 +1,11 @@
+{
+  "tool": "vec.pixel_to_world",
+  "inputs": [
+    "images/heatisland/09LD1638/image_opt.tif（EPSG:6677）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.04
+}

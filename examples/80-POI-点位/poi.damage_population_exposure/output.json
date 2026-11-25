@@ -1,0 +1,37 @@
+{
+  "tool": "poi.damage_population_exposure",
+  "join_field": "name",
+  "damage_field": "max",
+  "population_field": "max",
+  "damage_threshold": 2.0,
+  "allowed_types": [],
+  "total_damage_features": 3,
+  "total_population_features": 3,
+  "total_exposed": 2,
+  "exposed_pois": [
+    {
+      "name": "block_a",
+      "types": null,
+      "damage_value": 3.0,
+      "population_value": 1200.0,
+      "damage_feature_idx": null,
+      "population_feature_idx": null
+    },
+    {
+      "name": "block_b",
+      "types": null,
+      "damage_value": 2.0,
+      "population_value": 800.0,
+      "damage_feature_idx": null,
+      "population_feature_idx": null
+    }
+  ],
+  "top_exposed_poi": {
+    "name": "block_a",
+    "types": null,
+    "damage_value": 3.0,
+    "population_value": 1200.0,
+    "damage_feature_idx": null,
+    "population_feature_idx": null
+  }
+}

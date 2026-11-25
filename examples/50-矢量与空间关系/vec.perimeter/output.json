@@ -1,0 +1,6 @@
+{
+  "tool": "vec.perimeter",
+  "total_perimeter_m": 5178.97389382685,
+  "table_path": "<temp_dir>/vec_perimeter_table_cdd3c4.csv",
+  "input_vector": "<work>/fixtures/buildings.geojson"
+}

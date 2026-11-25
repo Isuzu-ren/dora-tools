@@ -1,0 +1,11 @@
+{
+  "tool": "vis.add_map_elements",
+  "output_path": "<temp_dir>/map_with_elements_867c455b.png",
+  "title": "Annotated Map",
+  "has_legend": true,
+  "legend_alpha": null,
+  "point_marker_count": 0,
+  "point_marker_labels": [],
+  "north_arrow": true,
+  "scale_bar": true
+}

@@ -1,0 +1,6 @@
+{
+  "tool": "vec.convex_hull",
+  "output_path": "<temp_dir>/convex_hull.geojson",
+  "area_m2": 115435.29787072193,
+  "vertex_count": 19
+}

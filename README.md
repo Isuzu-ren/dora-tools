@@ -12,6 +12,7 @@
 | 快速找工具 | 打开 [`index/index.html`](index/index.html)，按关键词或域筛选（双击即可，无需联网） |
 | 看总表 | [`index/INDEX.md`](index/INDEX.md) —— 108 行，按域排序 |
 | 读某件工具 | [`docs/`](docs/) —— 9 个功能域，每域一个 README + 每工具一页 |
+| 看实际效果 | 每页的「示例」段：真实输入的预览图 + 工具原样返回的 JSON + 产物渲染 |
 
 ## 目录
 
@@ -23,11 +24,13 @@ docs/                  说明文档
   10-水体与淹没/        每域：README.md + 逐工具页
   ...
   99-附录/             接入红线、已知陷阱、评测摘要、术语
+examples/              每件工具一组「真跑出来」的示例
+  <域>/<工具>/         input.json（参数）+ output.json（返回）+ 渲染图 + meta.json
 index/
   INDEX.md             108 件总表
   index.html           可搜索页面（单文件，无外部依赖）
   tools.json           机器可读（108 条，含参数与返回字段）
-scripts/               提取、生成、自检脚本
+scripts/               提取、示例、生成、自检脚本
 ```
 
 ## 两个标签
@@ -63,8 +66,12 @@ pip install -e ".[perception]"
 
 1. 用上游最新代码覆盖 `src/dora/tools/`（**不要在副本里改代码**，否则与上游分叉）
 2. `python scripts/extract_tools.py` —— 重新抽取 108 件的签名与说明
-3. `python scripts/build_docs.py` —— 重建 docs/ 与 index/
-4. 人工文案在 `scripts/content.py`（领域导语、逐工具补充、附录），重建时不会被覆盖
+3. `python scripts/build_examples.py` —— 真跑一遍，重建 `examples/` 下的示例输入与输出
+4. `python scripts/build_docs.py` —— 重建 docs/ 与 index/
+5. 人工文案在 `scripts/content.py`（领域导语、逐工具补充、附录），重建时不会被覆盖
+
+示例需要 `DORA_DATA` 指向的 DORA 数据根（影像 + 权重），没有数据时第 3 步会跳过对应工具，
+页面上的「示例」段随之缺省，其余内容不受影响。
 
 ## 重新生成文档
 

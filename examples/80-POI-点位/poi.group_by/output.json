@@ -1,0 +1,932 @@
+{
+  "tool": "poi.group_by",
+  "group_field": "name",
+  "count_field": null,
+  "return_item_details": false,
+  "return_sum": false,
+  "total_items": 307,
+  "total_groups": 307,
+  "groups": {
+    "Kuwagumi": {
+      "count": 1
+    },
+    "キッチン道": {
+      "count": 1
+    },
+    "Minokoh": {
+      "count": 1
+    },
+    "Kadochō Syokudō": {
+      "count": 1
+    },
+    "Ju Ju": {
+      "count": 1
+    },
+    "山小屋": {
+      "count": 1
+    },
+    "Kanayama": {
+      "count": 1
+    },
+    "Shinkoma": {
+      "count": 1
+    },
+    "Yabu Shimbashi": {
+      "count": 1
+    },
+    "やぶかぶれ": {
+      "count": 1
+    },
+    "Kabulet": {
+      "count": 1
+    },
+    "Ueno Sushi": {
+      "count": 1
+    },
+    "L'Atelier de NOTO": {
+      "count": 1
+    },
+    "Ikka": {
+      "count": 1
+    },
+    "Mariners Cafe & Restaurant": {
+      "count": 1
+    },
+    "Étranger": {
+      "count": 1
+    },
+    "Domburako": {
+      "count": 1
+    },
+    "Azuma Sushi": {
+      "count": 1
+    },
+    "Aiuto!": {
+      "count": 1
+    },
+    "Suke Sushi": {
+      "count": 1
+    },
+    "Go Go Curry Wajima Shop": {
+      "count": 1
+    },
+    "Jin": {
+      "count": 1
+    },
+    "Kinomi Cafe": {
+      "count": 1
+    },
+    "Portulacea": {
+      "count": 1
+    },
+    "狸": {
+      "count": 1
+    },
+    "Seikaisho": {
+      "count": 1
+    },
+    "炭火焼肉ライクイット": {
+      "count": 1
+    },
+    "Notokichi": {
+      "count": 1
+    },
+    "Tokushin": {
+      "count": 1
+    },
+    "Izakaya Warashibe": {
+      "count": 1
+    },
+    "Orizzonte": {
+      "count": 1
+    },
+    "わいちストアNAKAURAYA": {
+      "count": 1
+    },
+    "Chihara": {
+      "count": 1
+    },
+    "スナック ボン・リ・ブラン": {
+      "count": 1
+    },
+    "Shimpuku": {
+      "count": 1
+    },
+    "大ちょうちん": {
+      "count": 1
+    },
+    "Ramen Ibuki": {
+      "count": 1
+    },
+    "Ren": {
+      "count": 1
+    },
+    "コミセン鳳至BASE": {
+      "count": 1
+    },
+    "一口柚餅子本舗 良澤本店": {
+      "count": 1
+    },
+    "Warashow": {
+      "count": 1
+    },
+    "Nakauraya": {
+      "count": 1
+    },
+    "輪島朝市むすび": {
+      "count": 1
+    },
+    "Zuru Zuru": {
+      "count": 1
+    },
+    "Toku": {
+      "count": 1
+    },
+    "Miki Sushi": {
+      "count": 1
+    },
+    "美喜寿司 焼肉部": {
+      "count": 1
+    },
+    "Enka": {
+      "count": 1
+    },
+    "Mebuki": {
+      "count": 1
+    },
+    "居酒屋 いち富": {
+      "count": 1
+    },
+    "Junsai": {
+      "count": 1
+    },
+    "焼肉みらい YAKINIKU": {
+      "count": 1
+    },
+    "Wajimon": {
+      "count": 1
+    },
+    "Furatto": {
+      "count": 1
+    },
+    "Wajima Midori Nursery": {
+      "count": 1
+    },
+    "Kurokawaryoko Piano Lessons": {
+      "count": 1
+    },
+    "Wako Kindergarten": {
+      "count": 1
+    },
+    "Kawai Elementary School": {
+      "count": 1
+    },
+    "Wajima High School": {
+      "count": 1
+    },
+    "hapi hapy": {
+      "count": 1
+    },
+    "東進中学NET輪島校": {
+      "count": 1
+    },
+    "Hokkokujukuwa Center Youshitsu": {
+      "count": 1
+    },
+    "塾 輪島 志学舎": {
+      "count": 1
+    },
+    "Kawai Nursery": {
+      "count": 1
+    },
+    "Fugeshi Elementary School": {
+      "count": 1
+    },
+    "Horai Nursery School": {
+      "count": 1
+    },
+    "Kono Shinkin Bank Wajima": {
+      "count": 1
+    },
+    "ＪＡのと 輪島支店 信用共済課": {
+      "count": 1
+    },
+    "Hokkoku Bank Wajima": {
+      "count": 1
+    },
+    "Hokuriku Bank Wajima Branch": {
+      "count": 1
+    },
+    "Noto Kyoei Shinkin Bank Wajima": {
+      "count": 1
+    },
+    "輪島商工復興センター": {
+      "count": 1
+    },
+    "輪島市観音町復興通り地区仮設商店街": {
+      "count": 1
+    },
+    "Power City": {
+      "count": 1
+    },
+    "六銘館 海の駅": {
+      "count": 1
+    },
+    "輪島市観音町子ども広場前地区仮設商店街": {
+      "count": 1
+    },
+    "JA-SS /ＪＡのと 大屋SS": {
+      "count": 1
+    },
+    "COSMO Futatsuya SS": {
+      "count": 1
+    },
+    "Wajima Nanohana Pharmacy": {
+      "count": 1
+    },
+    "坂久錦生堂": {
+      "count": 1
+    },
+    "Miyawaki Pharmacy": {
+      "count": 1
+    },
+    "Shimeno Drug Wajima Pharmacy": {
+      "count": 1
+    },
+    "Matsumotokiyoshi Wajimaten Pharmacy": {
+      "count": 1
+    },
+    "Marco Grocery Store": {
+      "count": 1
+    },
+    "Minamimachiko Park": {
+      "count": 1
+    },
+    "鳳至めっこ広場": {
+      "count": 1
+    },
+    "Azumaya": {
+      "count": 1
+    },
+    "健康ふれあい広場": {
+      "count": 1
+    },
+    "Ipponmatsu Park": {
+      "count": 1
+    },
+    "Fujidana": {
+      "count": 1
+    },
+    "宅田桜堤": {
+      "count": 1
+    },
+    "観音町子どもの広場": {
+      "count": 1
+    },
+    "Wajima Museum of Lacquer (Urushi) Art": {
+      "count": 1
+    },
+    "Wajima Lacquerware Museum": {
+      "count": 1
+    },
+    "輪島塗の稲忠": {
+      "count": 1
+    },
+    "Wajima Kiriko Art Museum": {
+      "count": 1
+    },
+    "Hatakeda": {
+      "count": 1
+    },
+    "Kamiyu Hair Salon": {
+      "count": 1
+    },
+    "Anju": {
+      "count": 1
+    },
+    "HAIR-J": {
+      "count": 1
+    },
+    "Kanazawachihohomukyoku Wajimashikyoku": {
+      "count": 1
+    },
+    "石川県立輪島漆芸技術研修所": {
+      "count": 1
+    },
+    "Funaki Clinic": {
+      "count": 1
+    },
+    "谷川醸造㈱": {
+      "count": 1
+    },
+    "Wajima Shonanmachi Post Office": {
+      "count": 1
+    },
+    "日吉商店": {
+      "count": 1
+    },
+    "四十沢木材工芸 Factory's Gallery": {
+      "count": 1
+    },
+    "Yamagi Lumber Co": {
+      "count": 1
+    },
+    "姿勢専科・ＫＣＳセンターのと": {
+      "count": 1
+    },
+    "津田漆器店": {
+      "count": 1
+    },
+    "石川勤労者医療協会輪島診療所": {
+      "count": 1
+    },
+    "（株）大向カーオート": {
+      "count": 1
+    },
+    "Inarimachi": {
+      "count": 1
+    },
+    "Wajima": {
+      "count": 1
+    },
+    "Fugeshimachi": {
+      "count": 1
+    },
+    "池端漆香堂": {
+      "count": 1
+    },
+    "Ishikawaken Notohokubu Public Health Center": {
+      "count": 1
+    },
+    "輪島食品衛生協会": {
+      "count": 1
+    },
+    "Wajimaya Zenni Lacquer Shop": {
+      "count": 1
+    },
+    "さかしたペットセンター": {
+      "count": 1
+    },
+    "輪島屋善仁デザイン室": {
+      "count": 1
+    },
+    "Care Home Minnanouta": {
+      "count": 1
+    },
+    "五島屋 二勢工場": {
+      "count": 1
+    },
+    "Okemoto Eye Clinic": {
+      "count": 1
+    },
+    "輪島塗 坂本漆器店": {
+      "count": 1
+    },
+    "塩山エレクトーン教室": {
+      "count": 1
+    },
+    "カモン看板": {
+      "count": 1
+    },
+    "Minoru Shinbo Store": {
+      "count": 1
+    },
+    "Itō Clinic": {
+      "count": 1
+    },
+    "蔵田木工所": {
+      "count": 1
+    },
+    "尚古堂": {
+      "count": 1
+    },
+    "Mitomori Inari Shrine": {
+      "count": 1
+    },
+    "Kamayadani": {
+      "count": 1
+    },
+    "坂長": {
+      "count": 1
+    },
+    "Situgeibijutukan": {
+      "count": 1
+    },
+    "石川輪島漆芸桜並木": {
+      "count": 1
+    },
+    "Fresh Land Marcoux Parking Lot": {
+      "count": 1
+    },
+    "ZABOON Fugeshimise Coin Laundry": {
+      "count": 1
+    },
+    "Marble": {
+      "count": 1
+    },
+    "輪島市水守町堂端地区仮設工房": {
+      "count": 1
+    },
+    "輪島荘川桜・荘川七郎": {
+      "count": 1
+    },
+    "輪島漆器商工業協同組合 精漆工場": {
+      "count": 1
+    },
+    "県立漆芸研修所前（バス）": {
+      "count": 1
+    },
+    "EV充電スポット": {
+      "count": 1
+    },
+    "天野木材（株）": {
+      "count": 1
+    },
+    "Kenritusitugeikensyujomae": {
+      "count": 1
+    },
+    "天理教 大輪布教所": {
+      "count": 1
+    },
+    "輪島市移住促進住宅": {
+      "count": 1
+    },
+    "グリーンマーケットMOA輪島店": {
+      "count": 1
+    },
+    "Japan Post Bank ATM": {
+      "count": 1
+    },
+    "畑中塗箸店": {
+      "count": 1
+    },
+    "蒔絵師 五代 清石 川谷内（かわやち）準之助": {
+      "count": 1
+    },
+    "Sakae Hair Salon": {
+      "count": 1
+    },
+    "Kotobuki": {
+      "count": 1
+    },
+    "Honda": {
+      "count": 1
+    },
+    "JA Ozo Rawajima": {
+      "count": 1
+    },
+    "Wajima City Council Secretariat": {
+      "count": 1
+    },
+    "Takada Photography": {
+      "count": 1
+    },
+    "アミューズ・ワジマ": {
+      "count": 1
+    },
+    "酒ブティックおくだ": {
+      "count": 1
+    },
+    "石川県奥能登土木総合事務所 庶務課": {
+      "count": 1
+    },
+    "室金物店": {
+      "count": 1
+    },
+    "輪島・穴水地域ライフ・サポートセンター": {
+      "count": 1
+    },
+    "qiu きう": {
+      "count": 1
+    },
+    "（有）久岡保険事務所": {
+      "count": 1
+    },
+    "ＡＦＬＡＣ専属 の 保険代理店": {
+      "count": 1
+    },
+    "Shinsetsu": {
+      "count": 1
+    },
+    "市中漆器工房": {
+      "count": 1
+    },
+    "輪島訪問看護ステーション": {
+      "count": 1
+    },
+    "Osaka Acupuncture": {
+      "count": 1
+    },
+    "FamilyMart; Wajima Central": {
+      "count": 1
+    },
+    "酒のたかた 高田本店": {
+      "count": 1
+    },
+    "東洋警備保障㈱輪島営業所": {
+      "count": 1
+    },
+    "セレモニー会館 おおぞら天翔輪島 ＪＡのと": {
+      "count": 1
+    },
+    "石川印刷 輪島営業所": {
+      "count": 1
+    },
+    "Nakagishi Orthopedic Clinic": {
+      "count": 1
+    },
+    "輪島漆器商工業協同組合": {
+      "count": 1
+    },
+    "北陸電力(株) 輪島営業所 総務担当": {
+      "count": 1
+    },
+    "輪島市 福祉環境部子育て支援センター・児童センター": {
+      "count": 1
+    },
+    "輪島市まんなか商店街振興組合": {
+      "count": 1
+    },
+    "輪島市 福祉環境部健康推進課": {
+      "count": 1
+    },
+    "Nagai Dental Clinic": {
+      "count": 1
+    },
+    "鳳輪建設業協会": {
+      "count": 1
+    },
+    "Mitsue Hair Salon": {
+      "count": 1
+    },
+    "Beauty Salon Otani": {
+      "count": 1
+    },
+    "垣地椀木地所": {
+      "count": 1
+    },
+    "シロー": {
+      "count": 1
+    },
+    "中濱与吉屋": {
+      "count": 1
+    },
+    "Yashiki Inn": {
+      "count": 1
+    },
+    "A STORE WAJIMA": {
+      "count": 1
+    },
+    "Wajima Branch": {
+      "count": 1
+    },
+    "Kanazawa District Court Wajima Branch": {
+      "count": 1
+    },
+    "Sakashita": {
+      "count": 1
+    },
+    "Hanayoshi Flowers": {
+      "count": 1
+    },
+    "花屋 卯さぎ": {
+      "count": 1
+    },
+    "Wajima Tax Collector": {
+      "count": 1
+    },
+    "Taya": {
+      "count": 1
+    },
+    "Wajimaseisho Church": {
+      "count": 1
+    },
+    "浅見漆器店": {
+      "count": 1
+    },
+    "シメノ仏壇 輪島工場": {
+      "count": 1
+    },
+    "Nobuta Orthopedic Clinic": {
+      "count": 1
+    },
+    "わじまおみやげ館": {
+      "count": 1
+    },
+    "北國新聞社奥能登支社": {
+      "count": 1
+    },
+    "輪島市シルバー人材センター": {
+      "count": 1
+    },
+    "吉田漆器工房": {
+      "count": 1
+    },
+    "Wajimakanisaibansho": {
+      "count": 1
+    },
+    "Post Office Pickup": {
+      "count": 1
+    },
+    "Honke Kamadoya Wajima": {
+      "count": 1
+    },
+    "千舟堂(岡垣漆器店)": {
+      "count": 1
+    },
+    "藏口屋": {
+      "count": 1
+    },
+    "Wajimashi Shakaifukushikyogikai": {
+      "count": 1
+    },
+    "輪島ライオンズクラブ": {
+      "count": 1
+    },
+    "Nakatani Carpentry": {
+      "count": 1
+    },
+    "鳳珠酒造組合": {
+      "count": 1
+    },
+    "Wajima Taxis": {
+      "count": 1
+    },
+    "Junior chamber international Wajima": {
+      "count": 1
+    },
+    "うるしの匠": {
+      "count": 1
+    },
+    "輪島労働基準協会": {
+      "count": 1
+    },
+    "Wajimajoshitabi | Sight Seeing Information Center": {
+      "count": 1
+    },
+    "Wajima Post Office Chokin": {
+      "count": 1
+    },
+    "安心代行運転": {
+      "count": 1
+    },
+    "あての木園 ふげしデイサービスセンター": {
+      "count": 1
+    },
+    "輪島塗 中島忠平漆器店": {
+      "count": 1
+    },
+    "新谷産業 輪島工場": {
+      "count": 1
+    },
+    "輪島海房やまぐち": {
+      "count": 1
+    },
+    "加藤漆器店": {
+      "count": 1
+    },
+    "坂口漆器店": {
+      "count": 1
+    },
+    "四十沢漆店": {
+      "count": 1
+    },
+    "前田漆器工房": {
+      "count": 1
+    },
+    "輪島・うみ（海美味）工房": {
+      "count": 1
+    },
+    "山崖松花堂 芯漆": {
+      "count": 1
+    },
+    "Yamashohei Dental Clinic": {
+      "count": 1
+    },
+    "Wajimaso": {
+      "count": 1
+    },
+    "Minami Dental Clinic": {
+      "count": 1
+    },
+    "藤沢一二幸瓦店": {
+      "count": 1
+    },
+    "Hori Hakusan Shrine": {
+      "count": 1
+    },
+    "Horimati": {
+      "count": 1
+    },
+    "さかみず不動産": {
+      "count": 1
+    },
+    "Kishida Flowers": {
+      "count": 1
+    },
+    "米谷木工所": {
+      "count": 1
+    },
+    "喜多組 社員寮": {
+      "count": 1
+    },
+    "Yuhigaokajutaku": {
+      "count": 1
+    },
+    "トキワ塗装店": {
+      "count": 1
+    },
+    "板谷商店": {
+      "count": 1
+    },
+    "石川 勤労 者 医療 協会": {
+      "count": 1
+    },
+    "社会福祉 海と虹": {
+      "count": 1
+    },
+    "Umitosora Group Home": {
+      "count": 1
+    },
+    "地域生活支援 ウミュードゥソラ": {
+      "count": 1
+    },
+    "Matsushita Construction": {
+      "count": 1
+    },
+    "Jinza": {
+      "count": 1
+    },
+    "若島漆器店": {
+      "count": 1
+    },
+    "エホバの証人の王国会館": {
+      "count": 1
+    },
+    "集古堂": {
+      "count": 1
+    },
+    "Bosho": {
+      "count": 1
+    },
+    "クボタ クリーン 精米屋": {
+      "count": 1
+    },
+    "輪島市 鳳至児童クラブ": {
+      "count": 1
+    },
+    "Inarimatinisi": {
+      "count": 1
+    },
+    "萬砂漆器店": {
+      "count": 1
+    },
+    "輪島市応急仮設住宅 鳳至町第1団地(鳳⾄⼩学校グラウンド)": {
+      "count": 1
+    },
+    "Beauty Salon Koharu": {
+      "count": 1
+    },
+    "Croissant Budget Japanese inn": {
+      "count": 1
+    },
+    "遠島美容院": {
+      "count": 1
+    },
+    "Wajima Fugeshi Post Office": {
+      "count": 1
+    },
+    "釣船凪紗丸": {
+      "count": 1
+    },
+    "清水酒造店": {
+      "count": 1
+    },
+    "東洋電建（株） 輪島営業所": {
+      "count": 1
+    },
+    "Kawaimachi": {
+      "count": 1
+    },
+    "わらびの写真館 /フォトわらびの": {
+      "count": 1
+    },
+    "Sumiyoshi Shrine": {
+      "count": 1
+    },
+    "Wajima Police Station Asaichi Police Box": {
+      "count": 1
+    },
+    "工房和美紗美": {
+      "count": 1
+    },
+    "（有）大家漆器店": {
+      "count": 1
+    },
+    "（株）リベルテ（Ｌｉｂｅｒｔｅ） 能登営業所": {
+      "count": 1
+    },
+    "和洋菓子 島崎": {
+      "count": 1
+    },
+    "角知漆器店": {
+      "count": 1
+    },
+    "Wajimashi Josei Center": {
+      "count": 1
+    },
+    "Kyo Construction": {
+      "count": 1
+    },
+    "（有）畝田屋": {
+      "count": 1
+    },
+    "Kaigan-Dōri": {
+      "count": 1
+    },
+    "㈱まちづくり輪島": {
+      "count": 1
+    },
+    "Iwasaka": {
+      "count": 1
+    },
+    "㈱ケイユーオ": {
+      "count": 1
+    },
+    "Secom Wajima": {
+      "count": 1
+    },
+    "（株）高出建築設計事務所": {
+      "count": 1
+    },
+    "washirosa/たたみ靴店": {
+      "count": 1
+    },
+    "能登ひばファクトリー（まんぷく丸）": {
+      "count": 1
+    },
+    "Nihon Christ Kyodan Wajima Church": {
+      "count": 1
+    },
+    "惣領漆器店": {
+      "count": 1
+    },
+    "大角武志税理士事務所": {
+      "count": 1
+    },
+    "北陸綜合警備保障（株） 輪島事務所": {
+      "count": 1
+    },
+    "金沢港湾空港工事事務所 輪島事務所": {
+      "count": 1
+    },
+    "Wajima City Marine Town Arena": {
+      "count": 1
+    },
+    "Shokakuji": {
+      "count": 1
+    },
+    "zawa coffee": {
+      "count": 1
+    },
+    "カフェ丹 輪島": {
+      "count": 1
+    },
+    "Cafe KABULET": {
+      "count": 1
+    },
+    "Okina": {
+      "count": 1
+    },
+    "cafe S": {
+      "count": 1
+    },
+    "Hosi bosi coffee": {
+      "count": 1
+    },
+    "中浦屋 輪島わいち本店": {
+      "count": 1
+    },
+    "Kalpa": {
+      "count": 1
+    },
+    "Moco Moco": {
+      "count": 1
+    },
+    "海山えがくＣａｆｅ": {
+      "count": 1
+    },
+    "Snack Luce Hostess Bar": {
+      "count": 1
+    },
+    "スナック ボンリブラン": {
+      "count": 1
+    },
+    "Wajima Post Office": {
+      "count": 1
+    },
+    "丸型ポスト": {
+      "count": 1
+    }
+  }
+}

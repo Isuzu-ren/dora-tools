@@ -1,0 +1,10 @@
+{
+  "mask_paths": [
+    "<work>/fixtures/mask_c2.tif",
+    "<work>/fixtures/mask_c3.tif"
+  ],
+  "class_values": [
+    2,
+    3
+  ]
+}

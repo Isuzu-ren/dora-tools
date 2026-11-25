@@ -65,6 +65,52 @@ print(res)
 }
 ```
 
+## 示例
+
+> ⚠️ **构造示意（未实际运行）**：本机缺少该工具所需的外部服务（如 GPT 接口），下面的返回按源码的字段结构手写，仅用于说明「它会返回什么」。
+
+### 示例输入
+
+数据：一个 2 步的轨迹 + 问题文本（示意）
+
+```json
+{
+  "task_question": "Which district has the most destroyed buildings?",
+  "trajectory": [
+    {
+      "tool": "seg.building_damage",
+      "arguments": {
+        "post_image_path": "post.png"
+      },
+      "result": {
+        "mask_path": "mask.png"
+      }
+    },
+    {
+      "tool": "vis.damage_map",
+      "arguments": {
+        "base_image_path": "post.png"
+      }
+    }
+  ],
+  "image_paths": [],
+  "model": "gpt-4o-mini"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "model.summarize",
+  "model": "gpt-4o-mini",
+  "summary": "Building damage concentrates in the north-western block: 2,073 pixels were classified as totally destroyed and 25,880 as partially damaged, i.e. partial damage dominates.",
+  "backend": "gpt"
+}
+```
+
+> **构造示意**：本机没有 GPT key，这段返回按源码的字段结构手写，未实际调用。真实使用时它会读轨迹里的工具结果与图片，生成一段自然语言结论。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 值班简报文字；需 API Key，数据出境需评估

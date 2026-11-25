@@ -62,6 +62,51 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_sentinel.tif（12 波段，EPSG:4326）
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "row": 512,
+  "col": 512
+}
+```
+
+[![示例输入](../../examples/40-栅格分析/ras.sample_point/in.webp)](../../examples/40-栅格分析/ras.sample_point/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.sample_point",
+  "row": 512,
+  "col": 512,
+  "pixel_values": {
+    "1": 1332,
+    "2": 981,
+    "3": 935,
+    "4": 755,
+    "5": 1249,
+    "6": 1958,
+    "7": 2280,
+    "8": 2700,
+    "9": 872,
+    "10": 16,
+    "11": 2093,
+    "12": 1122
+  },
+  "is_inside": true
+}
+```
+
+耗时 0.08 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 站点/断面取值

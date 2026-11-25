@@ -1,0 +1,12 @@
+{
+  "tool": "seg.building_lowres",
+  "mask_path": "<temp_dir>/building_planet_586cfc.png",
+  "classes": {
+    "0": "non-building",
+    "255": "building"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 106584.85
+  }
+}

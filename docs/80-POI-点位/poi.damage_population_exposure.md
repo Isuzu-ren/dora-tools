@@ -64,6 +64,92 @@ print(res)
 }
 ```
 
+## 示例
+
+> ⚠️ **示意输入**：工具确实运行了，但输入与本工具的适用场景不完全对应（如用建筑影像演示滑坡双时相模型），结果只说明「接口怎么用」，不代表精度。
+
+### 示例输入
+
+数据：两个按 name 对齐的属性表（示意数据，结构同 `poi.group_by` 的输出）
+
+```json
+{
+  "damage_feature_stats": [
+    {
+      "name": "block_a",
+      "max": 3
+    },
+    {
+      "name": "block_b",
+      "max": 2
+    },
+    {
+      "name": "block_c",
+      "max": 1
+    }
+  ],
+  "population_feature_stats": [
+    {
+      "name": "block_a",
+      "max": 1200
+    },
+    {
+      "name": "block_b",
+      "max": 800
+    },
+    {
+      "name": "block_c",
+      "max": 450
+    }
+  ],
+  "damage_threshold": 2.0
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "poi.damage_population_exposure",
+  "join_field": "name",
+  "damage_field": "max",
+  "population_field": "max",
+  "damage_threshold": 2.0,
+  "allowed_types": [],
+  "total_damage_features": 3,
+  "total_population_features": 3,
+  "total_exposed": 2,
+  "exposed_pois": [
+    {
+      "name": "block_a",
+      "types": null,
+      "damage_value": 3.0,
+      "population_value": 1200.0,
+      "damage_feature_idx": null,
+      "population_feature_idx": null
+    },
+    {
+      "name": "block_b",
+      "types": null,
+      "damage_value": 2.0,
+      "population_value": 800.0,
+      "damage_feature_idx": null,
+      "population_feature_idx": null
+    }
+  ],
+  "top_exposed_poi": {
+    "name": "block_a",
+    "types": null,
+    "damage_value": 3.0,
+    "population_value": 1200.0,
+    "damage_feature_idx": null,
+    "population_feature_idx": null
+  }
+}
+```
+
+> 按 name 做连接，统计受损格网里的人口；真实使用时两个表来自同一套格网。
+
 ## 适用边界
 
 - **相关性**：★★ —— 受影响人口优先序

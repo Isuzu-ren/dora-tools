@@ -1,0 +1,15 @@
+{
+  "distance_px": null,
+  "distance_m": 0.0,
+  "nearest_a_id": 1,
+  "nearest_b_id": 1,
+  "tool": "vec.nearest",
+  "mode": "euclidean",
+  "topk": 1,
+  "pair_count": 79,
+  "pixel_size_m": null,
+  "table_path": "<temp_dir>/vec_nearest_table_daf3ff.csv",
+  "links_geojson": "<temp_dir>/vec_nearest_links_5b313b.geojson",
+  "vector_a_path": "<work>/fixtures/buildings.geojson",
+  "vector_b_path": "<work>/fixtures/points.geojson"
+}

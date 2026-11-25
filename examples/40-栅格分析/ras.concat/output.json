@@ -1,0 +1,36 @@
+{
+  "tool": "ras.concat",
+  "output_path": "<temp_dir>/Japan_all_14_sentinel_concat_dde727.tif",
+  "height": 1384,
+  "width": 1922,
+  "bands": 14,
+  "dtype": "uint16",
+  "crs": "EPSG:4326",
+  "transform": [
+    0.00012944888281104716,
+    0.0,
+    141.85923696581426,
+    "…（共 9 条，此处省略）"
+  ],
+  "band_map": [
+    {
+      "path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+      "in_bands": 12,
+      "out_start_band": 1,
+      "out_end_band": 12
+    },
+    {
+      "path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_slope.tif",
+      "in_bands": 1,
+      "out_start_band": 13,
+      "out_end_band": 13
+    },
+    {
+      "path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_dem.tif",
+      "in_bands": 1,
+      "out_start_band": 14,
+      "out_end_band": 14
+    }
+  ],
+  "note": "Concatenated along bands; inputs must share size & georeferencing."
+}

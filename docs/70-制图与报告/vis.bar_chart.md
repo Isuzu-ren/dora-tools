@@ -56,6 +56,50 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：seg.building_damage 掩膜的逐类像元计数
+
+```json
+{
+  "data": {
+    "intact": 1388,
+    "partial": 25886,
+    "destroyed": 2073
+  },
+  "output_path": "<work>/bar.png",
+  "title": "Building Damage by Class"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.bar_chart",
+  "output_path": "<work>/bar.png",
+  "chart_type": "bar",
+  "statistics": {
+    "intact": 1388,
+    "partial": 25886,
+    "destroyed": 2073
+  },
+  "title": "Building Damage by Class"
+}
+```
+
+[![按损毁等级统计的像元数（数据来自上一件工具的掩膜）](../../examples/70-制图与报告/vis.bar_chart/out.webp)](../../examples/70-制图与报告/vis.bar_chart/out.webp)
+
+*按损毁等级统计的像元数（数据来自上一件工具的掩膜）*（点击图片看原图）
+
+> 图表工具只负责画，不做统计；数据要自己先算好。
+
+耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 分区统计展示

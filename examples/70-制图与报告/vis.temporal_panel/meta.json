@@ -1,0 +1,13 @@
+{
+  "tool": "vis.temporal_panel",
+  "inputs": [
+    "multi_temp 下同一地点 4 个时刻的影像"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "时序拼图（每列一个时刻）",
+  "note": "适合展示淹没范围扩张、植被恢复这类随时间变化的场景。",
+  "status": "real",
+  "wall_time_s": 0.25
+}

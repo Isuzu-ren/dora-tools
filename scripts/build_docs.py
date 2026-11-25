@@ -234,6 +234,53 @@ def fallback_boundary(t: dict) -> str:
     }.get(lv, "")
 
 
+def render_example(t: dict, folder: str) -> list[str]:
+    """「示例输入 / 示例输出」两段，内容全部来自 examples/ 下真实运行留下的文件。"""
+    ex = ROOT / "examples" / folder / t["name"]
+    meta_p = ex / "meta.json"
+    if not meta_p.exists():
+        return []
+    meta = json.loads(meta_p.read_text(encoding="utf-8"))
+    args = json.loads((ex / "input.json").read_text(encoding="utf-8"))
+    resp = json.loads((ex / "output.json").read_text(encoding="utf-8"))
+    rel = f"../../examples/{folder}/{t['name']}"
+    status = meta.get("status", "real")
+    secs = ["## 示例", ""]
+    if status == "constructed":
+        secs.append("> ⚠️ **构造示意（未实际运行）**：本机缺少该工具所需的外部服务（如 GPT 接口），"
+                    "下面的返回按源码的字段结构手写，仅用于说明「它会返回什么」。")
+    elif status == "demo":
+        secs.append("> ⚠️ **示意输入**：工具确实运行了，但输入与本工具的适用场景不完全对应"
+                    "（如用建筑影像演示滑坡双时相模型），结果只说明「接口怎么用」，不代表精度。")
+    else:
+        secs.append("> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。"
+                    "路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。")
+    secs.append("")
+
+    secs += ["### 示例输入", ""]
+    if meta.get("inputs"):
+        secs.append("数据：" + "；".join(meta["inputs"]))
+        secs.append("")
+    secs += ["```json", json.dumps(args, ensure_ascii=False, indent=2), "```", ""]
+    if meta.get("figures", {}).get("in"):
+        secs += [f"[![示例输入]({rel}/in.webp)]({rel}/in.webp)", ""]
+
+    secs += ["### 示例输出", ""]
+    secs += ["```json", json.dumps(resp, ensure_ascii=False, indent=2), "```", ""]
+    figs = meta.get("figures", {})
+    out_key = next((k for k in ("out", "mask") if k in figs), None)
+    if out_key:
+        cap = meta.get("caption") or "示例输出"
+        secs += [f"[![{cap}]({rel}/{figs[out_key]})]({rel}/{figs[out_key]})", "",
+                 f"*{cap}*（点击图片看原图）", ""]
+    if meta.get("note"):
+        secs += [f"> {meta['note']}", ""]
+    wall = meta.get("wall_time_s")
+    if wall:
+        secs += [f"耗时 {wall} s（本机 8 核 CPU，无 GPU）。", ""]
+    return secs
+
+
 def render_tool(t: dict, folder: str, folder_by_tool: dict | None = None) -> str:
     lines = [f"# `{t['name']}`", ""]
     if t["relevance"] in ("○", "★") and t["domain"] == "other":
@@ -305,6 +352,8 @@ def render_tool(t: dict, folder: str, folder_by_tool: dict | None = None) -> str
               "```json",
               json.dumps({"name": t["name"], "arguments": args}, ensure_ascii=False, indent=2),
               "```", ""]
+
+    lines += render_example(t, folder)
 
     lines += ["## 适用边界", ""]
     lines.append(f"- **相关性**：{t['relevance']} —— {t['desc_cn']}")
@@ -402,6 +451,21 @@ HTML_TPL = """<!DOCTYPE html>
   code {{ background:#f2f4f7; padding:1px 4px; border-radius:3px; font-family:ui-monospace,Consolas,monospace; }}
   pre {{ background:#1e2228; color:#e6edf3; padding:12px; border-radius:8px; overflow:auto; }}
   pre code {{ background:none; color:inherit; }}
+  figure {{ margin:14px 0; }}
+  figure img {{ max-width:100%; border:1px solid var(--line); border-radius:6px; display:block; cursor:zoom-in; }}
+  #lb {{ position:fixed; inset:0; background:rgba(12,14,18,.88); display:none; z-index:99; }}
+  #lb.on {{ display:block; }}
+  #lb .canvas {{ position:absolute; inset:0; overflow:hidden; cursor:grab; }}
+  #lb .canvas.drag {{ cursor:grabbing; }}
+  #lb img {{ position:absolute; left:50%; top:50%; transform-origin:center; user-select:none; -webkit-user-drag:none; }}
+  #lb .tools {{ position:absolute; top:14px; right:16px; display:flex; gap:6px; z-index:2; }}
+  #lb button {{ background:rgba(255,255,255,.92); border:0; border-radius:6px; width:36px; height:34px;
+                font-size:16px; cursor:pointer; color:#1e2228; }}
+  #lb button:hover {{ background:#fff; }}
+  #lb .cap {{ position:absolute; left:16px; bottom:14px; right:16px; color:#dfe6ee; font-size:13px; }}
+  #lb .hint {{ position:absolute; left:16px; top:16px; color:#9fb0c2; font-size:12px; }}
+  figcaption {{ font-size:12px; color:var(--dim); margin-top:6px; }}
+  .dim {{ color:var(--dim); font-size:13px; }}
   h3 {{ font-size:14px; margin:18px 0 6px; color:var(--mut); }}
   .empty {{ color:var(--mut); padding:30px; }}
 </style>
@@ -419,8 +483,46 @@ HTML_TPL = """<!DOCTYPE html>
   <div class="list" id="list"></div>
   <div class="detail" id="detail"><div class="empty">左侧选一件工具查看详情。</div></div>
 </main>
+<div id="lb">
+  <div class="hint">滚轮缩放 · 拖动平移 · 双击复位 · Esc 关闭</div>
+  <div class="tools">
+    <button id="lbOut" title="缩小">−</button>
+    <button id="lbIn" title="放大">＋</button>
+    <button id="lbReset" title="复位">1:1</button>
+    <button id="lbClose" title="关闭">✕</button>
+  </div>
+  <div class="canvas" id="lbCanvas"><img id="lbImg" alt=""></div>
+  <div class="cap" id="lbCap"></div>
+</div>
 <script>
 const DATA = {data};
+// ---- 图片灯箱：点击放大，滚轮/按钮缩放，拖动平移 ----
+let lbScale = 1, lbX = 0, lbY = 0, lbDrag = null;
+function lbApply() {{
+  const img = document.getElementById('lbImg');
+  img.style.transform = `translate(-50%,-50%) translate(${{lbX}}px,${{lbY}}px) scale(${{lbScale}})`;
+}}
+function openLB(el) {{
+  const lb = document.getElementById('lb');
+  document.getElementById('lbImg').src = el.src;
+  document.getElementById('lbCap').textContent = (el.nextElementSibling && el.nextElementSibling.textContent) || el.alt || '';
+  lbScale = 1; lbX = 0; lbY = 0; lbApply();
+  lb.classList.add('on');
+}}
+function closeLB() {{ document.getElementById('lb').classList.remove('on'); }}
+function zoomBy(f) {{ lbScale = Math.min(8, Math.max(0.2, lbScale * f)); lbApply(); }}
+document.getElementById('lbClose').onclick = closeLB;
+document.getElementById('lbIn').onclick = () => zoomBy(1.25);
+document.getElementById('lbOut').onclick = () => zoomBy(0.8);
+document.getElementById('lbReset').onclick = () => {{ lbScale = 1; lbX = 0; lbY = 0; lbApply(); }};
+document.getElementById('lb').addEventListener('wheel', e => {{ e.preventDefault(); zoomBy(e.deltaY < 0 ? 1.12 : 0.9); }}, {{passive:false}});
+document.getElementById('lbCanvas').addEventListener('dblclick', () => {{ lbScale = 1; lbX = 0; lbY = 0; lbApply(); }});
+const lbCanvas = document.getElementById('lbCanvas');
+lbCanvas.addEventListener('mousedown', e => {{ lbDrag = [e.clientX - lbX, e.clientY - lbY]; lbCanvas.classList.add('drag'); }});
+window.addEventListener('mousemove', e => {{ if (lbDrag) {{ lbX = e.clientX - lbDrag[0]; lbY = e.clientY - lbDrag[1]; lbApply(); }} }});
+window.addEventListener('mouseup', () => {{ lbDrag = null; lbCanvas.classList.remove('drag'); }});
+document.addEventListener('keydown', e => {{ if (e.key === 'Escape') closeLB(); }});
+document.getElementById('lb').addEventListener('click', e => {{ if (e.target.id === 'lb' || e.target.id === 'lbCanvas') closeLB(); }});
 const DOMAINS = {domains};
 let cur = -1;
 const q = document.getElementById('q'), dom = document.getElementById('dom');
@@ -458,6 +560,16 @@ function pick(i) {{
   }}
   h += `<h3>依赖与运行</h3><p>依赖：${{esc(t.dep)}}<br>异常：${{esc(t.guard_text)}}</p>`;
   h += `<h3>调用</h3><pre><code>${{esc(t.py)}}</code></pre><pre><code>${{esc(t.json)}}</code></pre>`;
+  if (t.ex) {{
+    h += `<h3>示例${{t.ex.status === 'constructed' ? '（构造示意，未实际运行）' : '（实际运行）'}}</h3>`;
+    if (t.ex.status === 'constructed') h += `<p class="dim">⚠️ 本机缺少该工具所需的外部服务，返回按源码字段结构手写。</p>`;
+    if (t.ex.status === 'demo') h += `<p class="dim">⚠️ 工具确实运行了，但输入与适用场景不完全对应，只说明接口怎么用。</p>`;
+    if (t.ex.inputs && t.ex.inputs.length) h += `<p class="dim">数据：${{esc(t.ex.inputs.join('；'))}}</p>`;
+    if (t.ex.in) h += `<figure><img src="${{t.ex.in}}" alt="示例输入" onclick="openLB(this)" title="点击放大"><figcaption>示例输入</figcaption></figure>`;
+    h += `<pre><code>${{esc(t.ex.out)}}</code></pre>`;
+    if (t.ex.img) h += `<figure><img src="${{t.ex.img}}" alt="示例输出" onclick="openLB(this)" title="点击放大"><figcaption>${{esc(t.ex.cap||'示例输出')}}</figcaption></figure>`;
+    if (t.ex.note) h += `<p class="dim">${{esc(t.ex.note)}}</p>`;
+  }}
   h += `<h3>适用边界</h3><p>${{esc(t.boundary || '未做专项实测，按代码契约推定。')}}</p>`;
   if (t.pitfall) h += `<p><b>坑：</b>${{esc(t.pitfall)}}</p>`;
   if (t.tip) h += `<p><b>建议：</b>${{esc(t.tip)}}</p>`;
@@ -484,7 +596,30 @@ HTML_TPL = HTML_TPL.replace("{{", "{").replace("}}", "}")
 HTML_TPL = HTML_TPL.replace("{{", "{").replace("}}", "}")
 
 
+def example_payload(t: dict, folder: str) -> dict | None:
+    """索引页用的示例数据；只读 examples/ 下已有的文件，不重复计算。"""
+    ex = ROOT / "examples" / folder / t["name"]
+    meta_p = ex / "meta.json"
+    if not meta_p.exists():
+        return None
+    meta = json.loads(meta_p.read_text(encoding="utf-8"))
+    figs = meta.get("figures", {})
+    out_key = next((k for k in ("out", "mask") if k in figs), None)
+    base = f"../examples/{folder}/{t['name']}"
+    out_path = ex / "output.json"
+    return {
+        "inputs": meta.get("inputs", []),
+        "in": f"{base}/in.webp" if figs.get("in") else "",
+        "img": f"{base}/{figs[out_key]}" if out_key else "",
+        "cap": meta.get("caption", ""),
+        "note": meta.get("note", "").replace("`", ""),
+        "status": meta.get("status", "real"),
+        "out": out_path.read_text(encoding="utf-8").strip()[:1600] if out_path.exists() else "",
+    }
+
+
 def render_html(tools: list[dict]) -> str:
+    folder_of = dict(content.DOMAINS)
     opts = '<option value="">全部域</option>' + "".join(
         f'<option value="{k}">{v}</option>' for k, v in content.DOMAINS)
     data = []
@@ -505,6 +640,7 @@ def render_html(tools: list[dict]) -> str:
             "py": f"from dora.tools.{t['module']} import {t['func']}\nimport json\n"
                   f"res = json.loads({t['func']}({kw}))",
             "json": json.dumps({"name": t["name"], "arguments": args}, ensure_ascii=False, indent=2),
+            "ex": example_payload(t, folder_of[t["domain"]]),
         })
     domains = {k: v for k, v in content.DOMAINS}
     return (HTML_TPL.replace("{options}", opts)
@@ -526,6 +662,7 @@ README_TPL = """# DORA 工具库 · 可读版
 | 快速找工具 | 打开 [`index/index.html`](index/index.html)，按关键词或域筛选（双击即可，无需联网） |
 | 看总表 | [`index/INDEX.md`](index/INDEX.md) —— 108 行，按域排序 |
 | 读某件工具 | [`docs/`](docs/) —— 9 个功能域，每域一个 README + 每工具一页 |
+| 看实际效果 | 每页的「示例」段：真实输入的预览图 + 工具原样返回的 JSON + 产物渲染 |
 
 ## 目录
 
@@ -537,11 +674,13 @@ docs/                  说明文档
   10-水体与淹没/        每域：README.md + 逐工具页
   ...
   99-附录/             接入红线、已知陷阱、评测摘要、术语
+examples/              每件工具一组「真跑出来」的示例
+  <域>/<工具>/         input.json（参数）+ output.json（返回）+ 渲染图 + meta.json
 index/
   INDEX.md             108 件总表
   index.html           可搜索页面（单文件，无外部依赖）
   tools.json           机器可读（108 条，含参数与返回字段）
-scripts/               提取、生成、自检脚本
+scripts/               提取、示例、生成、自检脚本
 ```
 
 ## 两个标签
@@ -577,8 +716,12 @@ pip install -e ".[perception]"
 
 1. 用上游最新代码覆盖 `src/dora/tools/`（**不要在副本里改代码**，否则与上游分叉）
 2. `python scripts/extract_tools.py` —— 重新抽取 108 件的签名与说明
-3. `python scripts/build_docs.py` —— 重建 docs/ 与 index/
-4. 人工文案在 `scripts/content.py`（领域导语、逐工具补充、附录），重建时不会被覆盖
+3. `python scripts/build_examples.py` —— 真跑一遍，重建 `examples/` 下的示例输入与输出
+4. `python scripts/build_docs.py` —— 重建 docs/ 与 index/
+5. 人工文案在 `scripts/content.py`（领域导语、逐工具补充、附录），重建时不会被覆盖
+
+示例需要 `DORA_DATA` 指向的 DORA 数据根（影像 + 权重），没有数据时第 3 步会跳过对应工具，
+页面上的「示例」段随之缺省，其余内容不受影响。
 
 ## 重新生成文档
 
@@ -597,8 +740,7 @@ def main() -> int:
 
     folder_by_tool = {t["name"]: folder_of[t["domain"]] for t in tools}
 
-    if DOCS.exists():
-        shutil.rmtree(DOCS)
+    # 直接覆盖写，不整目录删除：删除 100+ 文件容易误伤，也过不了本地安全钩子
     (DOCS / "99-附录").mkdir(parents=True, exist_ok=True)
 
     # 逐域

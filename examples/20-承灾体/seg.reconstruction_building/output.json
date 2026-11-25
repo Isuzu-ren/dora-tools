@@ -1,0 +1,11 @@
+{
+  "tool": "seg.reconstruction_building",
+  "mask_path": "<temp_dir>/guatemala_volcano_00000004_post_reconstruction_building_mask.png",
+  "classes": {
+    "0": "not_under_reconstruction",
+    "255": "building_under_reconstruction"
+  },
+  "_meta": {
+    "forward_ms": 30874.82
+  }
+}

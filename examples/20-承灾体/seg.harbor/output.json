@@ -1,0 +1,8 @@
+{
+  "mask_path": "<temp_dir>/seg_harbor_mask_280230.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 18501.06
+  },
+  "tool": "seg.harbor"
+}

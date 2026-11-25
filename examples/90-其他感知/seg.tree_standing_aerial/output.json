@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_tree_standing_aerial_mask_d7b5da.png",
+  "classes": {
+    "8": "tree_not_fallen"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 25271.02
+  },
+  "tool": "seg.tree_standing_aerial"
+}

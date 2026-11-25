@@ -1,0 +1,10 @@
+{
+  "tool": "ras.slope",
+  "slope_path": "<temp_dir>/slope.tif",
+  "units": "degrees",
+  "stats": {
+    "min": 0.0,
+    "max": 88.26181030273438,
+    "mean": 19.227169036865234
+  }
+}

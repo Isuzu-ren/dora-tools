@@ -1,0 +1,6 @@
+{
+  "tool": "vec.connected_components",
+  "count": 79,
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "mode": "vector"
+}

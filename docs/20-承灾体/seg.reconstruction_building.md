@@ -60,6 +60,45 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：同地点灾前影像；xbd guatemala_volcano_00000004 灾后影像（0.8 m，1024²，RGB）
+
+```json
+{
+  "pre_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/pre/guatemala_volcano_00000004_pre.png",
+  "post_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png"
+}
+```
+
+[![示例输入](../../examples/20-承灾体/seg.reconstruction_building/in.webp)](../../examples/20-承灾体/seg.reconstruction_building/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.reconstruction_building",
+  "mask_path": "<temp_dir>/guatemala_volcano_00000004_post_reconstruction_building_mask.png",
+  "classes": {
+    "0": "not_under_reconstruction",
+    "255": "building_under_reconstruction"
+  },
+  "_meta": {
+    "forward_ms": 30874.82
+  }
+}
+```
+
+[![示例输出](../../examples/20-承灾体/seg.reconstruction_building/out.webp)](../../examples/20-承灾体/seg.reconstruction_building/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 37.14 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 灾后恢复进度监测

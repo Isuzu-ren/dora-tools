@@ -60,6 +60,73 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_sentinel.tif（12 波段）；…_slope.tif（坡度）；…_dem.tif（高程）
+
+```json
+{
+  "image_path_list": [
+    "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+    "<DORA_DATA>/images/landslide4sense/Japan_all_14_slope.tif",
+    "<DORA_DATA>/images/landslide4sense/Japan_all_14_dem.tif"
+  ]
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.concat",
+  "output_path": "<temp_dir>/Japan_all_14_sentinel_concat_dde727.tif",
+  "height": 1384,
+  "width": 1922,
+  "bands": 14,
+  "dtype": "uint16",
+  "crs": "EPSG:4326",
+  "transform": [
+    0.00012944888281104716,
+    0.0,
+    141.85923696581426,
+    "…（共 9 条，此处省略）"
+  ],
+  "band_map": [
+    {
+      "path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+      "in_bands": 12,
+      "out_start_band": 1,
+      "out_end_band": 12
+    },
+    {
+      "path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_slope.tif",
+      "in_bands": 1,
+      "out_start_band": 13,
+      "out_end_band": 13
+    },
+    {
+      "path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_dem.tif",
+      "in_bands": 1,
+      "out_start_band": 14,
+      "out_end_band": 14
+    }
+  ],
+  "note": "Concatenated along bands; inputs must share size & georeferencing."
+}
+```
+
+[![拼接后的 14 波段结果（预览取 B4/B3/B2）](../../examples/40-栅格分析/ras.concat/out.webp)](../../examples/40-栅格分析/ras.concat/out.webp)
+
+*拼接后的 14 波段结果（预览取 B4/B3/B2）*（点击图片看原图）
+
+> 三者的尺寸与地理参考必须完全一致；波段顺序按列表顺序落位，13、14 分别是坡度和高程。
+
+耗时 1.75 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 构造 14 波段输入（多光谱 + DEM + 坡度）的必经步骤

@@ -1,0 +1,13 @@
+{
+  "tool": "vis.bar_chart",
+  "inputs": [
+    "seg.building_damage 掩膜的逐类像元计数"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "按损毁等级统计的像元数（数据来自上一件工具的掩膜）",
+  "note": "图表工具只负责画，不做统计；数据要自己先算好。",
+  "status": "real",
+  "wall_time_s": 0.04
+}

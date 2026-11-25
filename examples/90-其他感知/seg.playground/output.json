@@ -1,0 +1,9 @@
+{
+  "mask_path": "<temp_dir>/seg_playground_mask_c804df.png",
+  "mask_value": 255,
+  "note": "Binary mask of playground/sports field classes merged into 255.",
+  "_meta": {
+    "forward_ms": 17568.42
+  },
+  "tool": "seg.playground"
+}

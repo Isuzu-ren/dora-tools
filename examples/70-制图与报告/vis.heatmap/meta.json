@@ -1,0 +1,14 @@
+{
+  "tool": "vis.heatmap",
+  "inputs": [
+    "Tokyo OSM 点要素（EPSG:6677）",
+    "同区域影像"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "点密度热力图（核密度）",
+  "note": "带宽 `bandwidth` 决定平滑程度；点与底图必须同坐标系、同上限范围。",
+  "status": "real",
+  "wall_time_s": 5.41
+}

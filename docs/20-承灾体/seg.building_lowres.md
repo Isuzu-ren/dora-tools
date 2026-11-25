@@ -57,6 +57,47 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd 灾后影像（1024²，0.8 m）
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png"
+}
+```
+
+[![示例输入](../../examples/20-承灾体/seg.building_lowres/in.webp)](../../examples/20-承灾体/seg.building_lowres/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.building_lowres",
+  "mask_path": "<temp_dir>/building_planet_586cfc.png",
+  "classes": {
+    "0": "non-building",
+    "255": "building"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 106584.85
+  }
+}
+```
+
+[![影像｜低分辨率建筑模型输出｜叠加](../../examples/20-承灾体/seg.building_lowres/out.webp)](../../examples/20-承灾体/seg.building_lowres/out.webp)
+
+*影像｜低分辨率建筑模型输出｜叠加*（点击图片看原图）
+
+> 为 480 px 窗口设计，512² 就要 5.5 GB 内存；大图请先切块。
+
+耗时 108.31 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 大范围承灾体底数（PlanetScope）

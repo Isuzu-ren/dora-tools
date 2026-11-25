@@ -1,0 +1,7 @@
+{
+  "vector_path": "<work>/fixtures/roads.geojson",
+  "meters": [
+    20.0,
+    40.0
+  ]
+}

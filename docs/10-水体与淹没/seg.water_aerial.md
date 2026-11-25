@@ -58,6 +58,46 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：mayfield 无人机影像 0.03 m（裁 1024²）
+
+```json
+{
+  "post_image_path": "<work>/fixtures/aerial.tif"
+}
+```
+
+[![示例输入](../../examples/10-水体与淹没/seg.water_aerial/in.webp)](../../examples/10-水体与淹没/seg.water_aerial/in.webp)
+
+### 示例输出
+
+```json
+{
+  "mask_path": "<temp_dir>/seg_water_aerial_mask_30d718.png",
+  "classes": {
+    "11": "water"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17959.98
+  },
+  "tool": "seg.water_aerial"
+}
+```
+
+[![影像｜航拍水体｜叠加](../../examples/10-水体与淹没/seg.water_aerial/out.webp)](../../examples/10-水体与淹没/seg.water_aerial/out.webp)
+
+*影像｜航拍水体｜叠加*（点击图片看原图）
+
+> 只认 0.03 m 无人机视角；喂卫星影像（0.5 m 以上）会大面积误判。
+
+耗时 22.03 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 应急航拍精细淹没边界

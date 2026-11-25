@@ -1,0 +1,6 @@
+{
+  "tool": "model.summarize",
+  "model": "gpt-4o-mini",
+  "summary": "Building damage concentrates in the north-western block: 2,073 pixels were classified as totally destroyed and 25,880 as partially damaged, i.e. partial damage dominates.",
+  "backend": "gpt"
+}

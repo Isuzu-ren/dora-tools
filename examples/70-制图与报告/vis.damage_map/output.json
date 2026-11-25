@@ -1,0 +1,15 @@
+{
+  "tool": "vis.damage_map",
+  "output_path": "<work>/damage_map.png",
+  "title": "Guatemala Volcano - Building Damage",
+  "has_legend": true,
+  "legend_alpha": 0.45,
+  "point_marker_count": 0,
+  "point_marker_labels": [],
+  "north_arrow": true,
+  "scale_bar": true,
+  "layers": [
+    "base_image",
+    "overlay_mask"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "tool": "poi.damage_population_exposure",
+  "inputs": [
+    "两个按 name 对齐的属性表（示意数据，结构同 `poi.group_by` 的输出）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "按 name 做连接，统计受损格网里的人口；真实使用时两个表来自同一套格网。",
+  "status": "demo",
+  "wall_time_s": 0.0
+}

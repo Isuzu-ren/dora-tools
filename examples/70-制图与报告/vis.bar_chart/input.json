@@ -1,0 +1,9 @@
+{
+  "data": {
+    "intact": 1388,
+    "partial": 25886,
+    "destroyed": 2073
+  },
+  "output_path": "<work>/bar.png",
+  "title": "Building Damage by Class"
+}

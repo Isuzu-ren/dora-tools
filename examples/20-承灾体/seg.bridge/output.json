@@ -1,0 +1,8 @@
+{
+  "mask_path": "<temp_dir>/seg_bridge_mask_e566ed.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17981.05
+  },
+  "tool": "seg.bridge"
+}

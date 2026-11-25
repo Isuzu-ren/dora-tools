@@ -1,0 +1,14 @@
+{
+  "tool": "calc.point_distance",
+  "point_a": [
+    0.0,
+    0.0
+  ],
+  "point_b": [
+    30.0,
+    40.0
+  ],
+  "pixel_size_m": 1.0,
+  "distance_px": 50.0,
+  "distance_m": 50.0
+}

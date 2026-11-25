@@ -1,0 +1,8 @@
+{
+  "mask_path": "<temp_dir>/seg_plane_mask_5a1060.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 18106.41
+  },
+  "tool": "seg.plane"
+}

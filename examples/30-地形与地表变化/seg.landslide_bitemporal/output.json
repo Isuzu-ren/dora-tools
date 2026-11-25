@@ -1,0 +1,11 @@
+{
+  "tool": "seg.landslide_bitemporal",
+  "mask_path": "<temp_dir>/seg_landslide_bitemporal_mask_5e08c1.png",
+  "classes": {
+    "0": "non-landslide",
+    "255": "landslide"
+  },
+  "_meta": {
+    "forward_ms": 4029.96
+  }
+}

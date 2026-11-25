@@ -64,6 +64,42 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_sentinel.tif（12 波段，EPSG:4326）
+
+```json
+{
+  "raster_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "target_pixel_size_m": 20.0
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.resample",
+  "output_path": "<temp_dir>/resampled.tif",
+  "src_pixel_size_m": 0.00012944888281104716,
+  "dst_pixel_size_m": 20.0,
+  "shape": [
+    1,
+    1
+  ]
+}
+```
+
+[![示例输出](../../examples/40-栅格分析/ras.resample/out.webp)](../../examples/40-栅格分析/ras.resample/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.17 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 统一 GSD：模型对分辨率敏感，这一步不能省

@@ -1,0 +1,16 @@
+{
+  "image_paths": [
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_post_disaster.png",
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_pre_disaster.png",
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_t1.png",
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_t2.png"
+  ],
+  "output_path": "<work>/temporal.png",
+  "labels": [
+    "110h",
+    "110h",
+    "110h",
+    "110h"
+  ],
+  "title": "Hurricane Florence - Temporal Comparison"
+}

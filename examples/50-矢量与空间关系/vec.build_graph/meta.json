@@ -1,0 +1,13 @@
+{
+  "tool": "vec.build_graph",
+  "inputs": [
+    "Tokyo OSM 道路中心线（193 条，EPSG:6677，已炸成单部件）"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "建图用的路网（红线为参与建图的中心线）",
+  "note": "**MultiLineString 会直接报错**（`Sub-geometries may have coordinate sequences`），建图前要先 `explode` 成单部件。",
+  "status": "real",
+  "wall_time_s": 0.04
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "vec.convex_hull",
+  "inputs": [
+    "images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.12
+}

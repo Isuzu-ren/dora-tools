@@ -1,0 +1,8 @@
+{
+  "mask_path": "<temp_dir>/seg_storage_tank_mask_31b032.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 18082.7
+  },
+  "tool": "seg.storage_tank"
+}

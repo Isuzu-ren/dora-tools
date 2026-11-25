@@ -1,0 +1,24 @@
+{
+  "tool": "ras.clip",
+  "output_path": "<temp_dir>/clip_guatemala_volcano_00000004_post_6c64ba.tif",
+  "window": {
+    "x1": 100,
+    "x2": 600,
+    "y1": 100,
+    "y2": 600
+  },
+  "out_shape": [
+    500,
+    500
+  ],
+  "bands": 4,
+  "dtype": "uint8",
+  "crs": null,
+  "transform": [
+    1.0,
+    0.0,
+    100.0,
+    "…（共 9 条，此处省略）"
+  ],
+  "clamped": false
+}

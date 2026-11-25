@@ -1,0 +1,13 @@
+{
+  "tool": "mask.compose_multiclass",
+  "inputs": [
+    "类别 2、3 各自的二值掩膜（由损毁掩膜拆出）"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "两张二值掩膜合成一张多类掩膜",
+  "note": "多模型各自只出二值时用它合并；类别值要预先约定好，别两处不一致。",
+  "status": "real",
+  "wall_time_s": 0.05
+}

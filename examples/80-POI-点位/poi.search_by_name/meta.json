@@ -1,0 +1,11 @@
+{
+  "tool": "poi.search_by_name",
+  "inputs": [
+    "noto 地震 POI"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "只返回匹配到的点与属性，不落盘。",
+  "status": "real",
+  "wall_time_s": 0.15
+}

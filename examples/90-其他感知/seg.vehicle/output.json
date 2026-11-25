@@ -1,0 +1,9 @@
+{
+  "mask_path": "<temp_dir>/seg_vehicle_mask_409442.png",
+  "mask_value": 255,
+  "note": "Binary mask: selected classes merged into 255.",
+  "_meta": {
+    "forward_ms": 26206.88
+  },
+  "tool": "seg.vehicle"
+}

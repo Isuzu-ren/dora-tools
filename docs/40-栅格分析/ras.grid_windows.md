@@ -60,6 +60,62 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_sentinel.tif（12 波段，EPSG:4326）
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "n": 4
+}
+```
+
+[![示例输入](../../examples/40-栅格分析/ras.grid_windows/in.webp)](../../examples/40-栅格分析/ras.grid_windows/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.grid_windows",
+  "windows": [
+    [
+      0,
+      346,
+      0,
+      "…（共 4 条，此处省略）"
+    ],
+    [
+      0,
+      346,
+      480,
+      "…（共 4 条，此处省略）"
+    ],
+    [
+      0,
+      346,
+      960,
+      "…（共 4 条，此处省略）"
+    ],
+    "…（共 16 条，此处省略）"
+  ],
+  "image_shape": [
+    1384,
+    1922
+  ],
+  "base_tile_px": [
+    346,
+    480
+  ],
+  "count": 16,
+  "note": "Row-major; last row/col expanded to image boundary."
+}
+```
+
 ## 适用边界
 
 - **相关性**：★★★ —— 面雨量/旱情分区统计的基础

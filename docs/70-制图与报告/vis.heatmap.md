@@ -61,6 +61,51 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：Tokyo OSM 点要素（EPSG:6677）；同区域影像
+
+```json
+{
+  "points_path": "<work>/fixtures/points.geojson",
+  "base_image_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif",
+  "bandwidth": 12,
+  "colormap": "inferno"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.heatmap",
+  "heatmap_path": "<temp_dir>/heatmap_0da43dc4.png",
+  "point_count": 139,
+  "stats": {
+    "kde_max": 1.426805204275755e-07,
+    "kde_mean": 1.4143904836861091e-07,
+    "extent": [
+      -12798.547402281212,
+      -34183.793230866126,
+      -12401.227792120913,
+      "…（共 4 条，此处省略）"
+    ]
+  }
+}
+```
+
+[![点密度热力图（核密度）](../../examples/70-制图与报告/vis.heatmap/out.webp)](../../examples/70-制图与报告/vis.heatmap/out.webp)
+
+*点密度热力图（核密度）*（点击图片看原图）
+
+> 带宽 `bandwidth` 决定平滑程度；点与底图必须同坐标系、同上限范围。
+
+耗时 5.41 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 隐患点、报汛站、受灾点密度

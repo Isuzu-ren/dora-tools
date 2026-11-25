@@ -58,6 +58,43 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+```json
+{
+  "pre_image_path": "<DORA_DATA>/images/volcano_lava/guatemala_volcano_00000000.png",
+  "post_image_path": "<DORA_DATA>/images/volcano_lava/guatemala_volcano_00000004.png"
+}
+```
+
+[![示例输入](../../examples/90-其他感知/seg.lava/in.webp)](../../examples/90-其他感知/seg.lava/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.lava",
+  "mask_path": "<temp_dir>/seg_lava_mask_97b66a.png",
+  "classes": {
+    "0": "non-lava",
+    "255": "lava"
+  },
+  "_meta": {
+    "forward_ms": 31379.76
+  }
+}
+```
+
+[![示例输出](../../examples/90-其他感知/seg.lava/out.webp)](../../examples/90-其他感知/seg.lava/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 37.28 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：○ —— 火山专用

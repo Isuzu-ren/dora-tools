@@ -1,0 +1,12 @@
+{
+  "tool": "seg.lava",
+  "inputs": [],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 37.28
+}

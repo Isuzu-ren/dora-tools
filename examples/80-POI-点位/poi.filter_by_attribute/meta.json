@@ -1,0 +1,11 @@
+{
+  "tool": "poi.filter_by_attribute",
+  "inputs": [
+    "images/disasterm3/noto_earthquake_agent2/…_poi.geojson（307 个点）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.0
+}

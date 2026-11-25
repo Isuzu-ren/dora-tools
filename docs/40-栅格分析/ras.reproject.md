@@ -64,6 +64,46 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_dem.tif（EPSG:4326，高程米）
+
+```json
+{
+  "raster_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_dem.tif",
+  "dst_crs": "EPSG:32654"
+}
+```
+
+[![示例输入](../../examples/40-栅格分析/ras.reproject/in.webp)](../../examples/40-栅格分析/ras.reproject/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.reproject",
+  "output_path": "<temp_dir>/reprojected.tif",
+  "src_crs": "EPSG:4326",
+  "dst_crs": "EPSG:32654",
+  "shape": [
+    1675,
+    1713
+  ]
+}
+```
+
+[![上：投影前（经纬度栅格）；下：投影后（UTM 54N，米制像元）](../../examples/40-栅格分析/ras.reproject/out.webp)](../../examples/40-栅格分析/ras.reproject/out.webp)
+
+*上：投影前（经纬度栅格）；下：投影后（UTM 54N，米制像元）*（点击图片看原图）
+
+> 坡度、缓冲区、最短路这类按「米」算的步骤，都应先投影到米制坐标系。
+
+耗时 0.45 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 多源数据统一坐标系（国产影像常为 CGCS2000）

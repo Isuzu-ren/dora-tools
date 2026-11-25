@@ -1,0 +1,6 @@
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "center_lat": 35.69,
+  "center_lon": 139.7,
+  "max_distance_m": 800.0
+}

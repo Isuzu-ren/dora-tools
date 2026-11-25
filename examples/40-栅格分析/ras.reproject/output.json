@@ -1,0 +1,10 @@
+{
+  "tool": "ras.reproject",
+  "output_path": "<temp_dir>/reprojected.tif",
+  "src_crs": "EPSG:4326",
+  "dst_crs": "EPSG:32654",
+  "shape": [
+    1675,
+    1713
+  ]
+}

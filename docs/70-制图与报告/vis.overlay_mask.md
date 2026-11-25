@@ -59,6 +59,55 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd 灾后影像；损毁掩膜
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png",
+  "mask_path": "<work>/fixtures/mask_damage.tif",
+  "output_path": "<work>/overlay.png",
+  "alpha": 0.5,
+  "class_labels": {
+    "1": "Intact",
+    "2": "Partial",
+    "3": "Destroyed"
+  }
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.overlay_mask",
+  "output_path": "<work>/overlay.png",
+  "classes_present": [
+    1,
+    2,
+    3
+  ],
+  "class_labels": {
+    "1": "Intact",
+    "2": "Partial",
+    "3": "Destroyed"
+  }
+}
+```
+
+[![纯叠加图（无图例/指北针），比 `vis.damage_map` 轻](../../examples/70-制图与报告/vis.overlay_mask/out.webp)](../../examples/70-制图与报告/vis.overlay_mask/out.webp)
+
+*纯叠加图（无图例/指北针），比 `vis.damage_map` 轻*（点击图片看原图）
+
+> 要出正式图用 `vis.damage_map`；这个用于快速目视核对。
+
+耗时 0.14 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 淹没范围图

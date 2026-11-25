@@ -1,0 +1,14 @@
+{
+  "tool": "ras.sample_points",
+  "inputs": [
+    "images/landslide4sense/Japan_all_14_sentinel.tif（12 波段，EPSG:4326）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.07
+}

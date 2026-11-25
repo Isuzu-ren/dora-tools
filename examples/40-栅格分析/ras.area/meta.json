@@ -1,0 +1,11 @@
+{
+  "tool": "ras.area",
+  "inputs": [
+    "滑坡掩膜（10 m 分辨率整景）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "面积 = 像元数 × 10 m × 10 m，不含模型误差修正。",
+  "status": "real",
+  "wall_time_s": 0.04
+}

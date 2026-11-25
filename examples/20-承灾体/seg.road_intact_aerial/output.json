@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_road_intact_aerial_mask_ea4d0f.png",
+  "classes": {
+    "5": "road_no_damage"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17693.9
+  },
+  "tool": "seg.road_intact_aerial"
+}

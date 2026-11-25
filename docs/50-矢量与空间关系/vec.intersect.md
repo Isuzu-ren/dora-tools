@@ -64,6 +64,44 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）；roads 外扩 30 m 的缓冲区，用于演示矢量求交
+
+```json
+{
+  "vector_a_path": "<work>/fixtures/buildings.geojson",
+  "vector_b_path": "<work>/fixtures/roads_buffer.geojson"
+}
+```
+
+[![示例输入](../../examples/50-矢量与空间关系/vec.intersect/in.webp)](../../examples/50-矢量与空间关系/vec.intersect/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.intersect",
+  "intersection_count": 78,
+  "intersecting_a_count": 78,
+  "intersecting_b_count": 1,
+  "intersection_area_px2": null,
+  "intersection_area_m2": 32167.350345048166,
+  "pixel_size_m": null,
+  "intersection_path": "<temp_dir>/buildings_roads_buffer_intersection_dd3949_873e48.geojson"
+}
+```
+
+[![示例输出](../../examples/50-矢量与空间关系/vec.intersect/out.webp)](../../examples/50-矢量与空间关系/vec.intersect/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.4 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 淹没范围 ∩ 耕地/居民地/行政区

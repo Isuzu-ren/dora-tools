@@ -1,0 +1,12 @@
+{
+  "map_image_path": "<work>/damage_map.png",
+  "chart_image_path": "<work>/bar.png",
+  "output_path": "<work>/report.png",
+  "title": "Guatemala Volcano - Situation Report",
+  "summary_text": "Partial damage dominates; 2,073 pixels classified as destroyed.",
+  "key_statistics": {
+    "destroyed_px": 2073,
+    "partial_px": 25880,
+    "area_km2": 1.7
+  }
+}

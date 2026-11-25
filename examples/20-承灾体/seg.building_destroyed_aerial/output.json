@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_building_destroyed_aerial_mask_66436f.png",
+  "classes": {
+    "3": "building_total_damage"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17788.82
+  },
+  "tool": "seg.building_destroyed_aerial"
+}

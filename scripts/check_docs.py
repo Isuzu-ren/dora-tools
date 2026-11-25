@@ -92,7 +92,26 @@ def main() -> int:
             if page.exists() and "## 这个工具做什么" not in page.read_text(encoding="utf-8"):
                 errors.append(f"{t['name']} 页缺「这个工具做什么」小节")
 
-    # 6. 未写「适用边界」补充说明的工具（不算错，提示）
+    # 6. 每件工具都要有示例：目录、meta、输出 JSON、图片引用的文件都得在
+    import json as _json  # noqa: PLC0415
+
+    missing = []
+    for t in tools:
+        ex = ROOT / "examples" / folder_of[t["domain"]] / t["name"]
+        meta_p = ex / "meta.json"
+        if not meta_p.exists():
+            missing.append(t["name"])
+            continue
+        meta = _json.loads(meta_p.read_text(encoding="utf-8"))
+        for fname in (meta.get("figures") or {}).values():
+            if not (ex / fname).exists():
+                errors.append(f"{t['name']} 示例图缺失：{fname}")
+        if not (ex / "output.json").exists():
+            errors.append(f"{t['name']} 缺 output.json")
+    if missing:
+        errors.append(f"{len(missing)} 件缺示例：{', '.join(missing[:6])}")
+
+    # 7. 未写「适用边界」补充说明的工具（不算错，提示）
     no_note = [t["name"] for t in tools if not t.get("boundary") and not t.get("pitfall") and not t.get("tip")]
     if no_note:
         warns.append(f"{len(no_note)} 件仅有通用边界说明：{', '.join(no_note[:6])} …")

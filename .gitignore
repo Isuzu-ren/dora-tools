@@ -6,3 +6,4 @@ dist/
 .venv/
 out/
 .DS_Store
+examples/_work/

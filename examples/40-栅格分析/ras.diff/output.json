@@ -1,0 +1,13 @@
+{
+  "tool": "ras.diff",
+  "image_a_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "image_b_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "output_path": "<temp_dir>/Japan_all_14_sentinel_minus_Japan_all_1_b77f31.tif",
+  "band_a": 1,
+  "band_b": 1,
+  "nodata": -9999.0,
+  "min": 0.0,
+  "max": 0.0,
+  "mean": 0.0,
+  "valid_pixels": 2655360
+}

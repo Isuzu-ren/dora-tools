@@ -1,0 +1,11 @@
+{
+  "tool": "ras.count_pixels",
+  "inputs": [
+    "损毁掩膜（类别 1/2/3）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "只数像元，不做面积换算；要面积用 `ras.area`。",
+  "status": "real",
+  "wall_time_s": 0.01
+}

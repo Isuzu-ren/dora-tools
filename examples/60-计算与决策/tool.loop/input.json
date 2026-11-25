@@ -1,0 +1,21 @@
+{
+  "calls": [
+    {
+      "tool": "ras.area",
+      "args": {
+        "mask_path": "<work>/fixtures/mask_landslide.tif",
+        "pixel_size_m": 10.0
+      }
+    }
+  ],
+  "loop_over": [
+    {
+      "scene": "japan"
+    },
+    {
+      "scene": "japan"
+    }
+  ],
+  "return_all": false,
+  "show_progress": false
+}

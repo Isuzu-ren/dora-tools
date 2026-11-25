@@ -1,0 +1,25 @@
+{
+  "image_path": "<work>/damage_map.png",
+  "title": "Annotated Map",
+  "legend_items": [
+    {
+      "label": "Destroyed",
+      "color": [
+        220,
+        40,
+        40
+      ]
+    },
+    {
+      "label": "Partial",
+      "color": [
+        255,
+        190,
+        40
+      ]
+    }
+  ],
+  "north_arrow": true,
+  "scale_bar": true,
+  "pixel_size_m": 0.8
+}

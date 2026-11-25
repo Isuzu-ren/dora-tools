@@ -1,0 +1,13 @@
+{
+  "tool": "vec.repair_min_edges",
+  "repair_edges": [],
+  "repair_count": 0,
+  "path_length_m": 20.0,
+  "path_node_count": 11,
+  "source": 17,
+  "target": 219,
+  "auto_selected": true,
+  "blocked_attr": "damaged",
+  "graph_nodes": 300,
+  "graph_edges": 206
+}

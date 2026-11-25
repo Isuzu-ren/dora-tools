@@ -1,0 +1,10 @@
+{
+  "tool": "vec.filter_by_attribute",
+  "vector_path": "<temp_dir>/filtered_by_attribute_fa0de2.geojson",
+  "attribute_name": "type",
+  "allowed_values": [
+    "residential"
+  ],
+  "total_input": 79,
+  "total_filtered": 0
+}

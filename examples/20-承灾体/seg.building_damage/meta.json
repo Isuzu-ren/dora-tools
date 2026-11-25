@@ -1,0 +1,15 @@
+{
+  "tool": "seg.building_damage",
+  "inputs": [
+    "xbd/guatemala_volcano_00000004_pre.png（0.8 m，1024²）",
+    "…_post.png"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上排：灾前｜灾后；下排：灾后影像｜损毁分级（绿=完好、黄=部分、红=完全）｜叠加",
+  "note": "只判「已建成建筑」的损毁等级；两期必须已配准，错位会直接变成假损毁。",
+  "status": "real",
+  "wall_time_s": 36.94
+}

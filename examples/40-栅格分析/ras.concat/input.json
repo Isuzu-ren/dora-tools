@@ -1,0 +1,7 @@
+{
+  "image_path_list": [
+    "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+    "<DORA_DATA>/images/landslide4sense/Japan_all_14_slope.tif",
+    "<DORA_DATA>/images/landslide4sense/Japan_all_14_dem.tif"
+  ]
+}

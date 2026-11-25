@@ -54,6 +54,44 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd guatemala_volcano_00000004 灾后影像（0.8 m，1024²，RGB）
+
+```json
+{
+  "post_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png"
+}
+```
+
+[![示例输入](../../examples/20-承灾体/seg.building_intact_aerial/in.webp)](../../examples/20-承灾体/seg.building_intact_aerial/in.webp)
+
+### 示例输出
+
+```json
+{
+  "mask_path": "<temp_dir>/seg_building_intact_aerial_mask_bc4052.png",
+  "classes": {
+    "1": "building_no_damage"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17355.55
+  },
+  "tool": "seg.building_intact_aerial"
+}
+```
+
+[![示例输出](../../examples/20-承灾体/seg.building_intact_aerial/out.webp)](../../examples/20-承灾体/seg.building_intact_aerial/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 17.41 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★ —— 同上

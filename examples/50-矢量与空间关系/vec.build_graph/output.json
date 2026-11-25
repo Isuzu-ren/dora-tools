@@ -1,0 +1,7 @@
+{
+  "tool": "vec.build_graph",
+  "graph_path": "<temp_dir>/road_graph_3d4936.graphml",
+  "node_count": 300,
+  "edge_count": 206,
+  "input_centerline": "<work>/fixtures/roads_single.geojson"
+}

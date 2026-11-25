@@ -1,0 +1,15 @@
+{
+  "tool": "seg.flood",
+  "inputs": [
+    "disasterm3/libya_flood_agent5/libya_flood_pre_4_8.png（灾前）",
+    "…/libya_flood_post_4_8.png（灾后，德尔纳洪灾）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上排：灾前｜灾后；下排：灾后影像｜新增淹没（本例为空）｜叠加",
+  "note": "判的是「灾后是水、灾前不是水」的像元。**本例德尔纳的洪水是浑水，光学水体模型零检出**（掩膜全黑），与 C2 评测里 IoU 0.107、65% 样本零检出是同一件事；要看清能力看 `seg.reservoir`，要稳定的淹没范围先用 SAR 阈值（见 `ras.threshold`）。",
+  "status": "demo",
+  "wall_time_s": 40.04
+}

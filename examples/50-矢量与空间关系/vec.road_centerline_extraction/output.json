@@ -1,0 +1,6 @@
+{
+  "tool": "vec.road_centerline_extraction",
+  "centerline_path": "<temp_dir>/road_centerline_6b94fa.geojson",
+  "input_mask": "<work>/fixtures/mask_damage.tif",
+  "edge_count": 518
+}

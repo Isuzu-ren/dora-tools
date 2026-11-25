@@ -1,0 +1,31 @@
+{
+  "tool": "vec.graph_shortest_path",
+  "distance_px": 9.0,
+  "distance_m": 1.8,
+  "path_pixels": [
+    [
+      -34127,
+      -12767
+    ],
+    [
+      -34118,
+      -12768
+    ],
+    [
+      -34087,
+      -12774
+    ],
+    "…（共 10 条，此处省略）"
+  ],
+  "path_geojson": "<temp_dir>/road_path_781d76.geojson",
+  "snapped_start": [
+    -34127,
+    -12767
+  ],
+  "snapped_end": [
+    -33913,
+    -12687
+  ],
+  "snapped_on_damaged": false,
+  "snap_failed": false
+}

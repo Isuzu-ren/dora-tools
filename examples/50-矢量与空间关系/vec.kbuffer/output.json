@@ -1,0 +1,16 @@
+{
+  "tool": "vec.kbuffer",
+  "buffers": [
+    {
+      "distance_input_m": 20.0,
+      "distance_used_units": 20.0,
+      "buffer_path": "<temp_dir>/buffer_20.0_3fcaa4.geojson"
+    },
+    {
+      "distance_input_m": 40.0,
+      "distance_used_units": 40.0,
+      "buffer_path": "<temp_dir>/buffer_40.0_3fcaa4.geojson"
+    }
+  ],
+  "input_vector": "<work>/fixtures/roads.geojson"
+}

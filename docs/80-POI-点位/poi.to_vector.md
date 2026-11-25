@@ -61,6 +61,38 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：noto 地震 POI（307 个点）
+
+```json
+{
+  "geojson_path": "<DORA_DATA>/images/disasterm3/noto_earthquake_agent2/noto_earthquake_post_polygon2_poi.geojson",
+  "name": "hospital",
+  "exact": false
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "poi.to_vector",
+  "vector_path": "<temp_dir>/poi_vector_noto_earthquake_post_pol_d66ec8.geojson",
+  "count": 0,
+  "name_filter": "hospital",
+  "exact_match": false
+}
+```
+
+> 按名称筛点并落成新的 GeoJSON；名称匹配是大小写无关的子串匹配。
+
+耗时 0.05 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— POI 数据入库

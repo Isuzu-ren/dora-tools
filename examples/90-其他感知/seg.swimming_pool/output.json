@@ -1,0 +1,8 @@
+{
+  "mask_path": "<temp_dir>/seg_swimming_pool_mask_54f087.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 19159.58
+  },
+  "tool": "seg.swimming_pool"
+}

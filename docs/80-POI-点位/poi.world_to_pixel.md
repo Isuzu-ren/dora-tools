@@ -64,6 +64,118 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：Tokyo OSM 点要素（EPSG:4326）；同区域影像 image_opt.tif（EPSG:6677）
+
+```json
+{
+  "geojson_path": "<work>/fixtures/points_clean.geojson",
+  "raster_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "poi.world_to_pixel",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": -2073894183,
+        "name": "吉野家",
+        "type": "fast_food",
+        "pixel_row": 1367,
+        "pixel_col": 1525,
+        "latitude": 35.6918064,
+        "longitude": 139.6954398,
+        "utm_x": -12479.940280045586,
+        "utm_y": -34183.793230866126,
+        "pixel_size_m": 0.8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1525.0,
+          1367.0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": -671919646,
+        "name": "タリーズコーヒー",
+        "type": "cafe",
+        "pixel_row": 1360,
+        "pixel_col": 1435,
+        "latitude": 35.691819,
+        "longitude": 139.6952416,
+        "utm_x": -12497.87625281864,
+        "utm_y": -34182.370152511925,
+        "pixel_size_m": 0.8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1435.0,
+          1360.0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": -28688425,
+        "name": "宇奈とと",
+        "type": "restaurant",
+        "pixel_row": 1342,
+        "pixel_col": 1562,
+        "latitude": 35.6918521,
+        "longitude": 139.695521,
+        "utm_x": -12472.584221742636,
+        "utm_y": -34178.73348329756,
+        "pixel_size_m": 0.8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1562.0,
+          1342.0
+        ]
+      }
+    },
+    "…（共 130 条，此处省略）"
+  ],
+  "output_path": "<temp_dir>/poi_pixel_coords_points_clean.geojs_d5ab81.geojson",
+  "total_points": 139,
+  "valid_points": 130,
+  "filtered_points": 9,
+  "image_bounds": {
+    "left": -12785.0,
+    "right": -12409.0,
+    "bottom": -34193.6,
+    "top": -33910.2
+  },
+  "image_size": [
+    1880,
+    1417
+  ],
+  "source_crs": "EPSG:4326",
+  "target_crs": "EPSG:6677"
+}
+```
+
+> **输入 GeoJSON 必须是经纬度**：工具内部固定按 EPSG:4326 解释再转成栅格坐标系，喂投影坐标会算出图外的行列号。
+
+耗时 0.08 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 把业务点位对齐到卫星影像

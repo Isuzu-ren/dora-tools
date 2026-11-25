@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_vehicle_free_aerial_mask_cbfe84.png",
+  "classes": {
+    "9": "vehicle_not_trapped"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 19149.26
+  },
+  "tool": "seg.vehicle_free_aerial"
+}

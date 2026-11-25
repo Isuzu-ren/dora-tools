@@ -1,0 +1,13 @@
+{
+  "tool": "vec.voronoi",
+  "inputs": [
+    "Tokyo OSM 点要素 + 用作边界的建筑面"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "泰森多边形（每个点的影响范围）",
+  "note": "边界决定裁剪范围；点太少时多边形会很大，注意配合边界使用。",
+  "status": "real",
+  "wall_time_s": 0.06
+}

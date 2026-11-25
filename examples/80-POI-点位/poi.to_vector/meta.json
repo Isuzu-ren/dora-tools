@@ -1,0 +1,11 @@
+{
+  "tool": "poi.to_vector",
+  "inputs": [
+    "noto 地震 POI（307 个点）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "按名称筛点并落成新的 GeoJSON；名称匹配是大小写无关的子串匹配。",
+  "status": "real",
+  "wall_time_s": 0.05
+}

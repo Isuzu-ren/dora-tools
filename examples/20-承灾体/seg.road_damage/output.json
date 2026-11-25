@@ -1,0 +1,12 @@
+{
+  "tool": "seg.road_damage",
+  "mask_path": "<temp_dir>/seg_road_damage_mask_5e08c1.png",
+  "classes": {
+    "1": "intact",
+    "2": "flooded",
+    "3": "debris blocked"
+  },
+  "_meta": {
+    "forward_ms": 31409.21
+  }
+}

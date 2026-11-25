@@ -1,0 +1,6 @@
+{
+  "tool": "vec.dissolve",
+  "output_path": "<temp_dir>/dissolved.geojson",
+  "input_count": 79,
+  "output_count": 1
+}

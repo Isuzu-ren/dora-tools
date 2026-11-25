@@ -1,0 +1,11 @@
+{
+  "tool": "report.extract_evidence",
+  "inputs": [
+    "一段含掩膜产物的轨迹（示意轨迹 + 真实掩膜文件）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "它把轨迹里的掩膜折算成面积与类别统计，是「把过程变成证据」的一步。",
+  "status": "demo",
+  "wall_time_s": 0.0
+}

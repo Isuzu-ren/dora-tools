@@ -1,0 +1,8 @@
+{
+  "mask_path": "<work>/fixtures/mask_damage.tif",
+  "classes": [
+    2,
+    3
+  ],
+  "pixel_size_m": 0.8
+}

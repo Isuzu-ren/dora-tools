@@ -58,6 +58,41 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：同一地点的灾前、灾后影像
+
+```json
+{
+  "pre_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/pre/guatemala_volcano_00000004_pre.png",
+  "post_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png",
+  "output_path": "<work>/before_after.png",
+  "title": "Guatemala Volcano"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.before_after_panel",
+  "output_path": "<work>/before_after.png",
+  "title": "Guatemala Volcano"
+}
+```
+
+[![左右对照图，用于人工核对变化](../../examples/70-制图与报告/vis.before_after_panel/out.webp)](../../examples/70-制图与报告/vis.before_after_panel/out.webp)
+
+*左右对照图，用于人工核对变化*（点击图片看原图）
+
+> 工具不做配准，错位会直接体现在图面上。
+
+耗时 0.15 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 汛前汛后对比

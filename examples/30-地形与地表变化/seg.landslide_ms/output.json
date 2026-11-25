@@ -1,0 +1,11 @@
+{
+  "tool": "seg.landslide_ms",
+  "mask_path": "<temp_dir>/seg_landslide_ms_mask_a825ef.tif",
+  "classes": {
+    "0": "non-landslide",
+    "255": "landslide"
+  },
+  "_meta": {
+    "forward_ms": 3750.88
+  }
+}

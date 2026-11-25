@@ -1,0 +1,10 @@
+{
+  "tool": "tool.chart_data",
+  "data": {},
+  "records": [],
+  "source_count": 0,
+  "kept_count": 0,
+  "value_field": "score",
+  "sort_by": null,
+  "descending": true
+}

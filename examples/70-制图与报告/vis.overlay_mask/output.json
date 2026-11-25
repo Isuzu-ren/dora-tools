@@ -1,0 +1,14 @@
+{
+  "tool": "vis.overlay_mask",
+  "output_path": "<work>/overlay.png",
+  "classes_present": [
+    1,
+    2,
+    3
+  ],
+  "class_labels": {
+    "1": "Intact",
+    "2": "Partial",
+    "3": "Destroyed"
+  }
+}

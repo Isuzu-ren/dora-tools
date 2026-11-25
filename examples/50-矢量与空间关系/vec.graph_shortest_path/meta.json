@@ -1,0 +1,11 @@
+{
+  "tool": "vec.graph_shortest_path",
+  "inputs": [
+    "vec.build_graph 生成的路网图（Tokyo OSM 道路）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "起点终点是像素坐标；图与影像必须同坐标系。",
+  "status": "real",
+  "wall_time_s": 0.02
+}

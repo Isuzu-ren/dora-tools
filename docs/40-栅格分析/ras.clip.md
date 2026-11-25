@@ -68,6 +68,61 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd guatemala_volcano_00000004 灾后影像（0.8 m，1024²，RGB）
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png",
+  "x1": 100,
+  "x2": 600,
+  "y1": 100,
+  "y2": 600
+}
+```
+
+[![示例输入](../../examples/40-栅格分析/ras.clip/in.webp)](../../examples/40-栅格分析/ras.clip/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.clip",
+  "output_path": "<temp_dir>/clip_guatemala_volcano_00000004_post_6c64ba.tif",
+  "window": {
+    "x1": 100,
+    "x2": 600,
+    "y1": 100,
+    "y2": 600
+  },
+  "out_shape": [
+    500,
+    500
+  ],
+  "bands": 4,
+  "dtype": "uint8",
+  "crs": null,
+  "transform": [
+    1.0,
+    0.0,
+    100.0,
+    "…（共 9 条，此处省略）"
+  ],
+  "clamped": false
+}
+```
+
+[![示例输出](../../examples/40-栅格分析/ras.clip/out.webp)](../../examples/40-栅格分析/ras.clip/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 按流域/行政区裁切

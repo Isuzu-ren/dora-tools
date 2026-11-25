@@ -1,0 +1,11 @@
+{
+  "tool": "ras.stats",
+  "inputs": [
+    "Japan_all_14_sentinel.tif 第 4 波段"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "单波段统计，整幅一次约 1 秒，不走模型。",
+  "status": "real",
+  "wall_time_s": 0.09
+}

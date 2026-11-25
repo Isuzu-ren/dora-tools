@@ -59,6 +59,41 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_sentinel.tif（12 波段，EPSG:4326）
+
+```json
+{
+  "raster_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.focal_stats",
+  "output_path": "<temp_dir>/Japan_all_14_sentinel_focal_mean_5.tif",
+  "statistic": "mean",
+  "window_size": 5,
+  "shape": [
+    1384,
+    1922
+  ]
+}
+```
+
+[![示例输出](../../examples/40-栅格分析/ras.focal_stats/out.webp)](../../examples/40-栅格分析/ras.focal_stats/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.19 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 热点检测、平滑、DEM 局部粗糙度

@@ -63,6 +63,40 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：vec.build_graph 生成的路网图（JSON）
+
+```json
+{
+  "graph_path": "<work>/fixtures/graph.graphml"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.repair_min_edges",
+  "repair_edges": [],
+  "repair_count": 0,
+  "path_length_m": 20.0,
+  "path_node_count": 11,
+  "source": 17,
+  "target": 219,
+  "auto_selected": true,
+  "blocked_attr": "damaged",
+  "graph_nodes": 300,
+  "graph_edges": 206
+}
+```
+
+耗时 0.03 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 断路情况下最小抢通方案

@@ -1,0 +1,13 @@
+{
+  "tool": "ras.hillshade",
+  "hillshade_path": "<temp_dir>/hillshade.tif",
+  "shape": [
+    1384,
+    1922
+  ],
+  "stats": {
+    "min": 0,
+    "max": 180,
+    "mean": 63.519059054573454
+  }
+}

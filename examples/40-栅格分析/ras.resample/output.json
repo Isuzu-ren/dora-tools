@@ -1,0 +1,10 @@
+{
+  "tool": "ras.resample",
+  "output_path": "<temp_dir>/resampled.tif",
+  "src_pixel_size_m": 0.00012944888281104716,
+  "dst_pixel_size_m": 20.0,
+  "shape": [
+    1,
+    1
+  ]
+}

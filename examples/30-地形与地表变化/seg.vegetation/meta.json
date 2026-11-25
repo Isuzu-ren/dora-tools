@@ -1,0 +1,14 @@
+{
+  "tool": "seg.vegetation",
+  "inputs": [
+    "xbd 灾后影像（3 波段，0–255）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "影像｜植被掩膜｜叠加（文档说输出 5/6 类，实际是 0/255）",
+  "note": "**文档与实现不一致**：工具返回 `classes: {5, 6}`，实际掩膜只有 0 和 255；统计请按 `>0`。",
+  "status": "real",
+  "wall_time_s": 21.81
+}

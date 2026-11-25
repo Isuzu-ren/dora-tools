@@ -1,0 +1,6 @@
+{
+  "tool": "vec.length",
+  "total_length_m": 18095.662677257802,
+  "table_path": "<temp_dir>/vec_length_table_9a91e1.csv",
+  "input_vector": "<work>/fixtures/roads.geojson"
+}

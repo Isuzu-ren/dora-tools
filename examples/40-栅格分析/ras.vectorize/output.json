@@ -1,0 +1,7 @@
+{
+  "tool": "ras.vectorize",
+  "vector_path": "<temp_dir>/mask_damage_class_2_3_609f5c.geojson",
+  "count": 26,
+  "total_pixels": 27959,
+  "total_area_m2": 17893.76
+}

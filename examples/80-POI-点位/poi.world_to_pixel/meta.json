@@ -1,0 +1,12 @@
+{
+  "tool": "poi.world_to_pixel",
+  "inputs": [
+    "Tokyo OSM 点要素（EPSG:4326）",
+    "同区域影像 image_opt.tif（EPSG:6677）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "**输入 GeoJSON 必须是经纬度**：工具内部固定按 EPSG:4326 解释再转成栅格坐标系，喂投影坐标会算出图外的行列号。",
+  "status": "real",
+  "wall_time_s": 0.08
+}

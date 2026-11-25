@@ -1,0 +1,13 @@
+{
+  "tool": "vis.pie_chart",
+  "inputs": [
+    "损毁掩膜的逐类像元计数"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "占比饼图",
+  "note": "类别多于 6 个时颜色会重复，建议先合并小类。",
+  "status": "real",
+  "wall_time_s": 0.02
+}

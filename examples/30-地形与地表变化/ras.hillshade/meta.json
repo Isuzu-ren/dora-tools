@@ -1,0 +1,13 @@
+{
+  "tool": "ras.hillshade",
+  "inputs": [
+    "images/landslide4sense/Japan_all_14_dem.tif"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "山体阴影（315° 方位、45° 高度角）",
+  "note": "只影响观感，不改变高程；做地形晕渲或叠加专题图时用。",
+  "status": "real",
+  "wall_time_s": 0.18
+}

@@ -1,0 +1,11 @@
+{
+  "tool": "seg.reservoir",
+  "mask_path": "<temp_dir>/seg_reservoir_mask_a825ef.tif",
+  "classes": {
+    "0": "background",
+    "255": "reservoir"
+  },
+  "_meta": {
+    "forward_ms": 3745.62
+  }
+}

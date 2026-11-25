@@ -1,0 +1,11 @@
+{
+  "tool": "vis.report_page",
+  "output_path": "<work>/report.png",
+  "title": "Guatemala Volcano - Situation Report",
+  "components": {
+    "map": true,
+    "chart": true,
+    "summary_text": true,
+    "key_statistics": true
+  }
+}

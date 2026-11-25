@@ -1,0 +1,12 @@
+{
+  "tool": "seg.vegetation",
+  "mask_path": "<temp_dir>/vegetation_map_586cfc.png",
+  "classes": {
+    "5": "forest",
+    "6": "agriculture"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17570.07
+  }
+}

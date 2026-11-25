@@ -1,0 +1,4 @@
+{
+  "geojson_path": "<work>/fixtures/points_clean.geojson",
+  "raster_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif"
+}

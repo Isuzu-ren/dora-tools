@@ -60,6 +60,45 @@ print(res)
 }
 ```
 
+## 示例
+
+> ⚠️ **示意输入**：工具确实运行了，但输入与本工具的适用场景不完全对应（如用建筑影像演示滑坡双时相模型），结果只说明「接口怎么用」，不代表精度。
+
+### 示例输入
+
+数据：xbd 灾前 / 灾后影像（0.8 m）——本例用建筑场景代替滑坡，只为演示接口
+
+```json
+{
+  "pre_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/pre/guatemala_volcano_00000004_pre.png",
+  "post_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.landslide_bitemporal",
+  "mask_path": "<temp_dir>/seg_landslide_bitemporal_mask_5e08c1.png",
+  "classes": {
+    "0": "non-landslide",
+    "255": "landslide"
+  },
+  "_meta": {
+    "forward_ms": 4029.96
+  }
+}
+```
+
+[![影像｜双时相滑坡掩膜｜叠加](../../examples/30-地形与地表变化/seg.landslide_bitemporal/out.webp)](../../examples/30-地形与地表变化/seg.landslide_bitemporal/out.webp)
+
+*影像｜双时相滑坡掩膜｜叠加*（点击图片看原图）
+
+> 双时相模型看的是「两期差异」，与本场景语义不符时输出无意义；真实使用需 0.5–1 m 滑坡影像对。
+
+耗时 5.08 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 无 DEM 时的替代路径

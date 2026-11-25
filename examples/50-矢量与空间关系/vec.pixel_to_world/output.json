@@ -1,0 +1,8 @@
+{
+  "tool": "vec.pixel_to_world",
+  "pixel_row": 200,
+  "pixel_col": 300,
+  "latitude": 35.693908801127726,
+  "longitude": 139.6927283944599,
+  "crs": "EPSG:6677"
+}

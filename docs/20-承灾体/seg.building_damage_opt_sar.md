@@ -60,6 +60,46 @@ print(res)
 }
 ```
 
+## 示例
+
+> ⚠️ **示意输入**：工具确实运行了，但输入与本工具的适用场景不完全对应（如用建筑影像演示滑坡双时相模型），结果只说明「接口怎么用」，不代表精度。
+
+### 示例输入
+
+数据：libya 灾前光学 + 灾后 SAR（VV）
+
+```json
+{
+  "pre_image_path": "<DORA_DATA>/images/disasterm3/libya_flood_agent5/libya_flood_pre_4_8.png",
+  "post_image_path": "<DORA_DATA>/images/disasterm3/libya_flood_agent5/libya_flood_sar_post_4_8.png"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.building_damage_opt_sar",
+  "mask_path": "<temp_dir>/seg_building_damage_optsar_mask_11ee79.png",
+  "classes": {
+    "1": "intact",
+    "2": "partially damaged",
+    "3": "totally destroyed"
+  },
+  "_meta": {
+    "forward_ms": 30379.1
+  }
+}
+```
+
+[![灾前光学｜SAR 后判出的损毁｜叠加](../../examples/20-承灾体/seg.building_damage_opt_sar/out.webp)](../../examples/20-承灾体/seg.building_damage_opt_sar/out.webp)
+
+*灾前光学｜SAR 后判出的损毁｜叠加*（点击图片看原图）
+
+> SAR 侧需要先做辐射定标与地理编码；工具里没有这些预处理，直接喂原始 SLC 不行。
+
+耗时 36.32 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 汛期多云雨，SAR 是唯一可靠手段

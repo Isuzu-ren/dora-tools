@@ -58,6 +58,57 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：multi_temp 下同一地点 4 个时刻的影像
+
+```json
+{
+  "image_paths": [
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_post_disaster.png",
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_pre_disaster.png",
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_t1.png",
+    "<DORA_DATA>/images/multi_temp/hurricane_florence_00000110/hurricane_florence_00000110_t2.png"
+  ],
+  "output_path": "<work>/temporal.png",
+  "labels": [
+    "110h",
+    "110h",
+    "110h",
+    "110h"
+  ],
+  "title": "Hurricane Florence - Temporal Comparison"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.temporal_panel",
+  "output_path": "<work>/temporal.png",
+  "labels": [
+    "110h",
+    "110h",
+    "110h",
+    "…（共 4 条，此处省略）"
+  ],
+  "title": "Hurricane Florence - Temporal Comparison"
+}
+```
+
+[![时序拼图（每列一个时刻）](../../examples/70-制图与报告/vis.temporal_panel/out.webp)](../../examples/70-制图与报告/vis.temporal_panel/out.webp)
+
+*时序拼图（每列一个时刻）*（点击图片看原图）
+
+> 适合展示淹没范围扩张、植被恢复这类随时间变化的场景。
+
+耗时 0.25 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 水情/旱情演变序列（涨水—峰值—退水）

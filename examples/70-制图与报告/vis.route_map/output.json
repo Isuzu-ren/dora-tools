@@ -1,0 +1,23 @@
+{
+  "tool": "vis.route_map",
+  "output_path": "<temp_dir>/route_map_dd53fcd9.png",
+  "path_point_count": 31,
+  "start_point": [
+    1168,
+    512
+  ],
+  "end_point": [
+    1168,
+    512
+  ],
+  "point_marker_labels": [
+    "Route start",
+    "Route end"
+  ],
+  "has_overlay": false,
+  "legend_items": [
+    "intact route",
+    "route start",
+    "route end"
+  ]
+}

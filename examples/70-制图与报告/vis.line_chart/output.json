@@ -1,0 +1,14 @@
+{
+  "tool": "vis.line_chart",
+  "output_path": "<work>/line.png",
+  "chart_type": "line",
+  "statistics": {
+    "2021-07-18": 12.4,
+    "2021-07-19": 28.9,
+    "2021-07-20": 41.6,
+    "2021-07-21": 39.2,
+    "2021-07-22": 33.0,
+    "2021-07-23": 24.7
+  },
+  "title": "Flooded Area over Time (km2)"
+}

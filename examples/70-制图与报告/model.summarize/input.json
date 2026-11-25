@@ -1,0 +1,22 @@
+{
+  "task_question": "Which district has the most destroyed buildings?",
+  "trajectory": [
+    {
+      "tool": "seg.building_damage",
+      "arguments": {
+        "post_image_path": "post.png"
+      },
+      "result": {
+        "mask_path": "mask.png"
+      }
+    },
+    {
+      "tool": "vis.damage_map",
+      "arguments": {
+        "base_image_path": "post.png"
+      }
+    }
+  ],
+  "image_paths": [],
+  "model": "gpt-4o-mini"
+}

@@ -1,0 +1,4 @@
+{
+  "vector_a_path": "<work>/fixtures/buildings.geojson",
+  "vector_b_path": "<work>/fixtures/points.geojson"
+}

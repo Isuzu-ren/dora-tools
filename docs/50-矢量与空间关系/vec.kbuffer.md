@@ -57,6 +57,47 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：同目录 roads.geojson（193 条道路，已转 EPSG:6677）
+
+```json
+{
+  "vector_path": "<work>/fixtures/roads.geojson",
+  "meters": [
+    20.0,
+    40.0
+  ]
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.kbuffer",
+  "buffers": [
+    {
+      "distance_input_m": 20.0,
+      "distance_used_units": 20.0,
+      "buffer_path": "<temp_dir>/buffer_20.0_3fcaa4.geojson"
+    },
+    {
+      "distance_input_m": 40.0,
+      "distance_used_units": 40.0,
+      "buffer_path": "<temp_dir>/buffer_40.0_3fcaa4.geojson"
+    }
+  ],
+  "input_vector": "<work>/fixtures/roads.geojson"
+}
+```
+
+耗时 0.16 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 分级影响区（100/500/1000 m）

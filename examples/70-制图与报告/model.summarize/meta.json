@@ -1,0 +1,11 @@
+{
+  "tool": "model.summarize",
+  "inputs": [
+    "一个 2 步的轨迹 + 问题文本（示意）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "**构造示意**：本机没有 GPT key，这段返回按源码的字段结构手写，未实际调用。真实使用时它会读轨迹里的工具结果与图片，生成一段自然语言结论。",
+  "status": "constructed",
+  "wall_time_s": null
+}

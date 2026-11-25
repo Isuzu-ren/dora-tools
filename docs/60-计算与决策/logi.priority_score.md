@@ -59,6 +59,51 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+```json
+{
+  "items": [
+    {
+      "name": "A",
+      "score": 0.9
+    },
+    {
+      "name": "B",
+      "score": 0.6
+    }
+  ],
+  "criteria": {
+    "score": 1.0
+  }
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "logi.priority_score",
+  "ranked": [
+    {
+      "name": "A",
+      "score": 0.9,
+      "priority_score": 0.9
+    },
+    {
+      "name": "B",
+      "score": 0.6,
+      "priority_score": 0.6
+    }
+  ],
+  "count": 2
+}
+```
+
 ## 适用边界
 
 - **相关性**：★★ —— 受灾点优先级排序

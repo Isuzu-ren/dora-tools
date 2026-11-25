@@ -1,0 +1,14 @@
+{
+  "tool": "vis.overlay_mask",
+  "inputs": [
+    "xbd 灾后影像",
+    "损毁掩膜"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "纯叠加图（无图例/指北针），比 `vis.damage_map` 轻",
+  "note": "要出正式图用 `vis.damage_map`；这个用于快速目视核对。",
+  "status": "real",
+  "wall_time_s": 0.14
+}

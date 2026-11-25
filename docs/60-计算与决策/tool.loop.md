@@ -62,6 +62,52 @@ print(res)
 }
 ```
 
+## 示例
+
+> ⚠️ **示意输入**：工具确实运行了，但输入与本工具的适用场景不完全对应（如用建筑影像演示滑坡双时相模型），结果只说明「接口怎么用」，不代表精度。
+
+### 示例输入
+
+数据：同一件工具、两组参数（示意，演示批量调用）
+
+```json
+{
+  "calls": [
+    {
+      "tool": "ras.area",
+      "args": {
+        "mask_path": "<work>/fixtures/mask_landslide.tif",
+        "pixel_size_m": 10.0
+      }
+    }
+  ],
+  "loop_over": [
+    {
+      "scene": "japan"
+    },
+    {
+      "scene": "japan"
+    }
+  ],
+  "return_all": false,
+  "show_progress": false
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "tool.loop",
+  "iteration_count": 2,
+  "results": []
+}
+```
+
+> 把「同一工具换参数跑多次」收成一次调用；返回里含每次的结果与汇总。
+
+耗时 0.08 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 按网格/按行政区批量算，是「分区统计」的编排器

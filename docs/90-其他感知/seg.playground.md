@@ -56,6 +56,42 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd guatemala_volcano_00000004 灾后影像（0.8 m，1024²，RGB）
+
+```json
+{
+  "post_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png"
+}
+```
+
+[![示例输入](../../examples/90-其他感知/seg.playground/in.webp)](../../examples/90-其他感知/seg.playground/in.webp)
+
+### 示例输出
+
+```json
+{
+  "mask_path": "<temp_dir>/seg_playground_mask_c804df.png",
+  "mask_value": 255,
+  "note": "Binary mask of playground/sports field classes merged into 255.",
+  "_meta": {
+    "forward_ms": 17568.42
+  },
+  "tool": "seg.playground"
+}
+```
+
+[![示例输出](../../examples/90-其他感知/seg.playground/out.webp)](../../examples/90-其他感知/seg.playground/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 17.63 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：○ —— 仅在「避难场所选址」这类派生任务中有用

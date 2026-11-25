@@ -1,0 +1,11 @@
+{
+  "tool": "vec.filter_by_distance",
+  "vector_path": "<temp_dir>/filtered_by_distance_d58d6d.geojson",
+  "center_lat": 35.69,
+  "center_lon": 139.7,
+  "max_distance_m": 800.0,
+  "total_input": 79,
+  "total_filtered": 0,
+  "nearest_distance_m": null,
+  "farthest_distance_m": null
+}

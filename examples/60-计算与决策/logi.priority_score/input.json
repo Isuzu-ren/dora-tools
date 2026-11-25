@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "name": "A",
+      "score": 0.9
+    },
+    {
+      "name": "B",
+      "score": 0.6
+    }
+  ],
+  "criteria": {
+    "score": 1.0
+  }
+}

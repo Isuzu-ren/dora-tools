@@ -1,0 +1,6 @@
+{
+  "tool": "vec.simplify",
+  "output_path": "<temp_dir>/simplified.geojson",
+  "input_vertex_count": 758,
+  "output_vertex_count": 757
+}

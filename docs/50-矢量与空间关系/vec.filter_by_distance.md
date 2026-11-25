@@ -67,6 +67,41 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）
+
+```json
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "center_lat": 35.69,
+  "center_lon": 139.7,
+  "max_distance_m": 800.0
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.filter_by_distance",
+  "vector_path": "<temp_dir>/filtered_by_distance_d58d6d.geojson",
+  "center_lat": 35.69,
+  "center_lon": 139.7,
+  "max_distance_m": 800.0,
+  "total_input": 79,
+  "total_filtered": 0,
+  "nearest_distance_m": null,
+  "farthest_distance_m": null
+}
+```
+
+耗时 0.02 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 以水库/险工段为中心的影响范围筛选

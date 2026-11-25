@@ -1,0 +1,4 @@
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "roi_vector_path": "<work>/fixtures/roi.geojson"
+}

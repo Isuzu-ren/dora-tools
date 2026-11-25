@@ -1,0 +1,25 @@
+{
+  "tool": "vec.point_in_polygon",
+  "matches": [
+    {
+      "point_index": 0,
+      "polygon_ids": [
+        0
+      ]
+    },
+    {
+      "point_index": 1,
+      "polygon_ids": [
+        0
+      ]
+    },
+    {
+      "point_index": 2,
+      "polygon_ids": [
+        0
+      ]
+    },
+    "…（共 46 条，此处省略）"
+  ],
+  "inside_count": 46
+}

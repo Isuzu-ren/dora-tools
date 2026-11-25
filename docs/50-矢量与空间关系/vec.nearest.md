@@ -62,6 +62,43 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）；同目录 points.geojson（OSM 点要素，已转 EPSG:6677）
+
+```json
+{
+  "vector_a_path": "<work>/fixtures/buildings.geojson",
+  "vector_b_path": "<work>/fixtures/points.geojson"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "distance_px": null,
+  "distance_m": 0.0,
+  "nearest_a_id": 1,
+  "nearest_b_id": 1,
+  "tool": "vec.nearest",
+  "mode": "euclidean",
+  "topk": 1,
+  "pair_count": 79,
+  "pixel_size_m": null,
+  "table_path": "<temp_dir>/vec_nearest_table_daf3ff.csv",
+  "links_geojson": "<temp_dir>/vec_nearest_links_5b313b.geojson",
+  "vector_a_path": "<work>/fixtures/buildings.geojson",
+  "vector_b_path": "<work>/fixtures/points.geojson"
+}
+```
+
+耗时 0.57 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 受灾点最近的安置点/物资库

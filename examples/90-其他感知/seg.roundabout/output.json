@@ -1,0 +1,8 @@
+{
+  "mask_path": "<temp_dir>/seg_roundabout_mask_f32fe3.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 19169.83
+  },
+  "tool": "seg.roundabout"
+}

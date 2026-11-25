@@ -1,0 +1,13 @@
+{
+  "tool": "seg.building_damage_opt_sar",
+  "inputs": [
+    "libya 灾前光学 + 灾后 SAR（VV）"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "灾前光学｜SAR 后判出的损毁｜叠加",
+  "note": "SAR 侧需要先做辐射定标与地理编码；工具里没有这些预处理，直接喂原始 SLC 不行。",
+  "status": "demo",
+  "wall_time_s": 36.32
+}

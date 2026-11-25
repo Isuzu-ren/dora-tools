@@ -62,6 +62,66 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：上一件工具出的专题图
+
+```json
+{
+  "image_path": "<work>/damage_map.png",
+  "title": "Annotated Map",
+  "legend_items": [
+    {
+      "label": "Destroyed",
+      "color": [
+        220,
+        40,
+        40
+      ]
+    },
+    {
+      "label": "Partial",
+      "color": [
+        255,
+        190,
+        40
+      ]
+    }
+  ],
+  "north_arrow": true,
+  "scale_bar": true,
+  "pixel_size_m": 0.8
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.add_map_elements",
+  "output_path": "<temp_dir>/map_with_elements_867c455b.png",
+  "title": "Annotated Map",
+  "has_legend": true,
+  "legend_alpha": null,
+  "point_marker_count": 0,
+  "point_marker_labels": [],
+  "north_arrow": true,
+  "scale_bar": true
+}
+```
+
+[![给已有图片补图例、指北针、比例尺](../../examples/70-制图与报告/vis.add_map_elements/out.webp)](../../examples/70-制图与报告/vis.add_map_elements/out.webp)
+
+*给已有图片补图例、指北针、比例尺*（点击图片看原图）
+
+> 用于美化外部图片；自己出图直接用 `vis.damage_map` 更省事。
+
+耗时 0.12 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 成品图规范化

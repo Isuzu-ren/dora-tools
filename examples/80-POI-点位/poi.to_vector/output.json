@@ -1,0 +1,7 @@
+{
+  "tool": "poi.to_vector",
+  "vector_path": "<temp_dir>/poi_vector_noto_earthquake_post_pol_d66ec8.geojson",
+  "count": 0,
+  "name_filter": "hospital",
+  "exact_match": false
+}

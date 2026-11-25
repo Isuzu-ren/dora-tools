@@ -64,6 +64,47 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：seg.building_damage 掩膜（类别 2、3）
+
+```json
+{
+  "mask_path": "<work>/fixtures/mask_damage.tif",
+  "classes": [
+    2,
+    3
+  ],
+  "pixel_size_m": 0.8
+}
+```
+
+[![示例输入](../../examples/40-栅格分析/ras.vectorize/in.webp)](../../examples/40-栅格分析/ras.vectorize/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.vectorize",
+  "vector_path": "<temp_dir>/mask_damage_class_2_3_609f5c.geojson",
+  "count": 26,
+  "total_pixels": 27959,
+  "total_area_m2": 17893.76
+}
+```
+
+[![上：灾后影像；下：矢量化后的建筑轮廓（橙线，26 个面）](../../examples/40-栅格分析/ras.vectorize/out.webp)](../../examples/40-栅格分析/ras.vectorize/out.webp)
+
+*上：灾后影像；下：矢量化后的建筑轮廓（橙线，26 个面）*（点击图片看原图）
+
+> 相邻像元会合并成一个面；细碎图斑建议接 `vec.filter_by_area` 清理。
+
+耗时 0.08 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 淹没范围出图、与行政区叠加的前提

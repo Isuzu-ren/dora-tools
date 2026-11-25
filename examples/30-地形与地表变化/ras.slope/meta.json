@@ -1,0 +1,14 @@
+{
+  "tool": "ras.slope",
+  "inputs": [
+    "ras.reproject 输出的 UTM DEM（米制像元 30 m）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上：输入高程；下：坡度（亮=陡，暗=平）",
+  "note": "**必须先投影到米制坐标系**：直接喂经纬度 DEM，像元边长被当成 0.000129（度），坡度均值会算成 86°，不报错但全错。",
+  "status": "real",
+  "wall_time_s": 0.13
+}

@@ -1,0 +1,11 @@
+{
+  "tool": "vec.road_centerline_extraction",
+  "inputs": [
+    "seg.building_damage 输出的损毁掩膜（类别 1/2/3）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.17
+}

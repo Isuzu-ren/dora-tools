@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_building_intact_aerial_mask_bc4052.png",
+  "classes": {
+    "1": "building_no_damage"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17355.55
+  },
+  "tool": "seg.building_intact_aerial"
+}

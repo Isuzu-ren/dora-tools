@@ -1,0 +1,14 @@
+{
+  "tool": "ras.vectorize",
+  "inputs": [
+    "seg.building_damage 掩膜（类别 2、3）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上：灾后影像；下：矢量化后的建筑轮廓（橙线，26 个面）",
+  "note": "相邻像元会合并成一个面；细碎图斑建议接 `vec.filter_by_area` 清理。",
+  "status": "real",
+  "wall_time_s": 0.08
+}

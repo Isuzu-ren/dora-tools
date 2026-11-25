@@ -1,0 +1,12 @@
+{
+  "graph_path": "<work>/fixtures/graph.graphml",
+  "start": [
+    -34127,
+    -12767
+  ],
+  "end": [
+    -33913,
+    -12687
+  ],
+  "pixel_size_m": 0.2
+}

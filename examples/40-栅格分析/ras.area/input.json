@@ -1,0 +1,7 @@
+{
+  "mask_path": "<work>/fixtures/mask_landslide.tif",
+  "pixel_size_m": 10.0,
+  "classes": [
+    1
+  ]
+}

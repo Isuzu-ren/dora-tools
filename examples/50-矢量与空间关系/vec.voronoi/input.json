@@ -1,0 +1,4 @@
+{
+  "points_path": "<work>/fixtures/points.geojson",
+  "boundary_path": "<work>/fixtures/buildings.geojson"
+}

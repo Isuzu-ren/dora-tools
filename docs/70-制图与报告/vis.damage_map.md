@@ -61,6 +61,60 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd 灾后影像（0.8 m）；seg.building_damage 掩膜
+
+```json
+{
+  "base_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png",
+  "overlay_mask_path": "<work>/fixtures/mask_damage.tif",
+  "output_path": "<work>/damage_map.png",
+  "pixel_size_m": 0.8,
+  "title": "Guatemala Volcano - Building Damage",
+  "class_labels": {
+    "1": "Intact",
+    "2": "Partial",
+    "3": "Destroyed"
+  },
+  "alpha": 0.45
+}
+```
+
+[![示例输入](../../examples/70-制图与报告/vis.damage_map/in.webp)](../../examples/70-制图与报告/vis.damage_map/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.damage_map",
+  "output_path": "<work>/damage_map.png",
+  "title": "Guatemala Volcano - Building Damage",
+  "has_legend": true,
+  "legend_alpha": 0.45,
+  "point_marker_count": 0,
+  "point_marker_labels": [],
+  "north_arrow": true,
+  "scale_bar": true,
+  "layers": [
+    "base_image",
+    "overlay_mask"
+  ]
+}
+```
+
+[![成品专题图：标题、图例、指北针、比例尺齐全](../../examples/70-制图与报告/vis.damage_map/out.webp)](../../examples/70-制图与报告/vis.damage_map/out.webp)
+
+*成品专题图：标题、图例、指北针、比例尺齐全*（点击图片看原图）
+
+> `pixel_size_m` 只影响比例尺，不改变叠加几何；不传就没有比例尺。
+
+耗时 0.31 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 预警产品出图

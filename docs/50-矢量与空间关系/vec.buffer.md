@@ -59,6 +59,41 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）
+
+```json
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "meter": 20.0
+}
+```
+
+[![示例输入](../../examples/50-矢量与空间关系/vec.buffer/in.webp)](../../examples/50-矢量与空间关系/vec.buffer/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.buffer",
+  "buffer_path": "<temp_dir>/buildings_buffer_20.0m_2fbb69.geojson",
+  "distance_input_m": 20.0,
+  "distance_used_units": 20.0,
+  "input_vector": "<work>/fixtures/buildings.geojson"
+}
+```
+
+[![示例输出](../../examples/50-矢量与空间关系/vec.buffer/out.webp)](../../examples/50-矢量与空间关系/vec.buffer/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 河道缓冲带、溃堤影响带、河岸带

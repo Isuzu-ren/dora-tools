@@ -1,0 +1,11 @@
+{
+  "tool": "vis.bar_chart",
+  "output_path": "<work>/bar.png",
+  "chart_type": "bar",
+  "statistics": {
+    "intact": 1388,
+    "partial": 25886,
+    "destroyed": 2073
+  },
+  "title": "Building Damage by Class"
+}

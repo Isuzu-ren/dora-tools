@@ -1,0 +1,10 @@
+{
+  "tool": "poi.filter_by_attribute",
+  "total_input": 307,
+  "total_filtered": 0,
+  "attribute_name": "type",
+  "allowed_values": [
+    "residential"
+  ],
+  "filtered_results": []
+}

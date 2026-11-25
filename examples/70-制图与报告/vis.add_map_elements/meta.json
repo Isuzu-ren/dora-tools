@@ -1,0 +1,13 @@
+{
+  "tool": "vis.add_map_elements",
+  "inputs": [
+    "上一件工具出的专题图"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "给已有图片补图例、指北针、比例尺",
+  "note": "用于美化外部图片；自己出图直接用 `vis.damage_map` 更省事。",
+  "status": "real",
+  "wall_time_s": 0.12
+}

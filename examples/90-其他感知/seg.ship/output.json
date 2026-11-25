@@ -1,0 +1,8 @@
+{
+  "mask_path": "<temp_dir>/seg_ship_mask_bc4052.png",
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17908.64
+  },
+  "tool": "seg.ship"
+}

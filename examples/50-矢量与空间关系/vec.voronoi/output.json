@@ -1,0 +1,5 @@
+{
+  "tool": "vec.voronoi",
+  "output_path": "<temp_dir>/voronoi.geojson",
+  "cell_count": 90
+}

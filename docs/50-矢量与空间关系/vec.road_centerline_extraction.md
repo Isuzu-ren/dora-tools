@@ -59,6 +59,33 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：seg.building_damage 输出的损毁掩膜（类别 1/2/3）
+
+```json
+{
+  "mask_path": "<work>/fixtures/mask_damage.tif"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.road_centerline_extraction",
+  "centerline_path": "<temp_dir>/road_centerline_6b94fa.geojson",
+  "input_mask": "<work>/fixtures/mask_damage.tif",
+  "edge_count": 518
+}
+```
+
+耗时 0.17 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 路网骨架，用于通行分析

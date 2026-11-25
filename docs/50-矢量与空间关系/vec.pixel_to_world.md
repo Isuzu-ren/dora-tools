@@ -62,6 +62,37 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/heatisland/09LD1638/image_opt.tif（EPSG:6677）
+
+```json
+{
+  "raster_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif",
+  "pixel_row": 200,
+  "pixel_col": 300
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.pixel_to_world",
+  "pixel_row": 200,
+  "pixel_col": 300,
+  "latitude": 35.693908801127726,
+  "longitude": 139.6927283944599,
+  "crs": "EPSG:6677"
+}
+```
+
+耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 把图上位置转成可上报的坐标

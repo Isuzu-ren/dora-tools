@@ -1,0 +1,31 @@
+{
+  "damage_feature_stats": [
+    {
+      "name": "block_a",
+      "max": 3
+    },
+    {
+      "name": "block_b",
+      "max": 2
+    },
+    {
+      "name": "block_c",
+      "max": 1
+    }
+  ],
+  "population_feature_stats": [
+    {
+      "name": "block_a",
+      "max": 1200
+    },
+    {
+      "name": "block_b",
+      "max": 800
+    },
+    {
+      "name": "block_c",
+      "max": 450
+    }
+  ],
+  "damage_threshold": 2.0
+}

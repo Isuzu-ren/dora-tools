@@ -63,6 +63,41 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：Japan_all_14_sentinel.tif 第 4 波段
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "band": 4
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.stats",
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "band": 4,
+  "nodata": 0.0,
+  "min": 265.0,
+  "max": 13001.0,
+  "mean": 668.584420944806,
+  "std": 270.81311003499343,
+  "valid_pixels": 2655360
+}
+```
+
+> 单波段统计，整幅一次约 1 秒，不走模型。
+
+耗时 0.09 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 水位/温度/降水量的区域统计

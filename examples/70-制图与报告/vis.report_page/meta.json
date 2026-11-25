@@ -1,0 +1,13 @@
+{
+  "tool": "vis.report_page",
+  "inputs": [
+    "上一件工具出的专题图 + 统计柱状图"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "一页式报告：地图 + 图表 + 关键数字",
+  "note": "它是排版工具，不做分析；数字与图都要先前算好。",
+  "status": "real",
+  "wall_time_s": 0.09
+}

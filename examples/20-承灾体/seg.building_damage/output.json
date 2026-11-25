@@ -1,0 +1,12 @@
+{
+  "tool": "seg.building_damage",
+  "mask_path": "<temp_dir>/seg_building_damage_mask_5e08c1.png",
+  "classes": {
+    "1": "intact",
+    "2": "partially damaged",
+    "3": "totally destroyed"
+  },
+  "_meta": {
+    "forward_ms": 31293.67
+  }
+}

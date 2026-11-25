@@ -58,6 +58,46 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：14 波段影像（ras.concat 的产物，日本山区 1922×1384，10 m）
+
+```json
+{
+  "post_image_path": "<work>/fixtures/geo14.tif"
+}
+```
+
+[![示例输入](../../examples/30-地形与地表变化/seg.landslide_ms/in.webp)](../../examples/30-地形与地表变化/seg.landslide_ms/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.landslide_ms",
+  "mask_path": "<temp_dir>/seg_landslide_ms_mask_a825ef.tif",
+  "classes": {
+    "0": "non-landslide",
+    "255": "landslide"
+  },
+  "_meta": {
+    "forward_ms": 3750.88
+  }
+}
+```
+
+[![上：输入影像（假彩色拉伸）；下列：影像｜掩膜｜叠加（橙色为滑坡）](../../examples/30-地形与地表变化/seg.landslide_ms/out.webp)](../../examples/30-地形与地表变化/seg.landslide_ms/out.webp)
+
+*上：输入影像（假彩色拉伸）；下列：影像｜掩膜｜叠加（橙色为滑坡）*（点击图片看原图）
+
+> 检出的是裸土/扰动像元，不含体积与危险性；10 m 下小于 30×30 m 的滑坡基本漏检。
+
+耗时 4.83 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 地形地貌变化主力；必须 14 波段

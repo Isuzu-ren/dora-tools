@@ -1,0 +1,14 @@
+{
+  "tool": "seg.building_lowres",
+  "inputs": [
+    "xbd 灾后影像（1024²，0.8 m）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "影像｜低分辨率建筑模型输出｜叠加",
+  "note": "为 480 px 窗口设计，512² 就要 5.5 GB 内存；大图请先切块。",
+  "status": "real",
+  "wall_time_s": 108.31
+}

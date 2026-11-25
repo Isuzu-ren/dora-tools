@@ -59,6 +59,39 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：滑坡掩膜（10 m 分辨率整景）
+
+```json
+{
+  "mask_path": "<work>/fixtures/mask_landslide.tif",
+  "pixel_size_m": 10.0,
+  "classes": [
+    1
+  ]
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.area",
+  "area_m2": 830200.0,
+  "pixel_count": 8302,
+  "pixel_size_m": 10.0
+}
+```
+
+> 面积 = 像元数 × 10 m × 10 m，不含模型误差修正。
+
+耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 淹没面积、受旱面积、水域面积

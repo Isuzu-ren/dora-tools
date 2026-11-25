@@ -1,0 +1,13 @@
+{
+  "tool": "vis.line_chart",
+  "inputs": [
+    "一组「日期 → 数值」点（示意数据，用于展示折线图能力）"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "折线图输出（数据为示意）",
+  "note": "图表工具与数据来源无关；换成真实的逐日淹没面积即可直接出图。",
+  "status": "demo",
+  "wall_time_s": 0.04
+}

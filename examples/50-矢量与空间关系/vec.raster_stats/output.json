@@ -1,0 +1,57 @@
+{
+  "tool": "vec.raster_stats",
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "raster_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif",
+  "output_vector_path": "<temp_dir>/buildings_image_opt_stats_819baf_66ead5.geojson",
+  "band": 1,
+  "stats": [
+    "mean",
+    "min",
+    "max"
+  ],
+  "feature_count": 72,
+  "min_pixels": 1,
+  "pixel_area_m2": 0.04000000000000001,
+  "feature_stats": [
+    {
+      "feature_idx": 0,
+      "geometry_type": "Polygon",
+      "pixel_count": 30246,
+      "sampled_area_m2": 1209.8400000000001,
+      "osm_id": 312900232,
+      "name": "新宿センタービル",
+      "type": null,
+      "mean": 97.21143291674932,
+      "min": 0.0,
+      "max": 192.0
+    },
+    {
+      "feature_idx": 1,
+      "geometry_type": "Polygon",
+      "pixel_count": 2721,
+      "sampled_area_m2": 108.84000000000002,
+      "osm_id": 572498059,
+      "name": null,
+      "type": null,
+      "mean": 77.93421536199926,
+      "min": 51.0,
+      "max": 170.0
+    },
+    {
+      "feature_idx": 2,
+      "geometry_type": "Polygon",
+      "pixel_count": 688,
+      "sampled_area_m2": 27.520000000000007,
+      "osm_id": 573210046,
+      "name": null,
+      "type": null,
+      "mean": 115.83720930232558,
+      "min": 96.0,
+      "max": 157.0
+    },
+    "…（共 72 条，此处省略）"
+  ],
+  "mean": 113.82445874865175,
+  "min": 0.0,
+  "max": 255.0
+}

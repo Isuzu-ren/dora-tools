@@ -1,0 +1,6 @@
+{
+  "tool": "logi.truck_trips",
+  "trips_required": 667,
+  "volume_m3": 8000.0,
+  "capacity_m3": 12.0
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "seg.plane",
+  "inputs": [
+    "xbd guatemala_volcano_00000004 灾后影像（0.8 m，1024²，RGB）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 23.62
+}

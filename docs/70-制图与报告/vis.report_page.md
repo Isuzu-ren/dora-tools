@@ -60,6 +60,53 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：上一件工具出的专题图 + 统计柱状图
+
+```json
+{
+  "map_image_path": "<work>/damage_map.png",
+  "chart_image_path": "<work>/bar.png",
+  "output_path": "<work>/report.png",
+  "title": "Guatemala Volcano - Situation Report",
+  "summary_text": "Partial damage dominates; 2,073 pixels classified as destroyed.",
+  "key_statistics": {
+    "destroyed_px": 2073,
+    "partial_px": 25880,
+    "area_km2": 1.7
+  }
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vis.report_page",
+  "output_path": "<work>/report.png",
+  "title": "Guatemala Volcano - Situation Report",
+  "components": {
+    "map": true,
+    "chart": true,
+    "summary_text": true,
+    "key_statistics": true
+  }
+}
+```
+
+[![一页式报告：地图 + 图表 + 关键数字](../../examples/70-制图与报告/vis.report_page/out.webp)](../../examples/70-制图与报告/vis.report_page/out.webp)
+
+*一页式报告：地图 + 图表 + 关键数字*（点击图片看原图）
+
+> 它是排版工具，不做分析；数字与图都要先前算好。
+
+耗时 0.09 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 值班简报

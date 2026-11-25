@@ -60,6 +60,48 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd/guatemala_volcano_00000004_pre.png（0.8 m，1024²）；…_post.png
+
+```json
+{
+  "pre_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/pre/guatemala_volcano_00000004_pre.png",
+  "post_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png"
+}
+```
+
+[![示例输入](../../examples/20-承灾体/seg.building_damage/in.webp)](../../examples/20-承灾体/seg.building_damage/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.building_damage",
+  "mask_path": "<temp_dir>/seg_building_damage_mask_5e08c1.png",
+  "classes": {
+    "1": "intact",
+    "2": "partially damaged",
+    "3": "totally destroyed"
+  },
+  "_meta": {
+    "forward_ms": 31293.67
+  }
+}
+```
+
+[![上排：灾前｜灾后；下排：灾后影像｜损毁分级（绿=完好、黄=部分、红=完全）｜叠加](../../examples/20-承灾体/seg.building_damage/out.webp)](../../examples/20-承灾体/seg.building_damage/out.webp)
+
+*上排：灾前｜灾后；下排：灾后影像｜损毁分级（绿=完好、黄=部分、红=完全）｜叠加*（点击图片看原图）
+
+> 只判「已建成建筑」的损毁等级；两期必须已配准，错位会直接变成假损毁。
+
+耗时 36.94 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 淹没区房屋灾损统计

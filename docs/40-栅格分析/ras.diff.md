@@ -65,6 +65,45 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_sentinel.tif（12 波段，EPSG:4326）
+
+```json
+{
+  "image_a_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "image_b_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.diff",
+  "image_a_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "image_b_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "output_path": "<temp_dir>/Japan_all_14_sentinel_minus_Japan_all_1_b77f31.tif",
+  "band_a": 1,
+  "band_b": 1,
+  "nodata": -9999.0,
+  "min": 0.0,
+  "max": 0.0,
+  "mean": 0.0,
+  "valid_pixels": 2655360
+}
+```
+
+[![示例输出](../../examples/40-栅格分析/ras.diff/out.webp)](../../examples/40-栅格分析/ras.diff/out.webp)
+
+*示例输出*（点击图片看原图）
+
+耗时 0.26 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 多期差值、DSM−DEM 求相对高度

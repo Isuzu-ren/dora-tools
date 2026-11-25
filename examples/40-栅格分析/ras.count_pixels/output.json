@@ -1,0 +1,12 @@
+{
+  "tool": "ras.count_pixels",
+  "counts": {
+    "2": 25886,
+    "3": 2073
+  },
+  "total": 27959,
+  "classes": [
+    2,
+    3
+  ]
+}

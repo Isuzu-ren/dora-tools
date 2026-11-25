@@ -66,6 +66,38 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+```json
+{
+  "values": [
+    3.0,
+    4.0,
+    5.0
+  ],
+  "value_field": "score"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "tool.chart_data",
+  "data": {},
+  "records": [],
+  "source_count": 0,
+  "kept_count": 0,
+  "value_field": "score",
+  "sort_by": null,
+  "descending": true
+}
+```
+
 ## 适用边界
 
 - **相关性**：★★ —— 为柱/折线图准备数据

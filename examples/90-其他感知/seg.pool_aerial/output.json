@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_pool_aerial_mask_b4cf39.png",
+  "classes": {
+    "4": "pool"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 18238.63
+  },
+  "tool": "seg.pool_aerial"
+}

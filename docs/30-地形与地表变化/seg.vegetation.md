@@ -57,6 +57,47 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：xbd 灾后影像（3 波段，0–255）
+
+```json
+{
+  "image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png"
+}
+```
+
+[![示例输入](../../examples/30-地形与地表变化/seg.vegetation/in.webp)](../../examples/30-地形与地表变化/seg.vegetation/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "seg.vegetation",
+  "mask_path": "<temp_dir>/vegetation_map_586cfc.png",
+  "classes": {
+    "5": "forest",
+    "6": "agriculture"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17923.26
+  }
+}
+```
+
+[![影像｜植被掩膜｜叠加（文档说输出 5/6 类，实际是 0/255）](../../examples/30-地形与地表变化/seg.vegetation/out.webp)](../../examples/30-地形与地表变化/seg.vegetation/out.webp)
+
+*影像｜植被掩膜｜叠加（文档说输出 5/6 类，实际是 0/255）*（点击图片看原图）
+
+> **文档与实现不一致**：工具返回 `classes: {5, 6}`，实际掩膜只有 0 和 255；统计请按 `>0`。
+
+耗时 23.56 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 旱情：植被覆盖变化、受旱耕地识别

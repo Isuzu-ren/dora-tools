@@ -56,6 +56,39 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：Tokyo OSM 点要素 + 用作边界的建筑面
+
+```json
+{
+  "points_path": "<work>/fixtures/points.geojson",
+  "boundary_path": "<work>/fixtures/buildings.geojson"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.voronoi",
+  "output_path": "<temp_dir>/voronoi.geojson",
+  "cell_count": 90
+}
+```
+
+[![泰森多边形（每个点的影响范围）](../../examples/50-矢量与空间关系/vec.voronoi/out.webp)](../../examples/50-矢量与空间关系/vec.voronoi/out.webp)
+
+*泰森多边形（每个点的影响范围）*（点击图片看原图）
+
+> 边界决定裁剪范围；点太少时多边形会很大，注意配合边界使用。
+
+耗时 0.06 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★ —— 物资投放点/水文站服务范围

@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_water_aerial_mask_30d718.png",
+  "classes": {
+    "11": "water"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17959.98
+  },
+  "tool": "seg.water_aerial"
+}

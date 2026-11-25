@@ -1,0 +1,13 @@
+{
+  "tool": "vec.max_polygon",
+  "max_area_m2": 4863.726964112406,
+  "max_pixel_count": null,
+  "topk_polygons": [
+    {
+      "pixel_count": null,
+      "area_m2": 4863.726964112406
+    }
+  ],
+  "total_polygons": 79,
+  "vector_path": "<work>/fixtures/buildings.geojson"
+}

@@ -60,6 +60,30 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+```json
+{
+  "demands": [],
+  "total_supply": 1000.0
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "logi.resource_allocation",
+  "allocations": [],
+  "allocated_total": 0.0,
+  "unallocated": 1000.0
+}
+```
+
 ## 适用边界
 
 - **相关性**：★★ —— 抢险队伍/物资分配

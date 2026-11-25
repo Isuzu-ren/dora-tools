@@ -1,0 +1,13 @@
+{
+  "tool": "ras.threshold",
+  "inputs": [
+    "Japan_all_14_sentinel.tif 第 7 波段（近红外）"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "影像｜阈值掩膜｜叠加（亮像元 > 1200）",
+  "note": "阈值法零成本、可解释，但没有语义；找水体/裸土够用，找「滑坡」不行。",
+  "status": "real",
+  "wall_time_s": 0.15
+}

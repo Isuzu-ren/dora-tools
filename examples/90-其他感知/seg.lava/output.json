@@ -1,0 +1,11 @@
+{
+  "tool": "seg.lava",
+  "mask_path": "<temp_dir>/seg_lava_mask_97b66a.png",
+  "classes": {
+    "0": "non-lava",
+    "255": "lava"
+  },
+  "_meta": {
+    "forward_ms": 31379.76
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "tool": "vec.clip",
+  "clip_path": "<temp_dir>/buildings_CLIP_roi.geojson_be9b87_c1a97a.geojson",
+  "input_count": 79,
+  "output_count": 42,
+  "input_vector": "<work>/fixtures/buildings.geojson",
+  "roi_vector": "<work>/fixtures/roi.geojson"
+}

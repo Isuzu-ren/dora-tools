@@ -61,6 +61,46 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：ras.reproject 输出的 UTM DEM（米制像元 30 m）
+
+```json
+{
+  "dem_path": "<temp_dir>/reprojected.tif",
+  "units": "degrees"
+}
+```
+
+[![示例输入](../../examples/30-地形与地表变化/ras.slope/in.webp)](../../examples/30-地形与地表变化/ras.slope/in.webp)
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.slope",
+  "slope_path": "<temp_dir>/slope.tif",
+  "units": "degrees",
+  "stats": {
+    "min": 0.0,
+    "max": 88.26181030273438,
+    "mean": 19.227169036865234
+  }
+}
+```
+
+[![上：输入高程；下：坡度（亮=陡，暗=平）](../../examples/30-地形与地表变化/ras.slope/out.webp)](../../examples/30-地形与地表变化/ras.slope/out.webp)
+
+*上：输入高程；下：坡度（亮=陡，暗=平）*（点击图片看原图）
+
+> **必须先投影到米制坐标系**：直接喂经纬度 DEM，像元边长被当成 0.000129（度），坡度均值会算成 86°，不报错但全错。
+
+耗时 0.13 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 坡度是滑坡模型与汇流分析的基础因子

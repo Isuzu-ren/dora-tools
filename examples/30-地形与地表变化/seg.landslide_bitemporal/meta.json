@@ -1,0 +1,13 @@
+{
+  "tool": "seg.landslide_bitemporal",
+  "inputs": [
+    "xbd 灾前 / 灾后影像（0.8 m）——本例用建筑场景代替滑坡，只为演示接口"
+  ],
+  "figures": {
+    "out": "out.webp"
+  },
+  "caption": "影像｜双时相滑坡掩膜｜叠加",
+  "note": "双时相模型看的是「两期差异」，与本场景语义不符时输出无意义；真实使用需 0.5–1 m 滑坡影像对。",
+  "status": "demo",
+  "wall_time_s": 5.08
+}

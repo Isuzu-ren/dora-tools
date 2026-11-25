@@ -1,0 +1,7 @@
+{
+  "mask_path": "<work>/fixtures/mask_damage.tif",
+  "classes": [
+    2,
+    3
+  ]
+}

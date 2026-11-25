@@ -1,0 +1,13 @@
+{
+  "base_image_path": "<DORA_DATA>/images/xbd_agent_benchv1/post/guatemala_volcano_00000004_post.png",
+  "overlay_mask_path": "<work>/fixtures/mask_damage.tif",
+  "output_path": "<work>/damage_map.png",
+  "pixel_size_m": 0.8,
+  "title": "Guatemala Volcano - Building Damage",
+  "class_labels": {
+    "1": "Intact",
+    "2": "Partial",
+    "3": "Destroyed"
+  },
+  "alpha": 0.45
+}

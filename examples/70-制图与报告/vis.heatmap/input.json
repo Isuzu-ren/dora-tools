@@ -1,0 +1,6 @@
+{
+  "points_path": "<work>/fixtures/points.geojson",
+  "base_image_path": "<DORA_DATA>/images/heatisland/09LD1638/image_opt.tif",
+  "bandwidth": 12,
+  "colormap": "inferno"
+}

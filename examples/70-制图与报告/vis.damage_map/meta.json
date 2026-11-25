@@ -1,0 +1,15 @@
+{
+  "tool": "vis.damage_map",
+  "inputs": [
+    "xbd 灾后影像（0.8 m）",
+    "seg.building_damage 掩膜"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "成品专题图：标题、图例、指北针、比例尺齐全",
+  "note": "`pixel_size_m` 只影响比例尺，不改变叠加几何；不传就没有比例尺。",
+  "status": "real",
+  "wall_time_s": 0.31
+}

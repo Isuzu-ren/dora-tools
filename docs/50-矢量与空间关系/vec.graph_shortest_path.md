@@ -64,6 +64,69 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：vec.build_graph 生成的路网图（Tokyo OSM 道路）
+
+```json
+{
+  "graph_path": "<work>/fixtures/graph.graphml",
+  "start": [
+    -34127,
+    -12767
+  ],
+  "end": [
+    -33913,
+    -12687
+  ],
+  "pixel_size_m": 0.2
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.graph_shortest_path",
+  "distance_px": 9.0,
+  "distance_m": 1.8,
+  "path_pixels": [
+    [
+      -34127,
+      -12767
+    ],
+    [
+      -34118,
+      -12768
+    ],
+    [
+      -34087,
+      -12774
+    ],
+    "…（共 10 条，此处省略）"
+  ],
+  "path_geojson": "<temp_dir>/road_path_781d76.geojson",
+  "snapped_start": [
+    -34127,
+    -12767
+  ],
+  "snapped_end": [
+    -33913,
+    -12687
+  ],
+  "snapped_on_damaged": false,
+  "snap_failed": false
+}
+```
+
+> 起点终点是像素坐标；图与影像必须同坐标系。
+
+耗时 0.02 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 抢险/撤离路径规划

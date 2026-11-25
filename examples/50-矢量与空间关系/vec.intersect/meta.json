@@ -1,0 +1,15 @@
+{
+  "tool": "vec.intersect",
+  "inputs": [
+    "images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）",
+    "roads 外扩 30 m 的缓冲区，用于演示矢量求交"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.4
+}

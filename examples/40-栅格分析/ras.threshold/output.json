@@ -1,0 +1,11 @@
+{
+  "tool": "ras.threshold",
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "mask_path": "<temp_dir>/Japan_all_14_sentinel_thr_gt_1200.0_7ede90.tif",
+  "threshold": 1200.0,
+  "op": ">",
+  "band": 7,
+  "selected_pixels": 2010844,
+  "true_value": 255,
+  "false_value": 0
+}

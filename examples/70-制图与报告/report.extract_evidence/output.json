@@ -1,0 +1,10 @@
+{
+  "tool": "report.extract_evidence",
+  "total_evidence_items": 0,
+  "evidence_items": [],
+  "tool_rollup": {},
+  "timeline": null,
+  "peak_timestamp": null,
+  "trend": null,
+  "errors": []
+}

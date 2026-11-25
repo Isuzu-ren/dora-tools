@@ -1,0 +1,12 @@
+{
+  "tool": "vec.point_in_polygon",
+  "inputs": [
+    "同目录 points.geojson（OSM 点要素，已转 EPSG:6677）",
+    "images/heatisland/09LD1638/osm/buildings.geojson（79 个建筑面，已转 EPSG:6677）"
+  ],
+  "figures": {},
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 0.07
+}

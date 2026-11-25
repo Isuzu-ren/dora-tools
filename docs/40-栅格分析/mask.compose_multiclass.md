@@ -61,6 +61,53 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：类别 2、3 各自的二值掩膜（由损毁掩膜拆出）
+
+```json
+{
+  "mask_paths": [
+    "<work>/fixtures/mask_c2.tif",
+    "<work>/fixtures/mask_c3.tif"
+  ],
+  "class_values": [
+    2,
+    3
+  ]
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "mask.compose_multiclass",
+  "mask_path": "<temp_dir>/compose_multiclass_mask_c2_mask_c3_2_3_45d9ac.tif",
+  "class_values": [
+    2,
+    3
+  ],
+  "classes": {
+    "0": "background",
+    "2": "building_damage",
+    "3": "building_total_damage"
+  }
+}
+```
+
+[![两张二值掩膜合成一张多类掩膜](../../examples/40-栅格分析/mask.compose_multiclass/out.webp)](../../examples/40-栅格分析/mask.compose_multiclass/out.webp)
+
+*两张二值掩膜合成一张多类掩膜*（点击图片看原图）
+
+> 多模型各自只出二值时用它合并；类别值要预先约定好，别两处不一致。
+
+耗时 0.05 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 把「常水体/新增水体/退水」合成一张图

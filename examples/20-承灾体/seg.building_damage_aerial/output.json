@@ -1,0 +1,11 @@
+{
+  "mask_path": "<temp_dir>/seg_building_damage_aerial_mask_f32fe3.png",
+  "classes": {
+    "2": "building_damage"
+  },
+  "mask_value": 255,
+  "_meta": {
+    "forward_ms": 17547.9
+  },
+  "tool": "seg.building_damage_aerial"
+}

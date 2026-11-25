@@ -1,0 +1,14 @@
+{
+  "tool": "ras.reproject",
+  "inputs": [
+    "images/landslide4sense/Japan_all_14_dem.tif（EPSG:4326，高程米）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上：投影前（经纬度栅格）；下：投影后（UTM 54N，米制像元）",
+  "note": "坡度、缓冲区、最短路这类按「米」算的步骤，都应先投影到米制坐标系。",
+  "status": "real",
+  "wall_time_s": 0.45
+}

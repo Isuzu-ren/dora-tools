@@ -57,6 +57,40 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：Tokyo OSM 道路中心线（193 条，EPSG:6677，已炸成单部件）
+
+```json
+{
+  "centerline_path": "<work>/fixtures/roads_single.geojson"
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "vec.build_graph",
+  "graph_path": "<temp_dir>/road_graph_3d4936.graphml",
+  "node_count": 300,
+  "edge_count": 206,
+  "input_centerline": "<work>/fixtures/roads_single.geojson"
+}
+```
+
+[![建图用的路网（红线为参与建图的中心线）](../../examples/50-矢量与空间关系/vec.build_graph/out.webp)](../../examples/50-矢量与空间关系/vec.build_graph/out.webp)
+
+*建图用的路网（红线为参与建图的中心线）*（点击图片看原图）
+
+> **MultiLineString 会直接报错**（`Sub-geometries may have coordinate sequences`），建图前要先 `explode` 成单部件。
+
+耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★ —— 通行能力建模

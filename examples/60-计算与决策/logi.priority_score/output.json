@@ -1,0 +1,16 @@
+{
+  "tool": "logi.priority_score",
+  "ranked": [
+    {
+      "name": "A",
+      "score": 0.9,
+      "priority_score": 0.9
+    },
+    {
+      "name": "B",
+      "score": 0.6,
+      "priority_score": 0.6
+    }
+  ],
+  "count": 2
+}

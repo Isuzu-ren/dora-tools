@@ -1,0 +1,14 @@
+{
+  "tool": "seg.pool_aerial",
+  "inputs": [
+    "mayfield region_01 无人机影像 0.03 m（裁 1024²）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "",
+  "note": "",
+  "status": "real",
+  "wall_time_s": 23.98
+}

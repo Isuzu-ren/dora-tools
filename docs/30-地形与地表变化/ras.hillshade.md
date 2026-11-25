@@ -63,6 +63,48 @@ print(res)
 }
 ```
 
+## 示例
+
+> 下面这组是**真跑出来的**：输入取自 DORA 数据根里的真实影像，输出是工具原样返回。路径用 `<DORA_DATA>` / `<temp_dir>` 占位，换机器照抄即可。
+
+### 示例输入
+
+数据：images/landslide4sense/Japan_all_14_dem.tif
+
+```json
+{
+  "dem_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_dem.tif",
+  "azimuth": 315,
+  "altitude": 45
+}
+```
+
+### 示例输出
+
+```json
+{
+  "tool": "ras.hillshade",
+  "hillshade_path": "<temp_dir>/hillshade.tif",
+  "shape": [
+    1384,
+    1922
+  ],
+  "stats": {
+    "min": 0,
+    "max": 180,
+    "mean": 63.519059054573454
+  }
+}
+```
+
+[![山体阴影（315° 方位、45° 高度角）](../../examples/30-地形与地表变化/ras.hillshade/out.webp)](../../examples/30-地形与地表变化/ras.hillshade/out.webp)
+
+*山体阴影（315° 方位、45° 高度角）*（点击图片看原图）
+
+> 只影响观感，不改变高程；做地形晕渲或叠加专题图时用。
+
+耗时 0.18 s（本机 8 核 CPU，无 GPU）。
+
 ## 适用边界
 
 - **相关性**：★★★ —— 地形地貌可视化、滑坡/泥石流易发性底图

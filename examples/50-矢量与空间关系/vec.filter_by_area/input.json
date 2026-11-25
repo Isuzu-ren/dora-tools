@@ -1,0 +1,5 @@
+{
+  "vector_path": "<work>/fixtures/buildings.geojson",
+  "min_area_m2": 20.0,
+  "pixel_size_m": 0.8
+}

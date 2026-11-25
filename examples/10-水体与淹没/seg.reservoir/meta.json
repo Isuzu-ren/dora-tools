@@ -1,0 +1,14 @@
+{
+  "tool": "seg.reservoir",
+  "inputs": [
+    "14 波段日本山区影像（ras.concat 产物）——本例场景里没有水库，只看接口"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "影像｜水库水面｜叠加",
+  "note": "只出水面范围；库容要靠「水面面积 × 水位—面积曲线」另外算。",
+  "status": "real",
+  "wall_time_s": 4.75
+}
