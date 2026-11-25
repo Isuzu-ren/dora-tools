@@ -612,7 +612,7 @@ def example_payload(t: dict, folder: str) -> dict | None:
         "in": f"{base}/in.webp" if figs.get("in") else "",
         "img": f"{base}/{figs[out_key]}" if out_key else "",
         "cap": meta.get("caption", ""),
-        "note": meta.get("note", "").replace("`", ""),
+        "note": meta.get("note", "").replace("`", "").replace("**", ""),
         "status": meta.get("status", "real"),
         "out": out_path.read_text(encoding="utf-8").strip()[:1600] if out_path.exists() else "",
     }

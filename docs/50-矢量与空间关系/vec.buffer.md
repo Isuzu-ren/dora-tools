@@ -88,11 +88,11 @@ print(res)
 }
 ```
 
-[![示例输出](../../examples/50-矢量与空间关系/vec.buffer/out.webp)](../../examples/50-矢量与空间关系/vec.buffer/out.webp)
+[![上：输入影像；下：影像｜掩膜｜叠加](../../examples/50-矢量与空间关系/vec.buffer/out.webp)](../../examples/50-矢量与空间关系/vec.buffer/out.webp)
 
-*示例输出*（点击图片看原图）
+*上：输入影像；下：影像｜掩膜｜叠加*（点击图片看原图）
 
-耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+耗时 0.23 s（本机 8 核 CPU，无 GPU）。
 
 ## 适用边界
 

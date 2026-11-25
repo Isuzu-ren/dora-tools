@@ -117,11 +117,11 @@ print(res)
 }
 ```
 
-[![示例输出](../../examples/40-栅格分析/ras.clip/out.webp)](../../examples/40-栅格分析/ras.clip/out.webp)
+[![上：输入影像；下：处理结果](../../examples/40-栅格分析/ras.clip/out.webp)](../../examples/40-栅格分析/ras.clip/out.webp)
 
-*示例输出*（点击图片看原图）
+*上：输入影像；下：处理结果*（点击图片看原图）
 
-耗时 0.04 s（本机 8 核 CPU，无 GPU）。
+耗时 0.06 s（本机 8 核 CPU，无 GPU）。
 
 ## 适用边界
 
