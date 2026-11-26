@@ -6035,11 +6035,171 @@
     ]
   },
   {
+    "name": "ras.catchment",
+    "func": "ras_catchment",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 424,
+    "loc": 283,
+    "signature": "dem_path: str, pour_points: Optional[str]=None, pour_crs: str='same', snap_radius_m: float=0.0, min_area_cells: int=1, simplify_m: float=0.0, out_dir: Optional[str]=None, out_geojson: Optional[str]=None",
+    "params": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "pour_points",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      },
+      {
+        "name": "pour_crs",
+        "type": "str",
+        "required": false,
+        "default": "'same'"
+      },
+      {
+        "name": "snap_radius_m",
+        "type": "float",
+        "required": false,
+        "default": "0.0"
+      },
+      {
+        "name": "min_area_cells",
+        "type": "int",
+        "required": false,
+        "default": "1"
+      },
+      {
+        "name": "simplify_m",
+        "type": "float",
+        "required": false,
+        "default": "0.0"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      },
+      {
+        "name": "out_geojson",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nDelineate the catchment (watershed / contributing area) upstream of one or more pour points.\nReuses the same depression filling, D8 routing and flow accumulation as ras.flow, then walks\nthe flow graph backwards from each outlet. Each cell is assigned to the first outlet it reaches\non its way downstream, so several pour points split the tile into disjoint sub-catchments whose\nareas add up; with a single outlet that is simply its watershed.\n\nPour points can be given in the DEM's own CRS (\"same\", the default), as WGS84 lon/lat\n(\"wgs84\", reprojected to the DEM CRS), or as 0-based pixel (\"pixel\", written as col,row).\nOmitting pour_points uses the lowest cell on the DEM border, i.e. the outlet of the whole tile.\n\nParameters:\n- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres\n- pour_points (str, optional): \"x,y;x,y\" - \";\", \"|\" or whitespace separated. Default: lowest border cell\n- pour_crs (str, optional): \"same\" (default) | \"wgs84\" | \"pixel\"\n- snap_radius_m (float, optional): Move each point to the highest-accumulation cell within this radius; 0 = exact cell\n- min_area_cells (int, optional): Drop catchments smaller than this and report them (default 1)\n- simplify_m (float, optional): Douglas-Peucker tolerance for the polygons (default 0 = keep all vertices)\n- out_dir (str, optional): Output directory; defaults to the session temp directory\n- out_geojson (str, optional): GeoJSON path for the polygons\n\nReturns:\n- outlets (list): per outlet - pixel, cells, area_km2, elevation range, border contact\n- paths (dict): catchment label raster (1..n) and the GeoJSON polygons\n- truncation (dict): how much of the catchment touches the tile edge, and what that implies\n- warnings (list): pour points that control almost no area, etc.",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★★",
+    "transfer": "A",
+    "usage": "给定出水口反查上游汇水区，洪水预报的单元划分",
+    "dep": "numpy / shapely",
+    "domain": "terrain",
+    "has_try": true,
+    "desc_cn": "给定出水口反查上游汇水区，洪水预报的单元划分",
+    "desc_raw": "Delineate the catchment (watershed / contributing area) upstream of one or more pour points. Reuses the same depression filling, D8 routing and flow accumulation as ras.flow, then walks the flow graph backwards from each outlet. Each cell is assigned to the first outlet it reaches on its way downstream, so several pour points split the tile into disjoint sub-catchments whose areas add up; with a single outlet that is simply its watershed. Pour points can be given in the DEM's own CRS (\"same\", the default), as WGS84 lon/lat (\"wgs84\", reprojected to the DEM CRS), or as 0-based pixel (\"pixel\", wr",
+    "params_doc": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "DEM 路径"
+      },
+      {
+        "name": "pour_points",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "\"x,y;x,y\" - \";\", \"|\" or whitespace separated. Default: lowest border cell"
+      },
+      {
+        "name": "pour_crs",
+        "type": "str",
+        "required": false,
+        "default": "'same'",
+        "desc": "\"same\" (default) | \"wgs84\" | \"pixel\""
+      },
+      {
+        "name": "snap_radius_m",
+        "type": "float",
+        "required": false,
+        "default": "0.0",
+        "desc": "Move each point to the highest-accumulation cell within this radius; 0 = exact cell"
+      },
+      {
+        "name": "min_area_cells",
+        "type": "int",
+        "required": false,
+        "default": "1",
+        "desc": "Drop catchments smaller than this and report them (default 1)"
+      },
+      {
+        "name": "simplify_m",
+        "type": "float",
+        "required": false,
+        "default": "0.0",
+        "desc": "Douglas-Peucker tolerance for the polygons (default 0 = keep all vertices)"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Output directory; defaults to the session temp directory"
+      },
+      {
+        "name": "out_geojson",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "GeoJSON path for the polygons"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "outlets",
+        "type": "list",
+        "desc": "per outlet - pixel, cells, area_km2, elevation range, border contact"
+      },
+      {
+        "name": "paths",
+        "type": "dict",
+        "desc": "catchment label raster (1..n) and the GeoJSON polygons"
+      },
+      {
+        "name": "truncation",
+        "type": "dict",
+        "desc": "how much of the catchment touches the tile edge, and what that implies"
+      },
+      {
+        "name": "warnings",
+        "type": "list",
+        "desc": "pour points that control almost no area, etc."
+      }
+    ],
+    "boundary": "D8 单流向，出水口必须落在**汇流路径**上：落在山脊或坡面中段只会圈出 1 格，工具会给出警告并建议设 `snap_radius_m`。实测 V 形谷（64×64）单点圈出全部 4096 格、面积 0.4096 km² 与手算一致；真实 12 m DEM（900×900，81 万像元）得 100.9 km²，含填洼共 6.9 s。图幅边界是硬限制：**触边时面积只是下界**。",
+    "pitfall": "触边不等于被截断——分水岭可能恰好压在边界上。所以要读三个数而不是一个布尔值：`border_cells`（多少格贴边）、`max_accumulation_on_border`（边界上最大的汇流量，远大于 1 说明有一条河被切断）、`exits_on_border`（有几处水流出图外）。只有第一个数大、第二个数还是 1，通常是真的没啥可丢。",
+    "tip": "出水口不用手量：先跑 `ras.flow`，累积量最大的一格就是本图主河道最下游。要给一组子流域就一次给多个点——结果是**互斥分区**：上游点管它以上、下游点管两点之间那段，面积正好相加（实测 2112 + 1984 = 4096），适合按子流域分区统计。要完整的嵌套流域（下游含上游）就单独跑下游那一个点。",
+    "related": [
+      "ras.flow",
+      "ras.terrain",
+      "ras.vectorize",
+      "ras.area"
+    ]
+  },
+  {
     "name": "ras.contour",
     "func": "ras_contour",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 369,
+    "lineno": 728,
     "loc": 68,
     "signature": "dem_path: str, interval: float, base: Optional[float]=None, min_length: float=0.0, out_path: Optional[str]=None",
     "params": [
@@ -6159,8 +6319,8 @@
     "func": "ras_flow",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 279,
-    "loc": 69,
+    "lineno": 330,
+    "loc": 45,
     "signature": "dem_path: str, fill: bool=True, epsilon: float=0.0001, river_threshold: Optional[int]=None, out_dir: Optional[str]=None",
     "params": [
       {
@@ -6471,7 +6631,7 @@
     "func": "ras_terrain",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 117,
+    "lineno": 119,
     "loc": 74,
     "signature": "dem_path: str, attributes: Optional[str]=None, units: str='degrees', out_dir: Optional[str]=None",
     "params": [

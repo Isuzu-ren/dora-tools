@@ -1,0 +1,6 @@
+{
+  "dem_path": "<temp_dir>/dem_flow_crop.tif",
+  "pour_points": "574995.17,4734193.91",
+  "pour_crs": "same",
+  "simplify_m": 30.0
+}

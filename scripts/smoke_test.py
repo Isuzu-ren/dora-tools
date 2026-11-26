@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""最小冒烟测试：不需要任何模型权重，验证「阈值 → 面积」这条链能跑通。
+"""最小冒烟测试：不需要任何模型权重，验证几条纯算法链能跑通。
 
     python scripts/smoke_test.py
 
-会临时造一张 64×64 的 GeoTIFF，调用 ras.threshold 与 ras.area，
-打印两段 JSON，并在失败时以非零码退出。
+会临时造一张 64×64 的 GeoTIFF，依次调用 ras.threshold / ras.area、
+ras.terrain / ras.contour、ras.catchment，逐条核对数值，失败时以非零码退出。
 """
 from __future__ import annotations
 
@@ -90,7 +90,26 @@ def main() -> int:
         return 1
     print(f"\n等高线 {r4['n_lines']} 条，高程 {r4['levels']}")
 
-    print("\n冒烟测试通过：阈值→面积、地形因子、等高线三条链可用（未涉及任何模型权重）。")
+    print("\n④ ras.catchment：在均匀东高西低的斜坡上，取西侧底角为出水口")
+    from dora.tools.terrain import ras_catchment
+
+    # 每格都向西流（code=16），所以最西列的水只汇到本列，第 0 列的集水区就是整列
+    x0 = 500000 + 0.5 * 10.0
+    y0 = 3000000 - 63.5 * 10.0
+    r5 = json.loads(ras_catchment(str(dem), f"{x0},{y0}"))
+    print(json.dumps(r5, ensure_ascii=False, indent=2))
+    if r5.get("error"):
+        print("流域提取失败")
+        return 1
+    outlet = r5["outlets"][0]
+    if outlet["cells"] != 64:
+        print(f"集水区应为 64 格（一列），实得 {outlet['cells']} 格")
+        return 1
+    if abs(outlet["area_km2"] - 64 * 100 / 1e6) > 1e-9:
+        print(f"面积不符：{outlet['area_km2']}")
+        return 1
+
+    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取四条链可用（未涉及任何模型权重）。")
     return 0
 
 

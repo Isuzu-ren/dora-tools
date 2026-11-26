@@ -667,21 +667,24 @@ def ex_terrain(F):
                      "坡度用 Horn 3×3（同 GDAL gdaldem），曲率用 Zevenbergen–Thorne，TRI 用 Riley。")
 
 
-@example("ras.flow")
-def ex_flow(F):
-    import rasterio  # noqa: PLC0415
-    from rasterio.windows import Window  # noqa: PLC0415
-
+def _flow_crop(F) -> Path:
+    """900x900 子区；汇流与流域两件工具共用同一块地形，示例之间可以对照。"""
     proj = _proj_dem(F)
     crop = WORK / "tmp" / "dem_flow_crop.tif"
     if not crop.exists():
         with rasterio.open(proj) as src:
-            win = Window(400, 400, 900, 900)
+            win = rasterio.windows.Window(400, 400, 900, 900)
             data = src.read(1, window=win)
             prof = src.profile.copy()
             prof.update(height=900, width=900, transform=src.window_transform(win))
         with rasterio.open(crop, "w", **prof) as dst:
             dst.write(data, 1)
+    return crop
+
+
+@example("ras.flow")
+def ex_flow(F):
+    crop = _flow_crop(F)
 
     args = {"dem_path": str(crop), "river_threshold": 800}
     res = run_tool(E("ras.flow"), **args)
@@ -700,6 +703,65 @@ def ex_flow(F):
                 caption="左：填洼后的地形，蓝色为汇流量 ≥800 的河段；右：汇流累积（对数）",
                 note="先填洼再定流向：不填洼的话，每一个小坑都会变成假的水系断点。"
                      "给定出水口用同样的汇流面反查，就是流域边界。")
+
+
+@example("ras.catchment")
+def ex_catchment(F):
+    crop = _flow_crop(F)
+    with rasterio.open(crop) as src:
+        tr = src.transform
+
+    # 出口不是猜的：先算汇流面，取累积量最大的那一格（全图主河道最下游）。
+    flow = run_tool(E("ras.flow"), dem_path=str(crop), river_threshold=4000)
+    acc = read_bands(flow["paths"]["flow_accumulation"])[0]
+    r0, c0 = np.unravel_index(int(np.argmax(acc)), acc.shape)
+    x, y = tr * (c0 + 0.5, r0 + 0.5)
+
+    args = {"dem_path": str(crop), "pour_points": f"{x:.2f},{y:.2f}",
+            "pour_crs": "same", "simplify_m": 30.0}
+    res = run_tool(E("ras.catchment"), **args)
+    o = res["outlets"][0]
+
+    hs = json.loads(E("ras.hillshade")(str(crop), 315, 45))
+    hs_path = next((v for k, v in hs.items() if k.endswith("_path") and v), None)
+    shade = to_single(read_bands(hs_path), "gray") if hs_path else to_single(read_bands(crop), "terrain")
+
+    lab = read_bands(res["paths"]["catchment"])[0]
+    basin = lab > 0
+    gj = res["paths"]["catchment_geojson"]
+
+    # 左：河网 + 出口。流域在这里占了 86%，轮廓几乎等于图幅边，画出来信息量不如河网。
+    left = to_single(read_bands(crop), "terrain")
+    if "river" in flow["paths"]:
+        riv = read_bands(flow["paths"]["river"])[0] > 0
+        left = left.copy()
+        left[riv] = (70, 165, 255)
+    li = Image.fromarray(left)
+    orow, ocol = o["pixel"]                      # 用工具自己回报的落格，不反算仿射
+    ImageDraw.Draw(li).ellipse([ocol - 11, orow - 11, ocol + 11, orow + 11],
+                               fill=(245, 70, 55), outline=(255, 255, 255), width=3)
+    left = np.array(li)
+
+    mid = to_single(np.log10(acc + 1.0), "inferno")
+
+    tint = shade.copy()
+    tint[basin] = (shade[basin] * 0.55 + np.array([80, 140, 245]) * 0.45).astype(np.uint8)
+    right = draw_polygons(tint, gj, tr, color=(255, 255, 255), width=6)
+    right = draw_polygons(right, gj, tr, color=(240, 70, 55), width=2)
+
+    panels = [("river network, red dot = outlet", left),
+              ("log10 flow accumulation", mid),
+              ("catchment (blue) over hillshade", right)]
+    tr_ = res["truncation"]
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(crop), "terrain"), "out": _grid(panels)},
+                inputs=["同一块 900×900 子区（EPSG:32654，像元 12 m）；出水口取汇流面的最大值格"],
+                caption=(f"流域 {o['area_km2']:.1f} km²（占图幅 {o['share_of_tile'] * 100:.0f}%），"
+                         f"出口在{'图幅边界' if tr_['outlet_on_border'] else '图幅内部'}；"
+                         f"{tr_['border_cells']} 格触边"),
+                note=("出口坐标由 `ras.flow` 的汇流面给出：累积量最大的一格就是本图主河道最下游，"
+                      "沿河道往上游反查就是流域。这里出口正好落在图幅左边界，"
+                      "所以面积是**下界**——左边界外还有上游未计入。"))
 
 
 @example("ras.contour")

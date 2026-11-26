@@ -1,0 +1,70 @@
+{
+  "tool": "ras.catchment",
+  "outlets": [
+    {
+      "id": 1,
+      "pour_point": [
+        574995.17,
+        4734193.91
+      ],
+      "pour_crs": "same",
+      "pixel": [
+        666,
+        0
+      ],
+      "snapped": false,
+      "snap_distance_m": 0.0,
+      "cells": 699036,
+      "area_km2": 100.9496,
+      "share_of_tile": 0.863,
+      "elevation_range_m": [
+        25.0,
+        420.0
+      ],
+      "outlet_accumulation": 699036.0,
+      "touches_border": true,
+      "border_cells": 847,
+      "border_by_side": {
+        "top": 307,
+        "bottom": 279,
+        "left": 31,
+        "right": 230
+      }
+    }
+  ],
+  "paths": {
+    "catchment": "<temp_dir>/catchment.tif",
+    "catchment_geojson": "<temp_dir>/catchment.geojson"
+  },
+  "truncation": {
+    "touches_border": true,
+    "border_cells": 847,
+    "by_side": {
+      "top": 307,
+      "bottom": 279,
+      "left": 31,
+      "right": 230
+    },
+    "outlet_on_border": true,
+    "exits_on_border": 1,
+    "max_accumulation_on_border": 699036.0,
+    "may_be_incomplete": true,
+    "note": "847 catchment cell(s) lie on the tile edge (top 307, bottom 279, left 31, right 230). The DEM ends there, so whatever drains in from beyond it is invisible and the reported area is a lower bound. The outlet itself is on the edge, so the downstream part is outside too. The largest accumulation on the edge is 699036 cells - a large value means a channel is severed by the boundary and closing it with the neighbouring tile matters.",
+    "how_to_close": "Mosaic the neighbouring tiles, or buffer the DEM by a few km and re-run, if the boundary cut matters for the question."
+  },
+  "warnings": [],
+  "fill": {
+    "enabled": true,
+    "filled_cells": 45682
+  },
+  "cell_size_m": {
+    "x": 12.017180807112608,
+    "y": 12.017180807112608,
+    "note": null
+  },
+  "shape": [
+    900,
+    900
+  ],
+  "summary": "1 catchment(s) over 810000 cells"
+}

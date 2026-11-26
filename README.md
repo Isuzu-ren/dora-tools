@@ -1,7 +1,7 @@
 # DORA 工具库 · 可读版
 
 把 DORA 的 **108 件上游 MCP 工具**按功能域重新组织成一套中文说明，附一份与上游一致的代码副本；
-另**新增 3 件地形工具**（`ras.terrain` / `ras.flow` / `ras.contour`），单独标注、不改上游任何一行。
+另**新增 4 件地形工具**（`ras.terrain` / `ras.flow` / `ras.catchment` / `ras.contour`），单独标注、不改上游任何一行。
 
 > 上游项目：DORA: Can LLM Agents Respond to Disasters?（NeurIPS 2026）
 > 本仓库只做「整理与说明」，**不改动工具实现**；代码位于 `src/`，与上游逐字一致。
@@ -11,7 +11,7 @@
 | 想做什么 | 入口 |
 |---|---|
 | 快速找工具 | 打开 [`index/index.html`](index/index.html)，按关键词或域筛选（双击即可，无需联网） |
-| 看总表 | [`index/INDEX.md`](index/INDEX.md) —— 111 行，按域排序 |
+| 看总表 | [`index/INDEX.md`](index/INDEX.md) —— 112 行，按域排序 |
 | 读某件工具 | [`docs/`](docs/) —— 9 个功能域，每域一个 README + 每工具一页 |
 | 看实际效果 | 每页的「示例」段：真实输入的预览图 + 工具原样返回的 JSON + 产物渲染 |
 
@@ -28,9 +28,9 @@ docs/                  说明文档
 examples/              每件工具一组「真跑出来」的示例
   <域>/<工具>/         input.json（参数）+ output.json（返回）+ 渲染图 + meta.json
 index/
-  INDEX.md             111 件总表（108 上游 + 3 扩展）
+  INDEX.md             112 件总表（108 上游 + 4 扩展）
   index.html           可搜索页面（单文件，无外部依赖）
-  tools.json           机器可读（111 条，含参数与返回字段）
+  tools.json           机器可读（112 条，含参数与返回字段）
 scripts/               提取、示例、生成、自检脚本
 ```
 
@@ -38,8 +38,8 @@ scripts/               提取、示例、生成、自检脚本
 
 每件工具都带两个标签，来自一周的真实评测（见 [`docs/99-附录/C-评测结论摘要.md`](docs/99-附录/C-评测结论摘要.md)）：
 
-- **相关性**：与水旱预警业务的关系（★★★ 36 / ★★ 52 / ★ 10 / ○ 10）
-- **可迁移性**：搬到新平台要付多少代价（A 直迁 76 / B 改造 11 / C 重训 11 / D 弃用 10）
+- **相关性**：与水旱预警业务的关系（★★★ 39 / ★★ 53 / ★ 10 / ○ 10）
+- **可迁移性**：搬到新平台要付多少代价（A 直迁 80 / B 改造 11 / C 重训 11 / D 弃用 10）
 
 两个维度交叉后最需要注意的一句：**★★★ 里必须重训的 4 件，恰好是滑坡、水库、洪水、航拍水体**
 ——也就是淹没范围、水域面积、滑坡这三个业务主指标。骨架能搬，感知要重训。
@@ -77,7 +77,7 @@ pip install -e ".[perception]"
 ## 重新生成文档
 
 ```bash
-python scripts/extract_tools.py     # 从源码提取 111 件 → index/tools.json
+python scripts/extract_tools.py     # 从源码提取 112 件 → index/tools.json
 python scripts/build_docs.py        # 生成 docs/ 与 index/
 python scripts/check_docs.py        # 自检：件数、参数一致性、死链
 ```

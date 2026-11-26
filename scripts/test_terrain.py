@@ -47,7 +47,7 @@ def write_dem(name: str, z: np.ndarray) -> str:
     return str(p)
 
 
-def load(res: str, key: str) -> dict:
+def load(res: str, key: str = "") -> dict:
     d = json.loads(res)
     assert "error" not in d, d
     return d
@@ -133,6 +133,83 @@ gj = json.loads(Path(res["out_path"]).read_text(encoding="utf-8"))
 check("GeoJSON 是 LineString 集合", gj["type"] == "FeatureCollection"
       and all(f["geometry"]["type"] == "LineString" for f in gj["features"]))
 check("每条线带高程属性", all("elevation" in f["properties"] for f in gj["features"]))
+
+print("\n[7] 流域：V 形谷（沿行缓降 0.1 m/行，向中列收拢 0.5 m/列）→ 底边中央出口应圈住全图")
+r_, c_ = np.mgrid[0:N, 0:N]
+vv = (N - r_) * 0.1 + np.abs(c_ - 32) * 0.5
+vp = write_dem("vvalley", vv)
+
+
+def wpt(c: int, r: int) -> tuple[float, float]:
+    """像元 (row=r, col=c) 的世界坐标中心，方便按「第几行第几列」写测试。"""
+    return 500000 + (c + 0.5) * CELL, 4000000 - (r + 0.5) * CELL
+
+
+def cc(tag: str, *args, **kw) -> dict:
+    """每次调用写到独立 out_dir：流域的产物文件名固定，共用目录会互相覆盖。"""
+    kw["out_dir"] = str(TMP / f"c_{tag}")
+    return load(T.ras_catchment(vp, *args, **kw))
+
+
+dc = cc("one", "%s,%s" % wpt(32, 63))
+o1 = dc["outlets"][0]
+check("单出口圈住全部 4096 格", o1["cells"] == N * N, f"cells={o1['cells']}")
+check("面积 = 4096 × 100 m² = 0.4096 km²", abs(o1["area_km2"] - 0.4096) < 1e-4, str(o1["area_km2"]))
+check("出口落在底边中央 (63, 32)", o1["pixel"] == [63, 32], str(o1["pixel"]))
+tr7 = dc["truncation"]
+check("四边计数之和 = border_cells（角落不重复算）",
+      sum(tr7["by_side"].values()) == tr7["border_cells"],
+      f"{tr7['by_side']} 之和 ≠ {tr7['border_cells']}")
+check("回报出口在图幅边界", tr7["outlet_on_border"] is True)
+check("只有 1 处水流出图", tr7["exits_on_border"] == 1, str(tr7["exits_on_border"]))
+
+print("\n[8] 多出口：上游点 + 下游点 → 互斥分区，面积相加 = 全图，栅格无重叠")
+dm = cc("two", "%s,%s;%s,%s" % (wpt(32, 32) + wpt(32, 63)))
+p1, p2 = dm["outlets"]
+check("两出口面积相加 = 4096", p1["cells"] + p2["cells"] == N * N,
+      f"{p1['cells']} + {p2['cells']}")
+check("上游点的流域只到它自己那一行", p1["cells"] == 33 * N, str(p1["cells"]))
+with rasterio.open(dm["paths"]["catchment"]) as s:
+    lab = s.read(1)
+check("标签栅格只含 1、2", set(np.unique(lab).tolist()) == {1, 2}, str(np.unique(lab)))
+check("两分区没有重叠格", int(((lab == 1) & (lab == 2)).sum()) == 0)
+
+print("\n[9] 三种坐标给法（同 CRS 的 x,y / 像素 col,row / WGS84 经纬度）落到同一格")
+x63, y63 = wpt(32, 63)
+from pyproj import Transformer  # noqa: E402
+
+lon, lat = Transformer.from_crs("EPSG:32654", "EPSG:4326", always_xy=True).transform(x63, y63)
+pa = cc("same", f"{x63},{y63}", pour_crs="same")["outlets"][0]["pixel"]
+pb = cc("pixel", "32,63", pour_crs="pixel")["outlets"][0]["pixel"]
+pc = cc("wgs84", f"{lon},{lat}", pour_crs="wgs84")["outlets"][0]["pixel"]
+check("same / pixel / wgs84 → (63, 32)", pa == pb == pc == [63, 32], f"{pa} {pb} {pc}")
+
+print("\n[10] 不出水口的两种用法：省略点位（自动取边界最低格）与 snap 吸附")
+da = cc("auto")
+check("省略点位时自动选底边最低格", da["outlets"][0]["pixel"] == [63, 32], str(da["outlets"][0]["pixel"]))
+d0 = cc("noseep", "%s,%s" % wpt(10, 10))
+d1 = cc("snap", "%s,%s" % wpt(10, 10), snap_radius_m=300)
+check("坡面中段不吸附：只圈到本列上游 11 格", d0["outlets"][0]["cells"] == 11, str(d0["outlets"][0]["cells"]))
+check("吸附后面积变大", d1["outlets"][0]["cells"] > d0["outlets"][0]["cells"],
+      f"{d0['outlets'][0]['cells']} → {d1['outlets'][0]['cells']}")
+check("吸附距离不超过给定半径", d1["outlets"][0]["snap_distance_m"] <= 300,
+      str(d1["outlets"][0]["snap_distance_m"]))
+
+print("\n[11] 无效点位：无上游只给 1 格并警告；被 min_area_cells 过滤后整体报错")
+dz = cc("corner", "%s,%s" % wpt(0, 0))
+check("图幅角上无上游 → 1 格", dz["outlets"][0]["cells"] == 1, str(dz["outlets"][0]["cells"]))
+check("给出「不在汇流路径上」的提示", any("single cell" in w for w in dz["warnings"]), str(dz["warnings"]))
+dmin = json.loads(T.ras_catchment(vp, "%s,%s" % wpt(0, 0), min_area_cells=10,
+                                 out_dir=str(TMP / "c_min")))
+check("全部被过滤时返回 error", "error" in dmin, str(dmin)[:80])
+
+print("\n[12] GeoJSON：多边形面积与栅格格数一致（UTM 下 ±1%）")
+gj = json.loads(Path(dc["paths"]["catchment_geojson"]).read_text(encoding="utf-8"))
+check("单出口 → 1 个要素", len(gj["features"]) == 1, str(len(gj["features"])))
+from shapely.geometry import shape as _shape  # noqa: E402
+
+pa_km2 = _shape(gj["features"][0]["geometry"]).area / 1e6
+check("多边形面积 ≈ 0.4096 km²", abs(pa_km2 - 0.4096) / 0.4096 < 0.01, f"{pa_km2:.4f}")
 
 print(f"\n{'='*46}\n通过 {ok}，失败 {failed}\n")
 raise SystemExit(1 if failed else 0)

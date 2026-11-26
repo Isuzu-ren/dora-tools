@@ -1,12 +1,13 @@
 """
 Terrain server: geomorphometry tools added on top of the upstream DORA tool library.
 
-Three tools, no model weights, no new third-party dependencies beyond what DORA already
-ships (numpy / rasterio / scikit-image):
+Four tools, no model weights, no new third-party dependencies beyond what DORA already
+ships (numpy / rasterio / scikit-image / shapely):
 
-- ``ras.terrain``  — slope, aspect, curvature, TRI, TPI and roughness in one pass
-- ``ras.flow``     — depression filling (priority-flood), D8 flow direction, flow accumulation
-- ``ras.contour``  — contour lines as GeoJSON
+- ``ras.terrain``    — slope, aspect, curvature, TRI, TPI and roughness in one pass
+- ``ras.flow``       — depression filling (priority-flood), D8 flow direction, flow accumulation
+- ``ras.catchment``  — watershed upstream of one or more pour points, as raster + polygon
+- ``ras.contour``    — contour lines as GeoJSON
 
 Conventions follow the common GIS implementations so results are comparable with GDAL
 ``gdaldem`` (Horn 3x3 for slope/aspect), Zevenbergen & Thorne (1987) for curvature,
@@ -75,16 +76,17 @@ def _neighbours(dem: np.ndarray) -> List[np.ndarray]:
             [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]]
 
 
-def _write_raster(path: str, array: np.ndarray, profile: Optional[dict]) -> str:
+def _write_raster(path: str, array: np.ndarray, profile: Optional[dict],
+                  dtype: str = "float32") -> str:
     import rasterio
 
     if profile is None:                      # PNG input: no georeferencing to preserve
         np.save(path + ".npy", array)
         return path + ".npy"
     prof = profile.copy()
-    prof.update(count=1, dtype="float32", compress="deflate")
+    prof.update(count=1, dtype=dtype, compress="deflate")
     with rasterio.open(path, "w", **prof) as dst:
-        dst.write(array.astype(np.float32), 1)
+        dst.write(array.astype(dtype), 1)
     return path
 
 
@@ -257,6 +259,55 @@ def _d8_direction(filled: np.ndarray, xres: float, yres: float) -> np.ndarray:
     return best
 
 
+# Lookup tables from an ESRI direction code to the (row, col) step it encodes.
+_LUT_DR = np.zeros(129, dtype=np.int64)
+_LUT_DC = np.zeros(129, dtype=np.int64)
+for _dr, _dc, _code in _D8:
+    _LUT_DR[_code] = _dr
+    _LUT_DC[_code] = _dc
+
+
+def _downstream_index(direction: np.ndarray) -> np.ndarray:
+    """Flat index of the cell each cell drains into, or -1 for an outlet / edge cell."""
+    h, w = direction.shape
+    code = direction.ravel().astype(np.int64)
+    valid = (code > 0) & (code < 129)
+    safe = np.where(valid, code, 0)
+    idx = np.arange(h * w)
+    nr = idx // w + _LUT_DR[safe]
+    nc = idx % w + _LUT_DC[safe]
+    ok = valid & (nr >= 0) & (nr < h) & (nc >= 0) & (nc < w)
+    return np.where(ok, nr * w + nc, -1)
+
+
+def _flow_grids(dem: np.ndarray, xres: float, yres: float, fill: bool = True,
+                epsilon: float = 1e-4) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, int]:
+    """Fill, route and accumulate in one go.
+
+    Returns ``(filled, direction, accumulation, order_desc, raised)`` where ``order_desc``
+    sorts the cells from the highest filled elevation down. The epsilon gradient makes that
+    order a valid topological order for D8, so accumulation is a single pass; reversing it
+    gives the upstream→downstream order used by ``ras.catchment``.
+    """
+    raised = 0
+    filled = dem
+    if fill:
+        filled, raised = _priority_flood(dem, epsilon)
+
+    direction = _d8_direction(filled, xres, yres)
+    target = _downstream_index(direction)
+
+    h, w = filled.shape
+    acc = np.ones(h * w, dtype=np.float64)
+    order = np.argsort(filled, axis=None)[::-1]
+    acc_dst = acc                               # same buffer, written in place
+    for idx in order:
+        nxt = target[idx]
+        if nxt >= 0:
+            acc_dst[nxt] += acc_dst[idx]
+    return filled, direction, acc.reshape(h, w), order, raised
+
+
 @mcp.tool(name="ras.flow", description='''
 Description:
 Hydrological terrain analysis: fill depressions, compute D8 flow direction and flow accumulation,
@@ -287,32 +338,8 @@ def ras_flow(dem_path: str, fill: bool = True, epsilon: float = 1e-4,
         xres, yres, note = (_cell_size_m(transform, crs) if transform is not None
                             else (1.0, 1.0, "no georeferencing: cell size assumed to be 1 m"))
 
-        raised = 0
-        filled = dem
-        if fill:
-            filled, raised = _priority_flood(dem, epsilon)
-
-        direction = _d8_direction(filled, xres, yres)
-
-        # Accumulation: visit cells from the highest filled elevation down. The epsilon
-        # gradient guarantees that this is a valid topological order for D8.
+        filled, direction, acc, _order, raised = _flow_grids(dem, xres, yres, fill, epsilon)
         h, w = filled.shape
-        acc = np.ones((h, w), dtype=np.float64)
-        order = np.argsort(filled, axis=None)[::-1]
-        dir_flat = direction.ravel()
-        acc_flat = acc.ravel()
-        filled_flat = filled.ravel()
-        for idx in order:
-            code = int(dir_flat[idx])
-            if not code:
-                continue
-            r, c = divmod(int(idx), w)
-            dr, dc, _ = next(d for d in _D8 if d[2] == code)
-            nr, nc = r + dr, c + dc
-            if 0 <= nr < h and 0 <= nc < w:
-                nxt = nr * w + nc
-                if filled_flat[nxt] <= filled_flat[idx]:
-                    acc_flat[nxt] += acc_flat[idx]
 
         base = out_dir or str(TEMP_DIR)
         import os
@@ -345,6 +372,338 @@ def ras_flow(dem_path: str, fill: bool = True, epsilon: float = 1e-4,
         }, ensure_ascii=False)
     except Exception as e:
         return _error("ras.flow", e, dem_path=dem_path, river_threshold=river_threshold)
+
+
+def _parse_points(spec: str) -> List[Tuple[float, float]]:
+    """Parse ``"x,y;x,y"`` (or space-separated) into a list of pairs."""
+    pts: List[Tuple[float, float]] = []
+    for chunk in spec.replace(";", " ").replace("|", " ").replace("\n", " ").split():
+        parts = [p for p in chunk.split(",") if p.strip()]
+        if len(parts) != 2:
+            raise ValueError(f"cannot read point {chunk!r}; expected 'x,y' pairs separated by ';'")
+        pts.append((float(parts[0]), float(parts[1])))
+    if not pts:
+        raise ValueError("pour_points is empty")
+    return pts
+
+
+def _side_counts(mask: np.ndarray) -> Dict[str, int]:
+    """True cells on each edge; corners are counted once, so the four numbers add up."""
+    return {"top": int(mask[0, :].sum()), "bottom": int(mask[-1, :].sum()),
+            "left": int(mask[1:-1, 0].sum()), "right": int(mask[1:-1, -1].sum())}
+
+
+@mcp.tool(name="ras.catchment", description='''
+Description:
+Delineate the catchment (watershed / contributing area) upstream of one or more pour points.
+Reuses the same depression filling, D8 routing and flow accumulation as ras.flow, then walks
+the flow graph backwards from each outlet. Each cell is assigned to the first outlet it reaches
+on its way downstream, so several pour points split the tile into disjoint sub-catchments whose
+areas add up; with a single outlet that is simply its watershed.
+
+Pour points can be given in the DEM's own CRS ("same", the default), as WGS84 lon/lat
+("wgs84", reprojected to the DEM CRS), or as 0-based pixel ("pixel", written as col,row).
+Omitting pour_points uses the lowest cell on the DEM border, i.e. the outlet of the whole tile.
+
+Parameters:
+- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres
+- pour_points (str, optional): "x,y;x,y" - ";", "|" or whitespace separated. Default: lowest border cell
+- pour_crs (str, optional): "same" (default) | "wgs84" | "pixel"
+- snap_radius_m (float, optional): Move each point to the highest-accumulation cell within this radius; 0 = exact cell
+- min_area_cells (int, optional): Drop catchments smaller than this and report them (default 1)
+- simplify_m (float, optional): Douglas-Peucker tolerance for the polygons (default 0 = keep all vertices)
+- out_dir (str, optional): Output directory; defaults to the session temp directory
+- out_geojson (str, optional): GeoJSON path for the polygons
+
+Returns:
+- outlets (list): per outlet - pixel, cells, area_km2, elevation range, border contact
+- paths (dict): catchment label raster (1..n) and the GeoJSON polygons
+- truncation (dict): how much of the catchment touches the tile edge, and what that implies
+- warnings (list): pour points that control almost no area, etc.
+''')
+def ras_catchment(dem_path: str, pour_points: Optional[str] = None, pour_crs: str = "same",
+                  snap_radius_m: float = 0.0, min_area_cells: int = 1,
+                  simplify_m: float = 0.0, out_dir: Optional[str] = None,
+                  out_geojson: Optional[str] = None) -> str:
+    try:
+        import os
+
+        if pour_crs not in ("same", "wgs84", "pixel"):
+            raise ValueError("pour_crs must be 'same', 'wgs84' or 'pixel'")
+        if snap_radius_m < 0:
+            raise ValueError("snap_radius_m must be >= 0")
+        if min_area_cells < 1:
+            raise ValueError("min_area_cells must be >= 1")
+
+        dem, transform, crs, profile = _read_dem(dem_path)
+        if not np.isfinite(dem).all():
+            dem = np.where(np.isfinite(dem), dem, np.nanmean(dem))
+        if transform is None:
+            xres = yres = 1.0
+            note = "no georeferencing: cell size assumed to be 1 m, coordinates read as pixels"
+        else:
+            xres, yres, note = _cell_size_m(transform, crs)
+
+        filled, direction, acc, order, raised = _flow_grids(dem, xres, yres, True, 1e-4)
+        h, w = filled.shape
+        n_cells = h * w
+        target = _downstream_index(direction)
+
+        # ---- pour points -> pixel ----
+        auto_selected = pour_points is None
+        warnings: List[str] = []
+        if auto_selected:
+            edge = np.zeros((h, w), dtype=bool)
+            edge[0, :] = edge[-1, :] = edge[:, 0] = edge[:, -1] = True
+            flat = int(np.argmin(np.where(edge, filled, np.inf)))
+            raw_pts = [(float(int(flat % w)), float(int(flat // w)))]
+            pour_crs = "pixel"
+        else:
+            raw_pts = _parse_points(pour_points)
+
+        transformer = None
+        if pour_crs == "wgs84":
+            if crs is None or transform is None:
+                raise ValueError("pour_crs='wgs84' needs a georeferenced DEM")
+            from pyproj import Transformer
+
+            transformer = Transformer.from_crs("EPSG:4326", crs, always_xy=True)
+
+        pixel_pts: List[Tuple[int, int]] = []
+        for k, (a, b) in enumerate(raw_pts):
+            if pour_crs == "pixel":
+                col_f, row_f = a, b
+            else:
+                x, y = a, b
+                if transformer is not None:
+                    x, y = transformer.transform(x, y)
+                col_f, row_f = (~transform * (x, y))
+            # floor, not round: the fractional part is the position inside the cell, so
+            # round() would push a point sitting exactly on a cell edge into the next cell.
+            row_i, col_i = int(math.floor(row_f + 1e-9)), int(math.floor(col_f + 1e-9))
+            if not (0 <= row_i < h and 0 <= col_i < w):
+                raise ValueError(
+                    f"pour point {k + 1} ({a}, {b}) falls outside the DEM; "
+                    f"the raster spans {w} columns x {h} rows")
+            pixel_pts.append((row_i, col_i))
+
+        # ---- optional snapping to the strongest channel nearby ----
+        rx = int(math.ceil(snap_radius_m / xres)) if snap_radius_m > 0 else 0
+        ry = int(math.ceil(snap_radius_m / yres)) if snap_radius_m > 0 else 0
+        snapped_info: List[Dict[str, Any]] = []
+        for k, (r0, c0) in enumerate(pixel_pts):
+            chosen, dist = (r0, c0), 0.0
+            if snap_radius_m > 0:
+                r1, r2 = max(0, r0 - ry), min(h, r0 + ry + 1)
+                c1, c2 = max(0, c0 - rx), min(w, c0 + rx + 1)
+                win = acc[r1:r2, c1:c2]
+                d = np.hypot((np.arange(r1, r2)[:, None] - r0) * yres,
+                             (np.arange(c1, c2)[None, :] - c0) * xres)
+                score = np.where(d <= snap_radius_m, win, -1.0)
+                j = int(np.argmax(score))
+                wr, wc = divmod(j, win.shape[1])
+                if score[wr, wc] > 0:
+                    chosen = (r1 + wr, c1 + wc)
+                    dist = float(d[wr, wc])
+            pixel_pts[k] = chosen
+            snapped_info.append({"snapped": chosen != (r0, c0),
+                                 "snap_distance_m": round(dist, 2)})
+
+        # Two pour points that land on the same cell (or snapped onto it) would fight over
+        # the same label; keep the first and say so.
+        seen_at: Dict[Tuple[int, int], int] = {}
+        kept_pts: List[Tuple[int, int]] = []
+        kept_snaps: List[Dict[str, Any]] = []
+        kept_raw: List[Tuple[float, float]] = []
+        for k, px in enumerate(pixel_pts):
+            if px in seen_at:
+                warnings.append(
+                    f"pour point {k + 1} landed on the same cell as pour point "
+                    f"{seen_at[px] + 1} (row {px[0]}, col {px[1]}); kept the first one")
+                continue
+            seen_at[px] = k
+            kept_pts.append(px)
+            kept_snaps.append(snapped_info[k])
+            kept_raw.append(raw_pts[k])
+        pixel_pts, snapped_info, raw_pts = kept_pts, kept_snaps, kept_raw
+
+        # ---- label cells with the outlet they drain to ----
+        # Walking the cells from low to high means every cell meets its downstream
+        # neighbour already labelled, so one pass assigns the whole network.
+        owner = [0] * n_cells
+        outlet_ids = list(range(1, len(pixel_pts) + 1))
+        for oid, (r, c) in zip(outlet_ids, pixel_pts):
+            owner[r * w + c] = oid
+        for idx in order[::-1]:
+            if owner[idx]:
+                continue
+            nxt = target[idx]
+            if nxt >= 0 and owner[nxt]:
+                owner[idx] = owner[nxt]
+        lab = np.fromiter(owner, dtype=np.int16 if len(pixel_pts) < 32767 else np.int32,
+                          count=n_cells).reshape(h, w)
+
+        border = np.zeros((h, w), dtype=bool)
+        border[0, :] = border[-1, :] = border[:, 0] = border[:, -1] = True
+
+        outlets: List[Dict[str, Any]] = []
+        keep = []
+        shown_crs = "pixel" if (auto_selected and transform is None) else (
+            "same" if auto_selected else pour_crs)
+        for oid, (r, c) in zip(outlet_ids, pixel_pts):
+            sel = lab == oid
+            cells = int(sel.sum())
+            if cells < min_area_cells:
+                warnings.append(
+                    f"pour point at row {r}, col {c} controls {cells} cell(s) and was dropped; "
+                    f"it is probably not on a flow path - try snap_radius_m=300")
+                continue
+            keep.append(oid)
+            vals = filled[sel]
+            if auto_selected:
+                if transform is not None:
+                    x, y = transform * (c + 0.5, r + 0.5)
+                    pp = [round(float(x), 3), round(float(y), 3)]
+                else:
+                    pp = [c, r]
+            else:
+                pp = raw_pts[oid - 1]
+            outlets.append({
+                "id": oid,
+                "pour_point": [round(float(v), 6) if isinstance(v, float) else v for v in pp],
+                "pour_crs": shown_crs,
+                "pixel": [r, c],
+                "snapped": snapped_info[oid - 1]["snapped"],
+                "snap_distance_m": snapped_info[oid - 1]["snap_distance_m"],
+                "cells": cells,
+                "area_km2": round(cells * xres * yres / 1e6, 4),
+                "share_of_tile": round(cells / n_cells, 4),
+                "elevation_range_m": [round(float(vals.min()), 1), round(float(vals.max()), 1)],
+                "outlet_accumulation": round(float(acc[r, c]), 1),
+                "touches_border": bool((sel & border).any()),
+                "border_cells": int((sel & border).sum()),
+                "border_by_side": _side_counts(sel & border),
+            })
+
+        if not keep:
+            raise ValueError("no catchment survived min_area_cells; see warnings")
+
+        # Drop the labels of discarded outlets so the raster only holds kept ids.
+        if len(keep) != len(outlet_ids):
+            remap = np.zeros(int(lab.max()) + 1, dtype=lab.dtype)
+            for new_id, old_id in enumerate(keep, start=1):
+                remap[old_id] = new_id
+            lab = remap[lab]
+            for i, o in enumerate(outlets, start=1):
+                o["id"] = i
+
+        # ---- border / truncation accounting ----
+        union = lab > 0
+        on_border = union & border
+        by_side = _side_counts(on_border)
+        border_acc = float(acc[on_border].max()) if on_border.any() else 0.0
+        # Cells where water leaves the tile (or the dataset) entirely.
+        exits = int(((direction == 0) & union & border).sum())
+        outlet_on_border = any(border[r, c] for r, c in pixel_pts)
+
+        if not on_border.any():
+            border_note = ("Nothing of the catchment touches the tile edge, so no upstream area is "
+                    "missing as far as this DEM can tell: the watershed closes inside the tile.")
+        else:
+            sides = ", ".join(f"{k} {v}" for k, v in by_side.items() if v)
+            border_note = (f"{int(on_border.sum())} catchment cell(s) lie on the tile edge ({sides}). "
+                    "The DEM ends there, so whatever drains in from beyond it is invisible "
+                    "and the reported area is a lower bound. "
+                    + ("The outlet itself is on the edge, so the downstream part is outside too. "
+                       if outlet_on_border else
+                       "No outlet sits on the edge, so what is cut off is upstream. ")
+                    + (f"The largest accumulation on the edge is {border_acc:.0f} cells - a large "
+                       "value means a channel is severed by the boundary and closing it with the "
+                       "neighbouring tile matters."
+                       if border_acc > 1 else
+                       "Every edge cell carries a single cell of runoff, which is what a watershed "
+                       "divide touching the corner of a tile looks like: probably nothing lost."))
+        truncation = {
+            "touches_border": bool(on_border.any()),
+            "border_cells": int(on_border.sum()),
+            "by_side": by_side,
+            "outlet_on_border": bool(outlet_on_border),
+            "exits_on_border": exits,
+            "max_accumulation_on_border": round(border_acc, 1),
+            "may_be_incomplete": bool(on_border.any()),
+            "note": border_note,
+            "how_to_close": ("Mosaic the neighbouring tiles, or buffer the DEM by a few km and "
+                             "re-run, if the boundary cut matters for the question."),
+        }
+
+        # ---- write raster ----
+        base = out_dir or str(TEMP_DIR)
+        os.makedirs(base, exist_ok=True)
+        paths: Dict[str, Any] = {
+            "catchment": _write_raster(os.path.join(base, "catchment.tif"), lab, profile,
+                                       dtype="int16" if lab.dtype == np.int16 else "int32"),
+        }
+
+        # ---- polygons ----
+        geojson_path = None
+        if transform is not None and profile is not None:
+            try:
+                from rasterio import features
+                from shapely.geometry import mapping, shape
+                from shapely.ops import unary_union
+
+                groups: Dict[int, list] = {}
+                for geom, val in features.shapes(lab, mask=union, transform=transform,
+                                                 connectivity=8):
+                    groups.setdefault(int(val), []).append(shape(geom))
+                feats = []
+                for o in outlets:
+                    polys = groups.get(o["id"], [])
+                    if not polys:
+                        continue
+                    merged = unary_union(polys)
+                    if simplify_m > 0:
+                        merged = merged.simplify(simplify_m, preserve_topology=True)
+                    feats.append({"type": "Feature",
+                                  "properties": {"id": o["id"], "area_km2": o["area_km2"],
+                                                 "cells": o["cells"]},
+                                  "geometry": mapping(merged)})
+                dest = out_geojson or os.path.join(base, "catchment.geojson")
+                os.makedirs(os.path.dirname(dest) or ".", exist_ok=True)
+                crs_name = crs.to_string() if crs is not None else None
+                with open(dest, "w", encoding="utf-8") as f:
+                    json.dump({"type": "FeatureCollection", "name": "catchments",
+                               "crs": ({"type": "name", "properties": {"name": crs_name}}
+                                       if crs_name else None),
+                               "features": feats}, f, ensure_ascii=False)
+                geojson_path = dest
+            except ImportError as exc:               # shapely missing: raster is still useful
+                warnings.append(f"polygon output skipped ({exc})")
+        elif transform is None:
+            warnings.append("no georeferencing: polygons skipped, use the label raster")
+
+        if geojson_path:
+            paths["catchment_geojson"] = geojson_path
+
+        for o in outlets:
+            if o["cells"] <= 1:
+                warnings.append(
+                    f"outlet {o['id']} controls a single cell: no mapped upstream, so it is "
+                    f"either on a ridge or off the D8 flow path. Try snap_radius_m=300")
+
+        return json.dumps({
+            "tool": "ras.catchment",
+            "outlets": outlets,
+            "paths": paths,
+            "truncation": truncation,
+            "warnings": warnings,
+            "fill": {"enabled": True, "filled_cells": int(raised)},
+            "cell_size_m": {"x": float(xres), "y": float(yres), "note": note},
+            "shape": [int(h), int(w)],
+            "summary": f"{len(keep)} catchment(s) over {n_cells} cells",
+        }, ensure_ascii=False)
+    except Exception as e:
+        return _error("ras.catchment", e, dem_path=dem_path, pour_points=pour_points)
 
 
 @mcp.tool(name="ras.contour", description='''
