@@ -18,6 +18,7 @@
     "docstring": "Segment bridges from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary bridge mask (255 = bridge)\n- classes (dict): {7: bridge}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "B（0.5–1 m）",
     "usage": "洪水冲毁桥梁排查的底图",
@@ -79,6 +80,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "B（≤1.6 m）",
     "usage": "淹没区房屋灾损统计",
@@ -143,6 +145,7 @@
     "docstring": "Segment building-major-damage areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to building_damage mask (255 = building_damage)\n- classes (dict): {2: \"building_damage\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "同上",
@@ -204,6 +207,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "B（需 SAR 预处理）",
     "usage": "汛期多云雨，SAR 是唯一可靠手段",
@@ -267,6 +271,7 @@
     "docstring": "Segment totally damaged building areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to building_total_damage mask (255 = building_total_damage)\n- classes (dict): {3: \"building_total_damage\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "航拍级灾损细查",
@@ -320,6 +325,7 @@
     "docstring": "Segment building-no-damage areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to building_no_damage mask (255 = building_no_damage)\n- classes (dict): {1: \"building_no_damage\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "同上",
@@ -375,6 +381,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "B（3.46 m 专用）",
     "usage": "大范围承灾体底数（PlanetScope）",
@@ -426,6 +433,7 @@
     "docstring": "Segment harbors from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary harbor mask (255 = harbor)\n- classes (dict): {15: harbor}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "B（0.5–1 m）",
     "usage": "内河/沿海码头受影响范围",
@@ -487,6 +495,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "B（未实测）",
     "usage": "灾后恢复进度监测",
@@ -555,6 +564,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "B（≤1.6 m）",
     "usage": "淹没路段 → 通行阻断、抢险路径",
@@ -618,6 +628,7 @@
     "docstring": "Segment debris-covered road areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to road_debris_covered mask (255 = road_debris_covered)\n- classes (dict): {6: \"road_debris_covered\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "航拍道路阻断精细判定",
@@ -671,6 +682,7 @@
     "docstring": "Segment intact road areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to road_no_damage mask (255 = road_no_damage)\n- classes (dict): {5: \"road_no_damage\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "同上，做对照",
@@ -724,6 +736,7 @@
     "docstring": "Segment storage tanks from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary storage tank mask (255 = storage_tank)\n- classes (dict): {12: storage_tank}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "B（0.5–1 m）",
     "usage": "洪水次生风险源（危化品）",
@@ -777,6 +790,7 @@
     "docstring": "Segment trapped vehicle areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to vehicle_trapped mask (255 = vehicle_trapped)\n- classes (dict): {10: \"vehicle_trapped\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "应急救援：受困目标",
@@ -854,6 +868,7 @@
     "docstring": "Use LLM to generate a summary of disaster analysis results.\n\nParameters:\n- task_question (str): The original task question\n- trajectory (list[dict]): List of trajectory steps with obs results from previous tool calls\n- image_paths (list[str], optional): Variable-length list of raw or derived images to summarize jointly with the trajectory\n- final_answer_template (dict, optional): Template for the final answer\n- model (str, optional): Gemini model to use (default: gemini-3-pro-preview)\n\nReturns:\n- summary (str): Natural language summary\n- image_observations (list): Short visual observations\n- key_findings (list): List of key findings\n- statistics (dict): Key statistics\n- recommendations (list): Optional recovery or response actions\n- confidence (str): Confidence level",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "B（换 LLM 端点）",
     "usage": "值班简报文字；需 API Key，数据出境需评估",
@@ -976,6 +991,7 @@
     "docstring": "Extract structured evidence from intermediate mask outputs in a trajectory.\n\nParameters:\n- trajectory (list[dict]): List of trajectory steps with obs results\n- pixel_size_m (float, optional): Pixel size in meters for area computation\n- include_empty_masks (bool, optional): Whether to keep masks with zero nonzero pixels\n\nReturns:\n- total_evidence_items\n- evidence_items\n- tool_rollup\n- timeline\n- peak_timestamp\n- trend\n- errors",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "多步结果的自动汇总，不调模型",
@@ -1084,6 +1100,7 @@
     "docstring": "Add title, legend, north arrow, and scale bar to an image.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "成品图规范化",
@@ -1181,6 +1198,7 @@
     "docstring": "Generate a bar chart from category statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "分区统计展示",
@@ -1242,6 +1260,7 @@
     "docstring": "Generate a before/after comparison panel.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "汛前汛后对比",
@@ -1328,6 +1347,7 @@
     "docstring": "Generate a standard damage assessment map.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "预警产品出图",
@@ -1426,6 +1446,7 @@
     "docstring": "Description:\nRender a 2D heatmap visualizing the spatial density of input points or polygon\ncentroids. Uses Gaussian kernel density estimation and a color-mapped overlay.\nIf the input vector contains polygons (e.g., building damage outlines), their\ncentroids are computed automatically.\n\nParameters:\n- points_path (str): Path to GeoJSON containing points, polygons, or mixed geometries\n- base_image_path (str, optional): Background image to overlay on\n- bandwidth (float, optional): Gaussian kernel bandwidth. Default auto.\n- colormap (str, optional): Matplotlib colormap. Default \"hot\".\n\nOutput file is written to a managed location and returned as heatmap_path.\n\nReturns:\n- heatmap_path (str): Path to rendered heatmap image\n- point_count (int): Number of points used (polygon centroids count as points)",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "隐患点、报汛站、受灾点密度",
@@ -1506,6 +1527,7 @@
     "docstring": "Generate a line chart from ordered statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "水位/面积过程线",
@@ -1573,6 +1595,7 @@
     "docstring": "Overlay a segmentation mask on top of a base image.\nInputs:\n- image_path: base raster image\n- mask_path: segmentation mask path\n- alpha: overlay opacity\n- class_labels: optional class label dict\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "淹没范围图",
@@ -1642,6 +1665,7 @@
     "docstring": "Generate a pie chart from category statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "构成占比",
@@ -1715,6 +1739,7 @@
     "docstring": "Compose a one-page disaster report from map, chart, summary, and statistics.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "值班简报",
@@ -1845,6 +1870,7 @@
     "docstring": "Render a shortest-path route on a base image, optionally with a damage-mask overlay.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "抢险路线图",
@@ -1975,6 +2001,7 @@
     "docstring": "Generate a multi-temporal panel from multiple image paths.\nOutput file is written to a managed location; its path is returned in the result dict as output_path.",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "水情/旱情演变序列（涨水—峰值—退水）",
@@ -2047,6 +2074,7 @@
     "docstring": "Description:\nAdd two numbers.\n\nParameters:\n- a (float): first value\n- b (float): second value\n\nReturns:\n- sum (float): a + b",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "累计量",
@@ -2108,6 +2136,7 @@
     "docstring": "Description:\nCompute absolute difference between two numbers.\n\nParameters:\n- a (float): first value\n- b (float): second value\n\nReturns:\n- diff (float): |a - b|",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "偏差评估",
@@ -2169,6 +2198,7 @@
     "docstring": "Description:\nDivide two numbers.\n\nParameters:\n- a (float): numerator\n- b (float): denominator\n\nReturns:\n- ratio (float): a / b",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "比例、变化率、单位换算",
@@ -2230,6 +2260,7 @@
     "docstring": "Description:\nCompare two numbers and return whether a > b.\n\nParameters:\n- a (float): left-hand value\n- b (float): right-hand value\n\nReturns:\n- value (int): 1 if a > b else 0\n- result (bool): True if a > b else False",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "超阈值判定",
@@ -2296,6 +2327,7 @@
     "docstring": "Description:\nMultiply two numbers.\n\nParameters:\n- a (float): first value\n- b (float): second value\n\nReturns:\n- product (float): a * b",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "面积×深度、权重×分值",
@@ -2363,6 +2395,7 @@
     "docstring": "Description:\nCompute straight-line distance between two pixel coordinates.\n\nParameters:\n- point_a (list[float]): [row, col]\n- point_b (list[float]): [row, col]\n- pixel_size_m (float): pixel size in meters\n\nReturns:\n- distance_px (float): Euclidean distance in pixels\n- distance_m (float): Euclidean distance in meters",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "站点间距、影响半径",
@@ -2436,6 +2469,7 @@
     "docstring": "Description:\nSubtract two numbers.\n\nParameters:\n- a (float): minuend\n- b (float): subtrahend\n\nReturns:\n- difference (float): a - b",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "变化量",
@@ -2497,6 +2531,7 @@
     "docstring": "Description:\nCalculate volume from area and depth.\nVolume = Area × Depth\n\nParameters:\n- area_m2 (float): Area in square meters\n- depth_m (float): Depth/height in meters\n\nReturns:\n- volume_m3 (float): Volume in cubic meters",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "蓄水量、土方量、淹没水量",
@@ -2564,6 +2599,7 @@
     "docstring": "Description:\nCompute a weighted sum over a list of numeric values (multi-criteria\naggregation). Commonly used for composite severity indices, e.g.,\ncombining building damage, flood depth, and road disruption into one score.\n\nParameters:\n- values (list[float]): Input values, same length as weights\n- weights (list[float]): Weights (need not sum to 1)\n- normalize (bool, optional): If True, normalize weights to sum to 1. Default False.\n\nReturns:\n- score (float): Weighted sum\n- normalized (bool): Whether weights were normalized",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "综合旱情指数（降水+温度+土壤湿度加权）",
@@ -2643,6 +2679,7 @@
     "docstring": "Description:\nRank a list of items (e.g., affected districts, damaged facilities) by a\npriority score computed as a weighted combination of criteria. Returns the\nitems sorted from highest to lowest priority. Used to support emergency\ndispatch decisions.\n\nParameters:\n- items (list[dict]): Candidate items, each a dict of numeric fields\n- criteria (dict[str, float]): Mapping from field name to weight\n- top_k (int, optional): If set, return only the top_k items\n\nReturns:\n- ranked (list[dict]): Items sorted by priority score (descending), each\n  augmented with a \"priority_score\" field\n- count (int): Number of items returned",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "受灾点优先级排序",
@@ -2722,6 +2759,7 @@
     "docstring": "Description:\nAllocate a limited resource (e.g., rescue teams, medical supplies) across\nmultiple demand sites in proportion to their priority/need. Uses a greedy\nlargest-share-first scheme with per-site capacity caps.\n\nParameters:\n- demands (list[dict]): Each dict has {\"id\": ..., \"need\": float, \"cap\": float (optional)}\n- total_supply (float): Total units available\n- min_per_site (float, optional): Minimum allocation per site. Default 0.\n\nReturns:\n- allocations (list[dict]): Per-site allocation {\"id\", \"need\", \"allocated\"}\n- allocated_total (float): Total units actually allocated\n- unallocated (float): Units left over",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "抢险队伍/物资分配",
@@ -2800,6 +2838,7 @@
     "docstring": "Description:\nCalculate the number of truck trips needed to transport a given volume.\nTrips = ceil(Volume / Capacity)\n\nParameters:\n- volume_m3 (float): Total volume to transport in cubic meters\n- capacity_m3 (float): Truck capacity in cubic meters\n\nReturns:\n- trips_required (int): Number of truck trips needed",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "物资/土方运输车次",
@@ -2909,6 +2948,7 @@
     "docstring": "Description:\nBuild chart-ready key/value data from a list of records or a dict of records.\nUseful for converting loop outputs or feature statistics into dynamic inputs for vis.bar_chart / vis.line_chart.\n\nParameters:\n- values (list[dict] | dict): source records\n- value_field (str): nested field path containing the numeric value\n- label_field (str, optional): nested field path for the primary label\n- fallback_label_field (str, optional): fallback nested field path when label_field is empty\n- fallback_label_prefix (str, optional): prefix for fallback label\n- label_template (str, optional): template such as \"r{item.row_idx}c{item.col_idx}\"\n- sort_by (str, optional): nested field path to sort by; if omitted, preserves input order\n- descending (bool, optional): sort order, default True\n- top_k (int, optional): keep only top k records\n- round_digits (int, optional): round numeric values for chart display\n\nReturns:\n- data (dict): ordered chart-ready mapping\n- records (list[dict]): ordered label/value records\n- source_count (int)\n- kept_count (int)",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "为柱/折线图准备数据",
@@ -3061,6 +3101,7 @@
     "docstring": "Description:\nLoop over a list of items and execute a sequence of tool calls for each item.\nSupports per-item binding and simple step-result references.\n\nParameters:\n- calls (list[dict]): [{tool: str, args: dict}, ...]\n- loop_over (list[dict]): items to iterate over (dicts with x1/x2/y1/y2). List windows are accepted and coerced.\n- bind (dict, optional): map arg_name -> item_key to inject into args\n- grid_n (int, optional): if loop_over items are windows, provide n to compute row/col\n- return_all (bool, optional): return per-iteration results\n\nReturns:\n- results (list, optional): per-iteration outputs if return_all true",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "按网格/按行政区批量算，是「分区统计」的编排器",
@@ -3166,6 +3207,7 @@
     "docstring": "Description:\nReduce a list of dicts by a numeric field.\n\nParameters:\n- values (list[dict]): items to reduce\n- field (str): dotted path, e.g. \"a.b.c\"\n- mode (str): \"max\", \"min\", or \"mean\"\n\nReturns:\n- best_value (float|None): for max/min\n- best_index (int|None): for max/min\n- best_item (dict|None): for max/min\n- mean_value (float|None): for mean",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "找极值网格（最热/最深/最旱）",
@@ -3253,6 +3295,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "火山专用",
@@ -3313,6 +3356,7 @@
     "docstring": "Segment planes from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary plane mask (255 = plane)",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "无关",
@@ -3361,6 +3405,7 @@
     "docstring": "Segment playground/sports fields from post-disaster optical image.\nClasses: 3 baseball_diamond, 4 tennis_court, 5 basketball_court, 6 ground_track_field, 13 soccer_ball_field.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary playground mask (255 = playground)\n- classes (dict): Mapping of class ids to names",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "仅在「避难场所选址」这类派生任务中有用",
@@ -3414,6 +3459,7 @@
     "docstring": "Segment pool areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to pool mask (255 = pool)\n- classes (dict): {4: \"pool\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "无关",
@@ -3467,6 +3513,7 @@
     "docstring": "Segment roundabouts from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary roundabout mask (255 = roundabout)\n- classes (dict): {2: roundabout}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "无关",
@@ -3520,6 +3567,7 @@
     "docstring": "Segment ships from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary ship mask (255 = ship)\n- classes (dict): {1: ship}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "内河航运场景可微调后使用",
@@ -3573,6 +3621,7 @@
     "docstring": "Segment swimming pools from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary pool mask (255 = swimming_pool)\n- classes (dict): {11: swimming_pool}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "无关",
@@ -3626,6 +3675,7 @@
     "docstring": "Segment fallen-tree areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to tree_fallen mask (255 = tree_fallen)\n- classes (dict): {7: \"tree_fallen\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "台风/洪涝伴生，河道行洪障碍",
@@ -3679,6 +3729,7 @@
     "docstring": "Segment standing-tree areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to tree_not_fallen mask (255 = tree_not_fallen)\n- classes (dict): {8: \"tree_not_fallen\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "对照类别",
@@ -3732,6 +3783,7 @@
     "docstring": "Segment vehicles (large and small) from post-disaster optical satellite image.\nSpatial resolution: 0.5m-1.0m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to binary vehicle mask (255 = vehicle)\n- classes (dict): {8: large_vehicle, 9: small_vehicle}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "与灾情关联弱",
@@ -3785,6 +3837,7 @@
     "docstring": "Segment non-trapped vehicle areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to vehicle_not_trapped mask (255 = vehicle_not_trapped)\n- classes (dict): {9: \"vehicle_not_trapped\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "○",
     "transfer": "D（业务无关）",
     "usage": "对照类别",
@@ -3874,6 +3927,7 @@
     "docstring": "Join damage and population feature statistics for POIs and rank exposed locations.\nUseful for identifying high-population POIs whose damage score exceeds a threshold.\n\nParameters:\n- damage_feature_stats (list[dict]): Damage stats per POI\n- population_feature_stats (list[dict]): Population stats per POI\n- damage_threshold (float, optional): Minimum damage value to keep\n- damage_field (str, optional): Field name for damage values\n- population_field (str, optional): Field name for population values\n- join_field (str, optional): Shared key used to join the two tables\n- allowed_types (list[str], optional): Restrict to POI types if provided\n\nReturns:\n- total_exposed (int): Number of POIs above the damage threshold\n- exposed_pois (list): Ranked exposed POIs with damage and population values\n- top_exposed_poi (dict|None): Highest-priority exposed POI",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "受影响人口优先序",
@@ -3989,6 +4043,7 @@
     "docstring": "Filter POI results by attribute values.\nUseful for keeping only specific POI types (e.g., commercial facilities like restaurants, cafes, banks).\n\nParameters:\n- data (list[dict]): List of tool.loop results containing item and last_obs\n- attribute_name (str): The attribute field to filter on (e.g., \"types\" for POI types)\n- allowed_values (list[str]): List of allowed values to keep (e.g., [\"restaurant\", \"cafe\", \"bank\"])\n\nReturns:\n- total_input (int): Total number of input items\n- total_filtered (int): Number of items after filtering\n- attribute_name (str): The attribute field used for filtering\n- allowed_values (list): The allowed values used for filtering\n- filtered_results (list): Filtered results matching the allowed values",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "只看医院/学校/水厂",
@@ -4077,6 +4132,7 @@
     "docstring": "Filter POI results to only include those located in damaged buildings.\nTakes the output from tool.loop and filters items where damage_class >= 2 (partially damaged or totally destroyed).\n\nParameters:\n- data (list[dict]): List of tool.loop results containing item and last_obs\n- min_damage_class (int, optional): Minimum damage class to include (default: 2)\n\nReturns:\n- total_input (int): Total number of input items\n- total_filtered (int): Number of items after filtering\n- total_damaged (int): Number of damaged items found\n- filtered_results (list): Filtered results with damage_class >= min_damage_class",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "学校/医院受淹排查",
@@ -4147,6 +4203,7 @@
     "docstring": "Filter POI results to only include those located in intact buildings.\nTakes the output from tool.loop and keeps items where damage_class == 1.\n\nParameters:\n- data (list[dict]): List of tool.loop results containing item and last_obs\n\nReturns:\n- total_input (int): Total number of input items\n- total_intact (int): Number of intact items found\n- filtered_results (list): Filtered results with damage_class == 1",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "A",
     "usage": "可用资源点",
@@ -4229,6 +4286,7 @@
     "docstring": "Group a list of dictionaries by a field and calculate statistics.\n\nParameters:\n- data (list[dict]): List of dictionaries to group\n- group_field (str): Field name to group by\n- count_field (str, optional): Field to sum (for weighted counts)\n- return_item_details (bool, optional): Whether to include items in groups (default: False)\n- return_sum (bool, optional): Whether to include sum of count_field (default: False)\n\nReturns:\n- group_field (str): The field used for grouping\n- total_items (int): Total number of input items\n- total_groups (int): Number of unique groups\n- groups (dict): Dictionary of {group_value: {count}} or {count, sum, items} based on options",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "按行政区/地类汇总",
@@ -4332,6 +4390,7 @@
     "docstring": "Search for POI (Points of Interest) by name in a GeoJSON file.\nSupports both exact and fuzzy matching.\n\nParameters:\n- geojson_path (str): Path to GeoJSON file containing POI data\n- name (str): Name to search for (case-insensitive fuzzy matching)\n- exact (bool): Whether to use exact matching (default: false)\n\nReturns:\n- search_name (str): The search term used\n- features (list): The found POI features\n- total_found (int): Number of POIs matching the search\n- results (list): List of matching POIs with name, coordinates, and properties",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "A",
     "usage": "按地名定位",
@@ -4421,6 +4480,7 @@
     "docstring": "Convert POI (Points of Interest) from GeoJSON/Shapefile to a vector GeoJSON file.\nOptionally filter by name.\n\nParameters:\n- geojson_path (str): Path to input GeoJSON or Shapefile\n- name (str, optional): Filter POI by name (fuzzy matching)\n- exact (bool): Whether to use exact name matching (default: false)\n\nReturns:\n- vector_path (str): Path to output vector GeoJSON\n- count (int): Number of features in output\n- name_filter (str): The name filter used",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "POI 数据入库",
@@ -4499,6 +4559,7 @@
     "docstring": "Transform GeoJSON POI coordinates from geographic CRS (WGS84) to the pixel coordinate system of a reference raster image.\nPoints that fall outside the image bounds are filtered out.\nThe output GeoJSON contains the original properties plus pixel coordinates (pixel_row, pixel_col, utm_x, utm_y).\n\nParameters:\n- geojson_path (str): Path to input GeoJSON file with Point geometries (WGS84)\n- raster_path (str): Path to reference raster image (GeoTIFF) to define the target pixel coordinate system\n\nReturns:\n- output_path (str): Path to transformed GeoJSON\n- total_points (int): Total input POI count\n- valid_points (int): Number of POIs within image bounds\n- filtered_points (int): Number of POIs filtered out (outside image)\n- image_bounds (dict): Image bounds (left, right, bottom, top)\n- image_size (list): [width, height] of the reference image",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "把业务点位对齐到卫星影像",
@@ -4585,6 +4646,7 @@
     "docstring": "Description:\nCompose multiple binary masks into a single multiclass raster mask.\nEach input mask contributes one class value, and any positive pixel in a mask\nis assigned to that class in the output raster.\n\nParameters:\n- mask_paths (list[str]): Paths to binary mask rasters\n- class_values (list[int]): Class ids aligned with mask_paths\n\nOutput file is written to a managed location; its path is returned as mask_path.\n\nReturns:\n- mask_path (str): Path to the composed multiclass raster\n- class_values (list[int]): Class ids written into the output\n- classes (dict): Class label mapping for the output mask",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "把「常水体/新增水体/退水」合成一张图",
@@ -4662,6 +4724,7 @@
     "docstring": "Description:\nCalculate the area of regions in a mask.\nOnly supports pixel-based masks.\n\nParameters:\n- mask_path (str): Path to the mask image file\n- pixel_size_m (float): Size of each pixel in meters\n- classes (list[int], optional): List of class values to include. If not provided, counts all non-zero pixels.\n\nReturns:\n- area_m2 (float): Total area in square meters\n- pixel_count (int): Number of pixels counted",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "淹没面积、受旱面积、水域面积",
@@ -4758,6 +4821,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "按流域/行政区裁切",
@@ -4857,6 +4921,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "构造 14 波段输入（多光谱 + DEM + 坡度）的必经步骤",
@@ -4931,6 +4996,7 @@
     "docstring": "Description:\nCount pixels for specified classes in a mask image.\n\nParameters:\n- mask_path (str): Path to the mask image file\n- classes (list[int]): List of class values to count\n\nReturns:\n- counts (dict): Pixel counts per class\n- total (int): Total pixel count for all specified classes",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "面积前的中间量",
@@ -5011,6 +5077,7 @@
       "output_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "多期差值、DSM−DEM 求相对高度",
@@ -5129,6 +5196,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "热点检测、平滑、DEM 局部粗糙度",
@@ -5205,6 +5273,7 @@
     "docstring": "Description:\nSplit a raster image into a uniform n×n grid and return pixel windows.\nIndexing uses image[x1:x2, y1:y2] where x is row (top→bottom), y is column (left→right).\nIf H or W is not divisible by n, the last row/col expands to the image boundary.\n\nParameters:\n- image_path (str): Path to raster (GeoTIFF/COG/PNG/JPG…)\n- n (int): number of splits per axis (n >= 1)\n\nReturns:\n- windows (list[list[int]]): [[x1,x2,y1,y2], ...] in row-major order\n- image_shape (list[int]): [height, width]\n- base_tile_px (list[int]): [floor(H/n), floor(W/n)]\n- count (int): n*n\n- note (str)",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "面雨量/旱情分区统计的基础",
@@ -5295,6 +5364,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "多源数据统一坐标系（国产影像常为 CGCS2000）",
@@ -5399,6 +5469,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "统一 GSD：模型对分辨率敏感，这一步不能省",
@@ -5498,6 +5569,7 @@
     "docstring": "Description:\nSample pixel value at a specific (row, col) location in a raster image.\n\nParameters:\n- image_path (str): Path to raster image file\n- row (int): Pixel row (y coordinate)\n- col (int): Pixel column (x coordinate)\n\nReturns:\n- row (int): Input row coordinate\n- col (int): Input column coordinate\n- pixel_values (dict): Pixel value for each band (1-indexed)\n- is_inside (bool): Whether the coordinates are within image bounds",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "站点/断面取值",
@@ -5581,6 +5653,7 @@
     "docstring": "Description:\nSample pixel values at multiple locations in a raster image.\n\nParameters:\n- image_path (str): Path to raster image file\n- points (list[dict]): List of {row, col} objects\n\nReturns:\n- total_points (int): Number of input points\n- results (list): List of {row, col, pixel_values, is_inside} for each point",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "水文站点批量采样",
@@ -5653,6 +5726,7 @@
     "docstring": "Description:\nCompute summary statistics for one raster band while ignoring nodata values.\n\nParameters:\n- image_path (str): Path to raster image\n- band (int, optional): 1-indexed band number. Default is 1\n- ignore_nodata (bool, optional): Ignore nodata and NaN values. Default is true\n\nReturns:\n- min (float|None): Minimum valid value\n- max (float|None): Maximum valid value\n- mean (float|None): Mean valid value\n- std (float|None): Standard deviation of valid values\n- valid_pixels (int): Number of valid pixels used\n- band (int): Band index used\n- nodata (float|None): Raster nodata value",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "水位/温度/降水量的区域统计",
@@ -5777,6 +5851,7 @@
       "mask_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "最通用的一招：LST/NDVI/水深/降水栅格都能阈值化",
@@ -5892,6 +5967,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "淹没范围出图、与行政区叠加的前提",
@@ -5959,6 +6035,242 @@
     ]
   },
   {
+    "name": "ras.contour",
+    "func": "ras_contour",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 369,
+    "loc": 68,
+    "signature": "dem_path: str, interval: float, base: Optional[float]=None, min_length: float=0.0, out_path: Optional[str]=None",
+    "params": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "interval",
+        "type": "float",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "base",
+        "type": "Optional[float]",
+        "required": false,
+        "default": "None"
+      },
+      {
+        "name": "min_length",
+        "type": "float",
+        "required": false,
+        "default": "0.0"
+      },
+      {
+        "name": "out_path",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nExtract contour lines (isolines) from a DEM at a fixed interval and write them as GeoJSON\nLineStrings with the elevation as an attribute. Useful for cartography and for slope-class\nbase maps.\n\nParameters:\n- dem_path (str): Path to a single-band DEM (GeoTIFF)\n- interval (float): Vertical interval between contour lines, in DEM units\n- base (float, optional): First contour level; defaults to the next multiple of interval\n- min_length (float, optional): Drop lines shorter than this many metres (default 0)\n- out_path (str, optional): GeoJSON output path\n\nReturns:\n- out_path (str): GeoJSON with one feature per contour line\n- n_lines (int): Number of lines written\n- levels (list[float]): Contour levels present in the output\n- total_length_m (float): Summed length of all lines",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★",
+    "transfer": "A",
+    "usage": "等高线出图、坡度分级底图",
+    "dep": "skimage",
+    "domain": "terrain",
+    "has_try": true,
+    "desc_cn": "等高线出图、坡度分级底图",
+    "desc_raw": "Extract contour lines (isolines) from a DEM at a fixed interval and write them as GeoJSON LineStrings with the elevation as an attribute. Useful for cartography and for slope-class base maps.",
+    "params_doc": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "DEM 路径"
+      },
+      {
+        "name": "interval",
+        "type": "float",
+        "required": true,
+        "default": null,
+        "desc": "Vertical interval between contour lines, in DEM units"
+      },
+      {
+        "name": "base",
+        "type": "Optional[float]",
+        "required": false,
+        "default": "None",
+        "desc": "First contour level; defaults to the next multiple of interval"
+      },
+      {
+        "name": "min_length",
+        "type": "float",
+        "required": false,
+        "default": "0.0",
+        "desc": "Drop lines shorter than this many metres (default 0)"
+      },
+      {
+        "name": "out_path",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "输出文件路径"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "out_path",
+        "type": "str",
+        "desc": "GeoJSON with one feature per contour line"
+      },
+      {
+        "name": "n_lines",
+        "type": "int",
+        "desc": "Number of lines written"
+      },
+      {
+        "name": "levels",
+        "type": "list[float",
+        "desc": "Contour levels present in the output"
+      },
+      {
+        "name": "total_length_m",
+        "type": "float",
+        "desc": "Summed length of all lines"
+      }
+    ],
+    "boundary": "输出是**等值线矢量**，不做平滑也不做抽稀；地形噪声大时线会很碎，先用 `ras.focal_stats` 平滑。",
+    "pitfall": "`interval` 小于高程噪声时会产生大量闭合小环；DEM 有空洞（NaN）时，空洞边缘会被当作低地，出现假等高线。",
+    "tip": "出图配 `ras.hillshade` 做底最直观；进 GIS 后按 `elevation` 属性分级设色即可。",
+    "related": [
+      "ras.hillshade",
+      "ras.terrain",
+      "ras.vectorize"
+    ]
+  },
+  {
+    "name": "ras.flow",
+    "func": "ras_flow",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 279,
+    "loc": 69,
+    "signature": "dem_path: str, fill: bool=True, epsilon: float=0.0001, river_threshold: Optional[int]=None, out_dir: Optional[str]=None",
+    "params": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "fill",
+        "type": "bool",
+        "required": false,
+        "default": "True"
+      },
+      {
+        "name": "epsilon",
+        "type": "float",
+        "required": false,
+        "default": "0.0001"
+      },
+      {
+        "name": "river_threshold",
+        "type": "Optional[int]",
+        "required": false,
+        "default": "None"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nHydrological terrain analysis: fill depressions, compute D8 flow direction and flow accumulation,\nand optionally extract a river network above an accumulation threshold.\nThis is the physical starting point for catchment and flood-routing work, which the upstream\nlibrary does not cover.\n\nParameters:\n- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres\n- fill (bool, optional): Fill depressions before routing (default True)\n- epsilon (float, optional): Elevation increment used to give flats a gradient (default 1e-4 m)\n- river_threshold (int, optional): Extract cells whose accumulation reaches this value\n- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory\n\nReturns:\n- paths (dict): filled DEM, flow direction, flow accumulation, optional river raster\n- stats (dict): max accumulation, number of outlets, filled cell count\n- cell_size_m (dict): Cell size used (degrees are converted to metres)",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★★",
+    "transfer": "A",
+    "usage": "填洼→流向→汇流，流域提取与洪水演进的前置",
+    "dep": "numpy",
+    "domain": "terrain",
+    "has_try": true,
+    "desc_cn": "填洼→流向→汇流，流域提取与洪水演进的前置",
+    "desc_raw": "Hydrological terrain analysis: fill depressions, compute D8 flow direction and flow accumulation, and optionally extract a river network above an accumulation threshold. This is the physical starting point for catchment and flood-routing work, which the upstream library does not cover.",
+    "params_doc": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "DEM 路径"
+      },
+      {
+        "name": "fill",
+        "type": "bool",
+        "required": false,
+        "default": "True",
+        "desc": "Fill depressions before routing (default True)"
+      },
+      {
+        "name": "epsilon",
+        "type": "float",
+        "required": false,
+        "default": "0.0001",
+        "desc": "Elevation increment used to give flats a gradient (default 1e-4 m)"
+      },
+      {
+        "name": "river_threshold",
+        "type": "Optional[int]",
+        "required": false,
+        "default": "None",
+        "desc": "Extract cells whose accumulation reaches this value"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Directory for the outputs; defaults to the session temp directory"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "paths",
+        "type": "dict",
+        "desc": "filled DEM, flow direction, flow accumulation, optional river raster"
+      },
+      {
+        "name": "stats",
+        "type": "dict",
+        "desc": "max accumulation, number of outlets, filled cell count"
+      },
+      {
+        "name": "cell_size_m",
+        "type": "dict",
+        "desc": "Cell size used (degrees are converted to metres)"
+      }
+    ],
+    "boundary": "D8 单流向，**不适用于平坦的灌区、湿地、城市管网**——那些地方需要 D-inf 或水文模型。填洼会把真实洼地（岩溶、采煤沉陷）也填平，做沉降分析时要用 `fill=False`。",
+    "pitfall": "ε 梯度决定平坦区的流向，**结果对 ε 敏感**：同一 DEM 换 ε 只改变平地内部的水路，不影响主河道，但会让「某块地属于哪个流域」在分水线附近摆动。",
+    "tip": "`river_threshold` 取 500–1000 个像元通常能得到接近实测的河网密度；先看汇流累积图再定阈值，比拍数字可靠。",
+    "related": [
+      "ras.terrain",
+      "ras.contour",
+      "ras.vectorize",
+      "vec.raster_stats"
+    ]
+  },
+  {
     "name": "ras.hillshade",
     "func": "ras_hillshade",
     "module": "analysis",
@@ -6001,6 +6313,7 @@
     "docstring": "Description:\nCompute a hillshade image from a Digital Elevation Model (DEM) raster,\nrevealing terrain relief. Uses the standard Horn (1981) formulation with\nconfigurable sun azimuth and altitude angles. Useful for landslide and\ndebris-flow susceptibility mapping.\n\nParameters:\n- dem_path (str): Path to DEM GeoTIFF (single-band elevation raster)\n- azimuth (float, optional): Sun azimuth in degrees, clockwise from north. Default 315.\n- altitude (float, optional): Sun altitude in degrees above horizon. Default 45.\n- z_factor (float, optional): Vertical exaggeration factor. Default 1.0.\n- out_path (str, optional): Output GeoTIFF path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- hillshade_path (str): Path to the generated hillshade image\n- shape (list[int]): [height, width] of the output\n- stats (dict): min, max, mean of hillshade values (0-255)",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "地形地貌可视化、滑坡/泥石流易发性底图",
@@ -6099,6 +6412,7 @@
     "docstring": "Description:\nCompute a slope map in degrees from a DEM raster. Slope is derived via\nthe Horn (1981) gradient formulation and converted from radians to degrees.\nCommonly used as input for landslide susceptibility and terrain stability.\n\nParameters:\n- dem_path (str): Path to DEM GeoTIFF\n- units (str, optional): \"degrees\" (default) or \"percent\"\n- out_path (str, optional): Output GeoTIFF path. Leave empty/omit this parameter to let the tool choose a managed location automatically. Only pass a value when the user explicitly provides an absolute path.\n\nReturns:\n- slope_path (str): Path to the generated slope raster\n- units (str): Units of the output values\n- stats (dict): min, max, mean slope",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "坡度是滑坡模型与汇流分析的基础因子",
@@ -6153,6 +6467,109 @@
     "related": []
   },
   {
+    "name": "ras.terrain",
+    "func": "ras_terrain",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 117,
+    "loc": 74,
+    "signature": "dem_path: str, attributes: Optional[str]=None, units: str='degrees', out_dir: Optional[str]=None",
+    "params": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "attributes",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      },
+      {
+        "name": "units",
+        "type": "str",
+        "required": false,
+        "default": "'degrees'"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nDerive terrain attributes from a DEM in one pass: slope, aspect, curvature, TRI, TPI and roughness.\nUses the Horn 3x3 kernel (same as GDAL gdaldem) for slope and aspect, Zevenbergen-Thorne for\ncurvature, Riley et al. for TRI, Weiss for TPI and a 3x3 range for roughness.\nA geographic CRS is handled by converting degrees to metres at the scene latitude, so the\nresult is not silently wrong on a lat/lon DEM.\n\nParameters:\n- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres\n- attributes (str, optional): Comma-separated subset of slope,aspect,curvature,tri,tpi,roughness\n- units (str, optional): \"degrees\" (default) or \"percent\" for slope\n- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory\n\nReturns:\n- paths (dict): One GeoTIFF path per attribute\n- stats (dict): min / max / mean per attribute\n- cell_size_m (dict): Cell size actually used, and a note when the CRS was geographic",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★★",
+    "transfer": "A",
+    "usage": "一次出坡度/坡向/曲率/TRI/TPI/粗糙度，地形地貌分析的地基",
+    "dep": "numpy",
+    "domain": "terrain",
+    "has_try": true,
+    "desc_cn": "一次出坡度/坡向/曲率/TRI/TPI/粗糙度，地形地貌分析的地基",
+    "desc_raw": "Derive terrain attributes from a DEM in one pass: slope, aspect, curvature, TRI, TPI and roughness. Uses the Horn 3x3 kernel (same as GDAL gdaldem) for slope and aspect, Zevenbergen-Thorne for curvature, Riley et al. for TRI, Weiss for TPI and a 3x3 range for roughness. A geographic CRS is handled by converting degrees to metres at the scene latitude, so the result is not silently wrong on a lat/lon DEM.",
+    "params_doc": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "DEM 路径"
+      },
+      {
+        "name": "attributes",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Comma-separated subset of slope,aspect,curvature,tri,tpi,roughness"
+      },
+      {
+        "name": "units",
+        "type": "str",
+        "required": false,
+        "default": "'degrees'",
+        "desc": "单位：`degrees` 或 `percent`"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Directory for the outputs; defaults to the session temp directory"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "paths",
+        "type": "dict",
+        "desc": "One GeoTIFF path per attribute"
+      },
+      {
+        "name": "stats",
+        "type": "dict",
+        "desc": "min / max / mean per attribute"
+      },
+      {
+        "name": "cell_size_m",
+        "type": "dict",
+        "desc": "Cell size actually used, and a note when the CRS was geographic"
+      }
+    ],
+    "boundary": "输入必须是**单波段高程**（米）。经纬度坐标会自动按纬度换算成米，但**投影变形仍在**——跨大范围做定量分析前应先投影到米制坐标系。边缘一行/列按复制填充，坡度会被削半，统计时建议去掉。",
+    "pitfall": "曲率与 TPI 在平地上几乎全是 0，直接线性拉伸会糊成一片灰；出图时要做符号平方根拉伸，并用「零值偏暗」的发散色带。",
+    "tip": "六个因子一次算完（2.87 M 像元约 3 s）；只要坡度时用 `ras.slope` 更省，但它不校正经纬度像元。",
+    "related": [
+      "ras.slope",
+      "ras.hillshade",
+      "ras.flow",
+      "ras.diff"
+    ]
+  },
+  {
     "name": "seg.landslide_bitemporal",
     "func": "seg_landslide_bitemporal",
     "module": "perception",
@@ -6179,6 +6596,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "B（未实测）",
     "usage": "无 DEM 时的替代路径",
@@ -6244,6 +6662,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "C（14 波段归一化）",
     "usage": "地形地貌变化主力；必须 14 波段",
@@ -6303,6 +6722,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "B（仅单期）",
     "usage": "旱情：植被覆盖变化、受旱耕地识别",
@@ -6362,6 +6782,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "河道缓冲带、溃堤影响带、河岸带",
@@ -6419,6 +6840,7 @@
       "graph_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "通行能力建模",
@@ -6482,6 +6904,7 @@
     "docstring": "Description:\nCalculate the centroid of a polygon or point feature in a vector file.\nUseful for finding the center point of the largest damaged area (explosion center).\n\nParameters:\n- vector_path (str): Path to input vector GeoJSON\n- feature_idx (int): Index of feature to get centroid for (default: 0, the first feature; use -1 for the largest)\n- raster_path (str, optional): reference GeoTIFF; for a georeferenced vector, also return the centroid's\n  pixel_row / pixel_col in this raster's grid\n\nReturns:\n- feature_idx (int): The feature index used\n- geometry_type (str): Type of the original geometry\n- If vector has CRS: latitude (float), longitude (float) in WGS84\n- If vector has no CRS: pixel_row (float), pixel_col (float) in pixel coordinates\n- If vector has CRS and raster_path is given: also pixel_row, pixel_col in the raster's grid",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "灾情中心点",
@@ -6557,6 +6980,7 @@
       "clip_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "裁到流域/行政区边界",
@@ -6625,6 +7049,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "数淹没片数、损毁建筑栋数",
@@ -6681,6 +7106,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "灾害影响范围包络",
@@ -6760,6 +7186,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "把破碎淹没斑块合成连片淹没区",
@@ -6846,6 +7273,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "去掉掩膜噪点，几乎每步都用",
@@ -6916,6 +7344,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "按地类/行政区代码筛选",
@@ -6990,6 +7419,7 @@
     "docstring": "Filter vector features by distance from a center point (WGS84).\n\n    Parameters:\n    - vector_path (str): Path to vector GeoJSON/Shapefile\n    - center_lat (float): Center point latitude (WGS84)\n    - center_lon (float): Center point longitude (WGS84)\n    - max_distance_m (float): Maximum distance in meters\n\n    Returns:\n    - vector_path (str): Path to filtered vector\n    - total_input (int): Number of input features\n    - total_filtered (int): Number of features within distance\n    - nearest_distance_m (float): Distance to nearest feature\n    - farthest_distance_m (float): Distance to farthest feature",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "以水库/险工段为中心的影响范围筛选",
@@ -7103,6 +7533,7 @@
     "docstring": "Description:\nFind shortest path on an intact-road graph.\n\nParameters:\n- graph_path (str): Path to graph graphml produced by vec.build_graph\n- start (list[int]): [row, col] start point (pixel coordinates)\n- end (list[int]): [row, col] end point (pixel coordinates)\n- pixel_size_m (float, optional): Pixel size in meters for distance conversion\n\nReturns:\n- distance_px (float|null): Shortest path length in pixels (null if no path)\n- distance_m (float|null): Shortest path length in meters (null if no path)\n- path_pixels (list): List of [row, col] along path\n- path_geojson (str|null): Path to saved path GeoJSON (null if no path)\n- snapped_start/end (list|None): Snapped coordinates on centerline",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "抢险/撤离路径规划",
@@ -7208,6 +7639,7 @@
       "intersection_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "淹没范围 ∩ 耕地/居民地/行政区",
@@ -7298,6 +7730,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "分级影响区（100/500/1000 m）",
@@ -7362,6 +7795,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "河道长度、道路淹没长度",
@@ -7431,6 +7865,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "找主淹没区/最大灾区",
@@ -7534,6 +7969,7 @@
       "table_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "受灾点最近的安置点/物资库",
@@ -7617,6 +8053,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "水域岸线长度",
@@ -7678,6 +8115,7 @@
     "docstring": "Description:\nConvert pixel coordinates to world coordinates (WGS84) using a reference GeoTIFF.\n\nParameters:\n- raster_path (str): Path to the reference GeoTIFF (e.g., post-disaster image)\n- pixel_row (int): Pixel row coordinate (y)\n- pixel_col (int): Pixel column coordinate (x)\n\nReturns:\n- latitude (float): Y coordinate in WGS84\n- longitude (float): X coordinate in WGS84\n- pixel_row (int): Input pixel row\n- pixel_col (int): Input pixel col",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "把图上位置转成可上报的坐标",
@@ -7767,6 +8205,7 @@
     "docstring": "Description:\nFor each input point, test whether it lies inside any polygon of a polygon\nlayer. Returns the matching polygon id(s) if any. Useful for filtering POIs\nto those located within damaged zones.\n\nParameters:\n- points_path (str): Path to point GeoJSON\n- polygons_path (str): Path to polygon GeoJSON\n- polygon_id_field (str, optional): Attribute field used as polygon identifier\n\nReturns:\n- matches (list[dict]): List of {point_index, polygon_ids} for inside points\n- inside_count (int): Number of points located inside at least one polygon",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "站点/村庄是否位于淹没区或风险区",
@@ -7872,6 +8311,7 @@
       "vector_path"
     ],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "A",
     "usage": "流域内平均降水、行政区平均 LST、耕地平均 NDVI",
@@ -7993,6 +8433,7 @@
     "docstring": "Description:\nGiven a road graph with some edges marked as damaged/blocked, find the minimum\nset of edges that must be repaired so that a shortest path between source and\ntarget nodes becomes possible. The solution minimises the number of repairs\nfirst and breaks ties by total path length.\n\nThe graph may be provided as a NetworkX .graphml file (output of vec.build_graph)\nor as a JSON file with {\"nodes\": [...], \"edges\": [...]}. If source/target are not\ngiven or do not exist in the graph, the function automatically selects two nodes\nfrom the largest connected component: a node near the centroid of the component\nas source and its farthest reachable node as target.\n\nParameters:\n- graph_path (str): Path to a graph file (.graphml or .json/.geojson)\n- source (str | int, optional): Source node id (e.g., a rescue base). If omitted\n  or not found, an auto-selection is performed.\n- target (str | int, optional): Target node id (e.g., a hospital). Same rule.\n- blocked_attr (str, optional): Edge attribute marking a damaged/blocked edge.\n  Defaults to \"damaged\" (native attribute from vec.build_graph); \"blocked\" is\n  also accepted.\n\nReturns:\n- repair_edges (list): Edge endpoints that must be repaired, e.g. [[u, v], ...]\n- repair_count (int): Minimum number of repairs needed on the optimal path\n- path_length_m (float): Total length of the post-repair path (metres)\n- source (int): Source node id actually used\n- target (int): Target node id actually used\n- auto_selected (bool): Whether source/target were auto-selected",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "断路情况下最小抢通方案",
@@ -8101,6 +8542,7 @@
     "docstring": "Description:\nExtract road centerlines directly from a road mask by skeletonizing and outputting\ncenterlines as GeoJSON LineStrings. The caller must supply the class-id lists\ncorresponding to intact vs damaged road pixels (look them up in the upstream\nsegmentation tool's returned `classes` dict).\n\nParameters:\n- mask_path (str): Path to road mask\n- intact_classes (list[int], optional): Class ids treated as intact road\n- damaged_classes (list[int], optional): Class ids treated as damaged road\n\nReturns:\n- centerline_path (str): Path to centerline GeoJSON",
     "artifacts": [],
     "guarded": true,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "路网骨架，用于通行分析",
@@ -8183,6 +8625,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★",
     "transfer": "A",
     "usage": "矢量过大时压缩，便于发布",
@@ -8276,6 +8719,7 @@
       "output_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★",
     "transfer": "A",
     "usage": "物资投放点/水文站服务范围",
@@ -8351,6 +8795,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "C（跨分辨率失效）",
     "usage": "洪水淹没范围主入口；两次水体推理再相减",
@@ -8412,6 +8857,7 @@
       "mask_path"
     ],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "C（14 波段归一化）",
     "usage": "干旱核心：水域面积萎缩监测；需 14 波段输入",
@@ -8469,6 +8915,7 @@
     "docstring": "Segment water areas from post-disaster optical airborne image.\nSpatial resolution: 0.03m.\n\nParameters:\n- post_image_path (str): Path to post-disaster image\n\nReturns:\n- mask_path (str): Path to water mask (255 = water)\n- classes (dict): {11: \"water\"}",
     "artifacts": [],
     "guarded": false,
+    "origin": "upstream",
     "relevance": "★★★",
     "transfer": "C（0.03 m 航拍）",
     "usage": "应急航拍精细淹没边界",

@@ -1,0 +1,53 @@
+{
+  "tool": "ras.terrain",
+  "paths": {
+    "slope": "<temp_dir>/terrain_slope.tif",
+    "aspect": "<temp_dir>/terrain_aspect.tif",
+    "curvature": "<temp_dir>/terrain_curvature.tif",
+    "tri": "<temp_dir>/terrain_tri.tif",
+    "tpi": "<temp_dir>/terrain_tpi.tif",
+    "roughness": "<temp_dir>/terrain_roughness.tif"
+  },
+  "stats": {
+    "slope": {
+      "min": 0.0,
+      "max": 85.76124984176325,
+      "mean": 19.28970881783951
+    },
+    "aspect": {
+      "min": 0.0,
+      "max": 359.9507425512539,
+      "mean": 178.88502825822573
+    },
+    "curvature": {
+      "min": -220.82906115069125,
+      "max": 401.6926474215162,
+      "mean": -0.01631739309960443
+    },
+    "tri": {
+      "min": 0.0,
+      "max": 580.0949349384109,
+      "mean": 11.974823920195453
+    },
+    "tpi": {
+      "min": -98.59533283174659,
+      "max": 145.02373373460273,
+      "mean": -0.008788840453391173
+    },
+    "roughness": {
+      "min": 0.0,
+      "max": 297.04746746920546,
+      "mean": 11.556356158852871
+    }
+  },
+  "units": "degrees",
+  "cell_size_m": {
+    "x": 12.017180807112608,
+    "y": 12.017180807112608,
+    "note": null
+  },
+  "shape": [
+    1675,
+    1713
+  ]
+}

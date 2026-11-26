@@ -1,0 +1,14 @@
+{
+  "tool": "ras.terrain",
+  "inputs": [
+    "ras.reproject 输出的 UTM DEM（12 m 像元，日本山区整景）"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "上：输入高程；下：一次算出的 6 个地形因子",
+  "note": "与 `ras.slope` 的关键差别：这里按**米**算，并在内部把经纬度的度换算成米；坡度用 Horn 3×3（同 GDAL gdaldem），曲率用 Zevenbergen–Thorne，TRI 用 Riley。",
+  "status": "real",
+  "wall_time_s": 4.68
+}

@@ -1,0 +1,24 @@
+{
+  "tool": "ras.flow",
+  "paths": {
+    "filled": "<temp_dir>/flow_filled.tif",
+    "flow_direction": "<temp_dir>/flow_direction.tif",
+    "flow_accumulation": "<temp_dir>/flow_accumulation.tif",
+    "river": "<temp_dir>/flow_river.tif"
+  },
+  "stats": {
+    "max_accumulation": 699036.0,
+    "outlet_count": 418,
+    "filled_cells": 45682,
+    "river_cells": 16593
+  },
+  "cell_size_m": {
+    "x": 12.017180807112608,
+    "y": 12.017180807112608,
+    "note": null
+  },
+  "shape": [
+    900,
+    900
+  ]
+}

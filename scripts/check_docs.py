@@ -25,14 +25,17 @@ def main() -> int:
     tools = json.loads((INDEX / "tools.json").read_text(encoding="utf-8"))
     folder_of = dict(content.DOMAINS)
 
-    # 1. 件数与域分布
-    if len(tools) != 108:
-        errors.append(f"tools.json 应有 108 件，实为 {len(tools)}")
+    # 1. 件数与域分布：上游 108 + 本地扩展
+    n_ext = sum(1 for t in tools if t.get("origin") == "extension")
+    if len(tools) - n_ext != 108:
+        errors.append(f"上游工具应为 108 件，实为 {len(tools) - n_ext}")
+    if n_ext == 0:
+        errors.append("没有识别到本地扩展工具（origin=extension）")
     per_dom = {}
     for t in tools:
         per_dom[t["domain"]] = per_dom.get(t["domain"], 0) + 1
-    if sum(per_dom.values()) != 108:
-        errors.append(f"域名分布合计 {sum(per_dom.values())}，应为 108")
+    if sum(per_dom.values()) != len(tools):
+        errors.append(f"域名分布合计 {sum(per_dom.values())}，应为 {len(tools)}")
     for key, _ in content.DOMAINS:
         if key not in per_dom:
             errors.append(f"域 {key} 没有工具")
@@ -116,7 +119,7 @@ def main() -> int:
     if no_note:
         warns.append(f"{len(no_note)} 件仅有通用边界说明：{', '.join(no_note[:6])} …")
 
-    print(f"工具页 {pages}/108；相对链接 {n_links} 条；域 {len(per_dom)} 个")
+    print(f"工具页 {pages}/{len(tools)}（上游 108 + 扩展 {n_ext}）；相对链接 {n_links} 条；域 {len(per_dom)} 个")
     print(f"警告 {len(warns)} 条")
     for w in warns[:5]:
         print("  ! " + w)

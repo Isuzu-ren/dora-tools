@@ -283,6 +283,9 @@ def render_example(t: dict, folder: str) -> list[str]:
 
 def render_tool(t: dict, folder: str, folder_by_tool: dict | None = None) -> str:
     lines = [f"# `{t['name']}`", ""]
+    if t.get("origin") == "extension":
+        lines += ["> ★ **本地扩展**：本件不在上游 DORA 的 108 件之内，由本仓库新增"
+                  "（`src/dora/tools/terrain.py`），实现依据见页末「已知坑」。", ""]
     if t["relevance"] in ("○", "★") and t["domain"] == "other":
         lines += ["> **与本项目无关**：本件不在水旱预警链路上，保留仅为台账完整（108 件与上游一致）。", ""]
     if t["desc_cn"]:
@@ -410,12 +413,15 @@ def render_domain(key: str, folder: str, tools: list[dict]) -> str:
 
 
 def render_index_md(tools: list[dict]) -> str:
-    lines = ["# 108 件工具总表", "",
+    n_ext = sum(1 for t in tools if t.get("origin") == "extension")
+    lines = [f"# {len(tools)} 件工具总表", "",
+             f"其中上游 DORA {len(tools) - n_ext} 件，本仓库新增 {n_ext} 件（标 ★）。",
              "按功能域排序。完整字段见 `index/tools.json`，可交互版本见 `index/index.html`。", "",
              "| # | 域 | 工具 | 相关性 | 可迁移性 | 用途 |", "|---:|---|---|---|---|---|"]
     folder_of = dict(content.DOMAINS)
     for i, t in enumerate(tools, 1):
-        lines.append(f"| {i} | {folder_of[t['domain']]} | [`{t['name']}`](../docs/{folder_of[t['domain']]}/{t['name']}.md) "
+        mark = " ★" if t.get("origin") == "extension" else ""
+        lines.append(f"| {i} | {folder_of[t['domain']]} | [`{t['name']}`](../docs/{folder_of[t['domain']]}/{t['name']}.md){mark} "
                      f"| {t['relevance']} | {t['transfer']} | {esc(t['desc_cn'])} |")
     return "\n".join(lines) + "\n"
 
@@ -424,7 +430,7 @@ HTML_TPL = """<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>DORA 工具库 · 108 件</title>
+<title>DORA 工具库 · {n_total} 件</title>
 <style>
   :root {{ --bd:#d8dee6; --fg:#1f2328; --mut:#5b6673; --bg:#fbfcfd; --hl:#0b5cad; }}
   * {{ box-sizing:border-box; }}
@@ -472,7 +478,7 @@ HTML_TPL = """<!DOCTYPE html>
 </head>
 <body>
 <header>
-  <h1>DORA 工具库 · 108 件</h1>
+  <h1>DORA 工具库 · {n_total} 件</h1>
   <div class="bar">
     <input id="q" type="search" placeholder="搜索工具名、用途、参数…（如 淹没 / buffer / 面积）" autofocus>
     <select id="dom">{options}</select>
@@ -643,14 +649,16 @@ def render_html(tools: list[dict]) -> str:
             "ex": example_payload(t, folder_of[t["domain"]]),
         })
     domains = {k: v for k, v in content.DOMAINS}
-    return (HTML_TPL.replace("{options}", opts)
+    return (HTML_TPL.replace("{n_total}", str(len(tools)))
+            .replace("{options}", opts)
             .replace("{data}", json.dumps(data, ensure_ascii=False))
             .replace("{domains}", json.dumps(domains, ensure_ascii=False)))
 
 
 README_TPL = """# DORA 工具库 · 可读版
 
-把 DORA 的 **108 件 MCP 工具**按功能域重新组织成一套中文说明，附一份与上游一致的代码副本。
+把 DORA 的 **108 件上游 MCP 工具**按功能域重新组织成一套中文说明，附一份与上游一致的代码副本；
+另**新增 3 件地形工具**（`ras.terrain` / `ras.flow` / `ras.contour`），单独标注、不改上游任何一行。
 
 > 上游项目：DORA: Can LLM Agents Respond to Disasters?（NeurIPS 2026）
 > 本仓库只做「整理与说明」，**不改动工具实现**；代码位于 `src/`，与上游逐字一致。
@@ -660,14 +668,14 @@ README_TPL = """# DORA 工具库 · 可读版
 | 想做什么 | 入口 |
 |---|---|
 | 快速找工具 | 打开 [`index/index.html`](index/index.html)，按关键词或域筛选（双击即可，无需联网） |
-| 看总表 | [`index/INDEX.md`](index/INDEX.md) —— 108 行，按域排序 |
+| 看总表 | [`index/INDEX.md`](index/INDEX.md) —— 111 行，按域排序 |
 | 读某件工具 | [`docs/`](docs/) —— 9 个功能域，每域一个 README + 每工具一页 |
 | 看实际效果 | 每页的「示例」段：真实输入的预览图 + 工具原样返回的 JSON + 产物渲染 |
 
 ## 目录
 
 ```
-src/dora/tools/        代码副本（6 个服务模块 + 模型实现子包）
+src/dora/tools/        代码副本（6 个上游服务 + terrain.py 扩展 + 模型实现子包）
 docs/                  说明文档
   00-快速开始.md
   01-工具全景.md        两种切法、相关性与可迁移性
@@ -677,9 +685,9 @@ docs/                  说明文档
 examples/              每件工具一组「真跑出来」的示例
   <域>/<工具>/         input.json（参数）+ output.json（返回）+ 渲染图 + meta.json
 index/
-  INDEX.md             108 件总表
+  INDEX.md             111 件总表（108 上游 + 3 扩展）
   index.html           可搜索页面（单文件，无外部依赖）
-  tools.json           机器可读（108 条，含参数与返回字段）
+  tools.json           机器可读（111 条，含参数与返回字段）
 scripts/               提取、示例、生成、自检脚本
 ```
 
@@ -715,7 +723,7 @@ pip install -e ".[perception]"
 ## 更新方式
 
 1. 用上游最新代码覆盖 `src/dora/tools/`（**不要在副本里改代码**，否则与上游分叉）
-2. `python scripts/extract_tools.py` —— 重新抽取 108 件的签名与说明
+2. `python scripts/extract_tools.py` —— 重新抽取全部工具的签名与说明
 3. `python scripts/build_examples.py` —— 真跑一遍，重建 `examples/` 下的示例输入与输出
 4. `python scripts/build_docs.py` —— 重建 docs/ 与 index/
 5. 人工文案在 `scripts/content.py`（领域导语、逐工具补充、附录），重建时不会被覆盖
@@ -726,7 +734,7 @@ pip install -e ".[perception]"
 ## 重新生成文档
 
 ```bash
-python scripts/extract_tools.py     # 从源码提取 108 件 → index/tools.json
+python scripts/extract_tools.py     # 从源码提取 111 件 → index/tools.json
 python scripts/build_docs.py        # 生成 docs/ 与 index/
 python scripts/check_docs.py        # 自检：件数、参数一致性、死链
 ```

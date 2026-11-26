@@ -1,0 +1,14 @@
+{
+  "tool": "ras.contour",
+  "inputs": [
+    "UTM DEM（12 m），等高距 100 m"
+  ],
+  "figures": {
+    "in": "in.webp",
+    "out": "out.webp"
+  },
+  "caption": "红线为等高线：363 条、总长 1580 km",
+  "note": "输出是 GeoJSON，每条线带 `elevation`，可直接进 QGIS/ArcGIS 或叠加到专题图上。",
+  "status": "real",
+  "wall_time_s": 1.5
+}

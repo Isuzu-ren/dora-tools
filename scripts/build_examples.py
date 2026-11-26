@@ -1,6 +1,6 @@
 """为每件工具生成一组示例输入 / 示例输出（真跑，不手写）。
 
-    python scripts/build_examples.py             # 全部 108 件
+    python scripts/build_examples.py             # 全部工具
     python scripts/build_examples.py ras.area    # 只跑指定工具
     python scripts/build_examples.py --list      # 看哪些工具有配方
 
@@ -86,9 +86,13 @@ def to_rgb(arr: np.ndarray, order: tuple[int, ...] = (2, 1, 0),
 
 
 def to_single(arr: np.ndarray, cmap: str = "inferno") -> np.ndarray:
-    v = arr[0] if arr.ndim == 3 else arr
-    lo, hi = np.percentile(v, [2, 98])
-    n = np.clip((v - lo) / (hi - lo + 1e-6), 0, 1)
+    v = (arr[0] if arr.ndim == 3 else arr).astype(np.float64)
+    # 有 NaN（DEM 空洞、掩膜外区域）时必须用 nan 版分位数，否则整幅会算成同一个值
+    lo, hi = np.nanpercentile(v, [2, 98])
+    if not np.isfinite(lo) or not np.isfinite(hi) or hi - lo < 1e-12:
+        lo, hi = 0.0, 1.0
+    n = np.clip((v - lo) / (hi - lo), 0, 1)
+    n = np.nan_to_num(n, nan=0.0)
     import matplotlib  # noqa: PLC0415
 
     return (matplotlib.colormaps[cmap](n)[..., :3] * 255).astype(np.uint8)
@@ -604,6 +608,123 @@ def ex_hillshade(F):
                 inputs=["images/landslide4sense/Japan_all_14_dem.tif"],
                 caption="山体阴影（315° 方位、45° 高度角）",
                 note="只影响观感，不改变高程；做地形晕渲或叠加专题图时用。")
+
+
+def _proj_dem(F) -> Path:
+    """投影到 UTM 54N 的 DEM；坡向、汇流、等高线这类按米算的工具都用它。"""
+    proj = WORK / "tmp" / "reprojected.tif"
+    if not proj.exists():
+        E("ras.reproject")(str(F["dem"]), "EPSG:32654")
+    return proj
+
+
+def _grid(panels: list[tuple[str, np.ndarray]], cols: int = 3) -> np.ndarray:
+    """带标题的等宽拼图，用来一次展示多个派生量。"""
+    tiles = []
+    for title, rgb in panels:
+        im = Image.fromarray(rgb)
+        im.thumbnail((420, 420), Image.LANCZOS)
+        canvas = Image.new("RGB", (im.width, im.height + 20), (255, 255, 255))
+        canvas.paste(im, (0, 20))
+        ImageDraw.Draw(canvas).text((6, 4), title, fill=(25, 25, 25))
+        tiles.append(canvas)
+    tw = max(t.width for t in tiles)
+    th = max(t.height for t in tiles)
+    rows = (len(tiles) + cols - 1) // cols
+    out = Image.new("RGB", (tw * cols + 8 * (cols - 1), th * rows + 8 * (rows - 1)), (255, 255, 255))
+    for i, t in enumerate(tiles):
+        out.paste(t, ((i % cols) * (tw + 8), (i // cols) * (th + 8)))
+    return np.array(out)
+
+
+@example("ras.terrain")
+def ex_terrain(F):
+    proj = _proj_dem(F)
+    attrs = "slope,aspect,curvature,tri,tpi,roughness"
+    args = {"dem_path": str(proj), "attributes": attrs, "units": "degrees"}
+    res = run_tool(E("ras.terrain"), **args)
+    # 曲率与 TPI 以 0 为中心，用「零值偏暗」的发散色带，平地才不会糊成一片白
+    cmaps = {"slope": "inferno", "aspect": "hsv", "curvature": "berlin",
+             "tri": "viridis", "tpi": "berlin", "roughness": "magma"}
+    titles = {"slope": "slope (deg)", "aspect": "aspect (deg from N)", "curvature": "curvature (1/100m)",
+              "tri": "TRI", "tpi": "TPI", "roughness": "roughness (m)"}
+    def enhance(a: np.ndarray) -> np.ndarray:
+        """曲率与 TPI 绝大多数像元贴着 0，直接线性拉伸会一片灰；先做符号平方根。"""
+        return np.sign(a) * np.sqrt(np.abs(a))
+
+    panels = []
+    for k in attrs.split(","):
+        band = read_bands(res["paths"][k])
+        if k in ("curvature", "tpi"):
+            band = enhance(band)
+        panels.append((titles[k], to_single(band, cmaps[k])))
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(proj), "terrain"),
+                         "out": _grid(panels)},
+                inputs=["ras.reproject 输出的 UTM DEM（12 m 像元，日本山区整景）"],
+                caption="上：输入高程；下：一次算出的 6 个地形因子",
+                note="与 `ras.slope` 的关键差别：这里按**米**算，并在内部把经纬度的度换算成米；"
+                     "坡度用 Horn 3×3（同 GDAL gdaldem），曲率用 Zevenbergen–Thorne，TRI 用 Riley。")
+
+
+@example("ras.flow")
+def ex_flow(F):
+    import rasterio  # noqa: PLC0415
+    from rasterio.windows import Window  # noqa: PLC0415
+
+    proj = _proj_dem(F)
+    crop = WORK / "tmp" / "dem_flow_crop.tif"
+    if not crop.exists():
+        with rasterio.open(proj) as src:
+            win = Window(400, 400, 900, 900)
+            data = src.read(1, window=win)
+            prof = src.profile.copy()
+            prof.update(height=900, width=900, transform=src.window_transform(win))
+        with rasterio.open(crop, "w", **prof) as dst:
+            dst.write(data, 1)
+
+    args = {"dem_path": str(crop), "river_threshold": 800}
+    res = run_tool(E("ras.flow"), **args)
+    acc = read_bands(res["paths"]["flow_accumulation"])
+    filled = read_bands(res["paths"]["filled"]) if "filled" in res["paths"] else read_bands(crop)
+    river = read_bands(res["paths"]["river"]) if "river" in res["paths"] else None
+    base = to_single(filled, "terrain")
+    if river is not None:
+        base = base.copy()
+        base[river[0] > 0] = (60, 170, 255)
+    panels = [("filled DEM + river", base),
+              ("log10 flow accumulation", to_single(np.log10(acc + 1.0), "inferno"))]
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(crop), "terrain"), "out": _grid(panels, cols=2)},
+                inputs=["同一 DEM 的 900×900 子区（EPSG:32654）"],
+                caption="左：填洼后的地形，蓝色为汇流量 ≥800 的河段；右：汇流累积（对数）",
+                note="先填洼再定流向：不填洼的话，每一个小坑都会变成假的水系断点。"
+                     "给定出水口用同样的汇流面反查，就是流域边界。")
+
+
+@example("ras.contour")
+def ex_contour(F):
+    proj = _proj_dem(F)
+    args = {"dem_path": str(proj), "interval": 100.0}
+    res = run_tool(E("ras.contour"), **args)
+
+    hs = json.loads(E("ras.hillshade")(str(proj), 315, 45))
+    hs_path = next((v for k, v in hs.items() if k.endswith("_path") and v), None)
+    base = to_single(read_bands(hs_path), "gray") if hs_path else to_single(read_bands(proj), "gray")
+    img = Image.fromarray(base).convert("RGB")
+    draw = ImageDraw.Draw(img)
+    gj = json.loads(Path(res["out_path"]).read_text(encoding="utf-8"))
+    with rasterio.open(proj) as src:
+        inv = ~src.transform
+    for feat in gj["features"]:
+        pts = [tuple(inv * (x, y)) for x, y in feat["geometry"]["coordinates"]]
+        if len(pts) > 1:
+            draw.line([(c, r) for c, r in pts], fill=(220, 40, 40), width=2)
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(proj), "terrain"), "out": np.array(img)},
+                inputs=["UTM DEM（12 m），等高距 100 m"],
+                caption=f"红线为等高线：{res['n_lines']} 条、总长 {res['total_length_m'] / 1000:.0f} km",
+                note="输出是 GeoJSON，每条线带 `elevation`，可直接进 QGIS/ArcGIS 或叠加到专题图上。")
 
 
 @example("ras.vectorize")

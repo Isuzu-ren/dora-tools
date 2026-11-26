@@ -1,0 +1,5 @@
+{
+  "dem_path": "<temp_dir>/reprojected.tif",
+  "attributes": "slope,aspect,curvature,tri,tpi,roughness",
+  "units": "degrees"
+}

@@ -19,7 +19,22 @@ SRC = ROOT / "src" / "dora" / "tools"
 APPENDIX = Path("D:/research/DORA/my/DORA_工具清单与水旱项目相关性评估.md")
 OUT = ROOT / "index" / "tools.json"
 
-MODULES = ["perception", "analysis", "calculate", "vis", "poi", "model"]
+MODULES = ["perception", "analysis", "calculate", "vis", "poi", "model", "terrain"]
+
+# 本仓库在上游 108 件之外新增的工具：上游清单里没有它们，标签在此手工给出。
+# origin=extension 会写进 tools.json，文档据此加「本地扩展」标注。
+EXTENSION_MODULES = {"terrain"}
+EXTRA_META = {
+    "ras.terrain": {"relevance": "★★★", "transfer": "A",
+                    "usage": "一次出坡度/坡向/曲率/TRI/TPI/粗糙度，地形地貌分析的地基",
+                    "dep": "numpy"},
+    "ras.flow": {"relevance": "★★★", "transfer": "A",
+                 "usage": "填洼→流向→汇流，流域提取与洪水演进的前置",
+                 "dep": "numpy"},
+    "ras.contour": {"relevance": "★★", "transfer": "A",
+                    "usage": "等高线出图、坡度分级底图",
+                    "dep": "skimage"},
+}
 
 # 功能域（主域唯一）。键为 MCP 工具名，值为域名 key。
 DOMAINS = [
@@ -51,7 +66,7 @@ assign("asset",
        "seg.building_intact_aerial", "seg.building_damage_aerial",
        "seg.building_destroyed_aerial", "seg.road_intact_aerial")
 assign("terrain", "seg.landslide_ms", "seg.landslide_bitemporal", "seg.vegetation",
-       "ras.slope", "ras.hillshade")
+       "ras.slope", "ras.hillshade", "ras.terrain", "ras.flow", "ras.contour")
 assign("other",
        "seg.lava", "seg.plane", "seg.ship", "seg.vehicle", "seg.pool_aerial",
        "seg.swimming_pool", "seg.playground", "seg.roundabout",
@@ -156,6 +171,9 @@ def main() -> int:
     app = parse_appendix()
     for t in tools:
         meta = app.get(t["name"], {})
+        t["origin"] = "extension" if t["module"] in EXTENSION_MODULES else "upstream"
+        if t["origin"] == "extension":
+            meta = {**EXTRA_META.get(t["name"], {}), **meta}
         t["relevance"] = meta.get("relevance")
         t["transfer"] = meta.get("transfer")
         t["usage"] = meta.get("usage")

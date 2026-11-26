@@ -62,7 +62,35 @@ def main() -> int:
         print("面积不符，冒烟测试失败")
         return 1
 
-    print("\n冒烟测试通过：纯算法工具链可用（未涉及任何模型权重）。")
+    print("\n③ ras.terrain / ras.contour：在 10% 均匀斜坡上验证坡度与等高线")
+    import math
+
+    from dora.tools.terrain import ras_contour, ras_terrain
+
+    dem = TMP / "dem.tif"
+    ramp = np.tile(np.arange(64, dtype=np.float64) * 1.0, (64, 1))  # 每像元升 1 m，10 m 像元 → 10%
+    with rasterio.open(dem, "w", driver="GTiff", height=64, width=64, count=1,
+                       dtype="float32", crs="EPSG:32650",
+                       transform=Affine(10.0, 0, 500000, 0, -10.0, 3000000)) as ds:
+        ds.write(ramp.astype("float32"), 1)
+
+    r3 = json.loads(ras_terrain(str(dem), attributes="slope"))
+    print(json.dumps(r3, ensure_ascii=False, indent=2))
+    if r3.get("error"):
+        print("地形因子计算失败")
+        return 1
+    want = math.degrees(math.atan(0.1))
+    if abs(r3["stats"]["slope"]["mean"] - want) > 0.5:
+        print(f"坡度均值应约 {want:.2f}°，实得 {r3['stats']['slope']['mean']:.2f}°")
+        return 1
+
+    r4 = json.loads(ras_contour(str(dem), interval=20.0))
+    if r4.get("error") or r4.get("n_lines", 1) < 2:
+        print("等高线生成失败")
+        return 1
+    print(f"\n等高线 {r4['n_lines']} 条，高程 {r4['levels']}")
+
+    print("\n冒烟测试通过：阈值→面积、地形因子、等高线三条链可用（未涉及任何模型权重）。")
     return 0
 
 

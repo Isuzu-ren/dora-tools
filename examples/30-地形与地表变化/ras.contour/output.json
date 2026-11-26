@@ -1,0 +1,17 @@
+{
+  "tool": "ras.contour",
+  "out_path": "<temp_dir>/contour.geojson",
+  "n_lines": 363,
+  "levels": [
+    100.0,
+    200.0,
+    300.0,
+    "…（共 4 条，此处省略）"
+  ],
+  "total_length_m": 1579690.7,
+  "interval": 100.0,
+  "elevation_range": [
+    12.0,
+    482.0
+  ]
+}
