@@ -6039,7 +6039,7 @@
     "func": "ras_catchment",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 424,
+    "lineno": 601,
     "loc": 283,
     "signature": "dem_path: str, pour_points: Optional[str]=None, pour_crs: str='same', snap_radius_m: float=0.0, min_area_cells: int=1, simplify_m: float=0.0, out_dir: Optional[str]=None, out_geojson: Optional[str]=None",
     "params": [
@@ -6199,7 +6199,7 @@
     "func": "ras_contour",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 728,
+    "lineno": 905,
     "loc": 68,
     "signature": "dem_path: str, interval: float, base: Optional[float]=None, min_length: float=0.0, out_path: Optional[str]=None",
     "params": [
@@ -6319,7 +6319,7 @@
     "func": "ras_flow",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 330,
+    "lineno": 507,
     "loc": 45,
     "signature": "dem_path: str, fill: bool=True, epsilon: float=0.0001, river_threshold: Optional[int]=None, out_dir: Optional[str]=None",
     "params": [
@@ -6428,6 +6428,145 @@
       "ras.contour",
       "ras.vectorize",
       "vec.raster_stats"
+    ]
+  },
+  {
+    "name": "ras.geomorphons",
+    "func": "ras_geomorphons",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 306,
+    "loc": 64,
+    "signature": "dem_path: str, search_distance: int=10, flatness_deg: float=1.0, skip_distance: int=0, return_pattern: bool=False, out_dir: Optional[str]=None",
+    "params": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "search_distance",
+        "type": "int",
+        "required": false,
+        "default": "10"
+      },
+      {
+        "name": "flatness_deg",
+        "type": "float",
+        "required": false,
+        "default": "1.0"
+      },
+      {
+        "name": "skip_distance",
+        "type": "int",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "name": "return_pattern",
+        "type": "bool",
+        "required": false,
+        "default": "False"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nClassify every DEM cell into one of the ten common landform units - flat, peak, ridge,\nshoulder, spur, slope, hollow, footslope, valley, pit - using the geomorphon method of\nJasiewicz & Stepinski (2013). Terrain is read as a pattern, not as derivatives: from each cell\neight rays are cast and each records whether the visible horizon rises above or falls below\nit; that 8-symbol pattern names the landform. The result is categorical and scale-explicit:\nsearch_distance sets the size of the landform, so a ridge at 100 m is a slope at 2 km.\n\nParameters:\n- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres\n- search_distance (int, optional): Look-out radius in cells (default 10); sets the landform size\n- flatness_deg (float, optional): Angle in degrees below which a ray counts as level (default 1)\n- skip_distance (int, optional): Ignore this many cells next to the centre, to suppress noise (default 0)\n- return_pattern (bool, optional): Also write the ternary pattern code per cell, for diagnosis\n- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory\n\nReturns:\n- path (str): Categorical raster, values 1-10\n- classes (dict): code -> name\n- share (dict): fraction of valid cells in each class\n- pattern_path (str): present only when return_pattern is true\n- cell_size_m (dict): Cell size used (degrees are converted to metres)",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★★",
+    "transfer": "A",
+    "usage": "10 类地貌单元分类，地貌分区与易发性解释变量",
+    "dep": "numpy",
+    "domain": "terrain",
+    "has_try": true,
+    "desc_cn": "10 类地貌单元分类，地貌分区与易发性解释变量",
+    "desc_raw": "Classify every DEM cell into one of the ten common landform units - flat, peak, ridge, shoulder, spur, slope, hollow, footslope, valley, pit - using the geomorphon method of Jasiewicz & Stepinski (2013). Terrain is read as a pattern, not as derivatives: from each cell eight rays are cast and each records whether the visible horizon rises above or falls below it; that 8-symbol pattern names the landform. The result is categorical and scale-explicit: search_distance sets the size of the landform, so a ridge at 100 m is a slope at 2 km.",
+    "params_doc": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "DEM 路径"
+      },
+      {
+        "name": "search_distance",
+        "type": "int",
+        "required": false,
+        "default": "10",
+        "desc": "Look-out radius in cells (default 10); sets the landform size"
+      },
+      {
+        "name": "flatness_deg",
+        "type": "float",
+        "required": false,
+        "default": "1.0",
+        "desc": "Angle in degrees below which a ray counts as level (default 1)"
+      },
+      {
+        "name": "skip_distance",
+        "type": "int",
+        "required": false,
+        "default": "0",
+        "desc": "Ignore this many cells next to the centre, to suppress noise (default 0)"
+      },
+      {
+        "name": "return_pattern",
+        "type": "bool",
+        "required": false,
+        "default": "False",
+        "desc": "Also write the ternary pattern code per cell, for diagnosis"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Directory for the outputs; defaults to the session temp directory"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "path",
+        "type": "str",
+        "desc": "Categorical raster, values 1-10"
+      },
+      {
+        "name": "classes",
+        "type": "dict",
+        "desc": "code -> name"
+      },
+      {
+        "name": "share",
+        "type": "dict",
+        "desc": "fraction of valid cells in each class"
+      },
+      {
+        "name": "pattern_path",
+        "type": "str",
+        "desc": "present only when return_pattern is true"
+      },
+      {
+        "name": "cell_size_m",
+        "type": "dict",
+        "desc": "Cell size used (degrees are converted to metres)"
+      }
+    ],
+    "boundary": "结果**显式依赖尺度**：同一地形在 10 格与 30 格搜索半径下，脊和谷的位置会移动、数量会变（实测 900×900 / 81 万像元，search=10 用 1.4 s、search=30 用 2.1 s）。分类也是相对的：「坡」不代表没有起伏，只是八个方向里上坡与下坡各占一半。所以没有「跑一次就定稿」的用法。",
+    "pitfall": "**不要把类别当成绝对地貌类型**。geomorphon 只描述局部八个方向的可见起伏，不含成因——河流阶地、冰碛垄、喀斯特洼地在它看来都只是「坡」或「坑」。做地貌分区时要再叠高程带、坡度带或地质图，别指望它一个顶三个。",
+    "tip": "两个参数决定结果：`search_distance` 定尺度（想要多大的地貌单元就设多大），`flatness_deg` 定「多平算平」（平原区调到 2–3° 可明显减少碎斑）。拿不准就同一块地跑两个尺度再对比，比调参猜更可靠。",
+    "related": [
+      "ras.terrain",
+      "ras.flow",
+      "ras.catchment",
+      "seg.landslide_ms"
     ]
   },
   {
@@ -6631,7 +6770,7 @@
     "func": "ras_terrain",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 119,
+    "lineno": 120,
     "loc": 74,
     "signature": "dem_path: str, attributes: Optional[str]=None, units: str='degrees', out_dir: Optional[str]=None",
     "params": [

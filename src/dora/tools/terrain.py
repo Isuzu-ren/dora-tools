@@ -1,18 +1,19 @@
 """
 Terrain server: geomorphometry tools added on top of the upstream DORA tool library.
 
-Four tools, no model weights, no new third-party dependencies beyond what DORA already
+Five tools, no model weights, no new third-party dependencies beyond what DORA already
 ships (numpy / rasterio / scikit-image / shapely):
 
-- ``ras.terrain``    — slope, aspect, curvature, TRI, TPI and roughness in one pass
-- ``ras.flow``       — depression filling (priority-flood), D8 flow direction, flow accumulation
-- ``ras.catchment``  — watershed upstream of one or more pour points, as raster + polygon
-- ``ras.contour``    — contour lines as GeoJSON
+- ``ras.terrain``      — slope, aspect, curvature, TRI, TPI and roughness in one pass
+- ``ras.geomorphons``  — the 10 common landform units from line-of-sight patterns
+- ``ras.flow``         — depression filling (priority-flood), D8 flow direction, flow accumulation
+- ``ras.catchment``    — watershed upstream of one or more pour points, as raster + polygon
+- ``ras.contour``      — contour lines as GeoJSON
 
 Conventions follow the common GIS implementations so results are comparable with GDAL
 ``gdaldem`` (Horn 3x3 for slope/aspect), Zevenbergen & Thorne (1987) for curvature,
-Riley et al. (1999) for TRI, Weiss (2001) for TPI, and Barnes et al. (2014) for the
-priority-flood depression filling.
+Riley et al. (1999) for TRI, Weiss (2001) for TPI, Barnes et al. (2014) for the
+priority-flood depression filling, and Jasiewicz & Stepinski (2013) for geomorphons.
 
 Differences from ``ras.slope`` / ``ras.hillshade`` in ``analysis.py`` (kept unchanged for
 compatibility): those use ``np.gradient`` and take ``transform.a`` as the cell size in
@@ -190,6 +191,182 @@ def ras_terrain(dem_path: str, attributes: Optional[str] = None, units: str = "d
         }, ensure_ascii=False)
     except Exception as e:
         return _error("ras.terrain", e, dem_path=dem_path, attributes=attributes)
+
+
+# Geomorphon directions, clockwise from north: (drow, dcol, is_diagonal).
+_GEOM_DIRS = [(-1, 0, False), (-1, 1, True), (0, 1, False), (1, 1, True),
+              (1, 0, False), (1, -1, True), (0, -1, False), (-1, -1, True)]
+
+GEOM_CLASSES = ("flat", "peak", "ridge", "shoulder", "spur",
+                "slope", "hollow", "footslope", "valley", "pit")
+
+
+def _shift(a: np.ndarray, dr: int, dc: int, fill: float) -> np.ndarray:
+    """Translate ``a`` by (dr, dc), filling the vacated border instead of wrapping."""
+    h, w = a.shape
+    out = np.full((h, w), fill, dtype=a.dtype)
+    rs, rd = slice(max(0, dr), h + min(0, dr)), slice(max(0, -dr), h + min(0, -dr))
+    cs, cd = slice(max(0, dc), w + min(0, dc)), slice(max(0, -dc), w + min(0, -dc))
+    out[rd, cd] = a[rs, cs]
+    return out
+
+
+def _ternary_pattern(dem: np.ndarray, xres: float, yres: float, search: int,
+                     skip: int, flat_rad: float) -> np.ndarray:
+    """8 layers of +1 / 0 / -1, one per compass direction, clockwise from north.
+
+    Follows the dual line-of-sight rule of Jasiewicz & Stepinski (2013): along each ray take
+    the steepest upward sight line (zenith) and the steepest downward one (nadir); the
+    direction is +1 when the zenith clears the nadir by more than the flatness threshold,
+    -1 when the nadir wins by that much, and 0 in between.
+    """
+    h, w = dem.shape
+    tern = np.zeros((8, h, w), dtype=np.int8)
+    for k, (dr, dc, _diag) in enumerate(_GEOM_DIRS):
+        up = np.full((h, w), -np.inf)
+        down = np.full((h, w), np.inf)
+        for n in range(skip + 1, search + 1):
+            nb = _shift(dem, dr * n, dc * n, np.nan)
+            tan = (nb - dem) / (n * math.hypot(dr * yres, dc * xres))
+            up = np.fmax(up, tan)
+            down = np.fmin(down, tan)
+        diff = np.arctan(up) - np.arctan(-down)
+        ok = np.isfinite(diff)
+        tern[k] = np.where(ok & (diff > flat_rad), 1,
+                           np.where(ok & (diff < -flat_rad), -1, 0))
+    return tern
+
+
+def _segments(layer: np.ndarray, value: int) -> np.ndarray:
+    """How many separate runs of ``value`` the 8-direction ring contains (1..4)."""
+    hit = layer == value
+    starts = (hit & ~np.roll(hit, 1, axis=0)).sum(axis=0).astype(np.int16)
+    return np.where(hit.all(axis=0), 1, starts)
+
+
+def _classify_geomorphons(n_plus: np.ndarray, n_minus: np.ndarray,
+                          seg_plus: np.ndarray, seg_minus: np.ndarray) -> np.ndarray:
+    """Map the line-of-sight pattern to the ten landform codes.
+
+    Counting rays alone cannot tell a ridge from a spur - both look down on 5-6 rays. What
+    separates them is how those rays are grouped: a ridge falls away on two opposite sides
+    (two runs), a spur on three connected sides (one run). The same pairing separates a valley
+    (two runs of rising ground) from a hollow at its head (one run).
+
+    Codes follow the common GIS convention: 1 flat, 2 peak, 3 ridge, 4 shoulder, 5 spur,
+    6 slope, 7 hollow, 8 footslope, 9 valley, 10 pit.
+    """
+    z = 8 - n_plus - n_minus
+    cls = np.full(n_plus.shape, 6, dtype=np.uint8)          # slope by default
+
+    cls[(n_plus == 0) & (n_minus == 0)] = 1                 # flat
+    cls[n_minus == 8] = 2                                   # peak
+    cls[n_plus == 8] = 10                                   # pit
+
+    high = (n_minus >= 5) & (n_minus < 8) & (n_plus <= 2)    # looks down more than it looks up
+    cls[high & (seg_minus == 1)] = 5                        # spur   - one connected drop
+    cls[high & (seg_minus >= 2)] = 3                        # ridge  - drops on two sides
+
+    low = (n_plus >= 5) & (n_plus < 8) & (n_minus <= 2)     # looks up more than it looks down
+    cls[low & (seg_plus == 1)] = 7                          # hollow - one connected rise
+    cls[low & (seg_plus >= 2)] = 9                          # valley - rises on two sides
+
+    # A near-even split is an ordinary slope; only a clear surplus names a shoulder or a
+    # footslope, otherwise the two classes swallow the whole hillside.
+    mixed = (n_plus > 0) & (n_minus > 0) & ~high & ~low
+    cls[mixed & (n_minus - n_plus >= 2)] = 4                # shoulder
+    cls[mixed & (n_plus - n_minus >= 2)] = 8                # footslope
+    return cls
+
+
+@mcp.tool(name="ras.geomorphons", description='''
+Description:
+Classify every DEM cell into one of the ten common landform units - flat, peak, ridge,
+shoulder, spur, slope, hollow, footslope, valley, pit - using the geomorphon method of
+Jasiewicz & Stepinski (2013). Terrain is read as a pattern, not as derivatives: from each cell
+eight rays are cast and each records whether the visible horizon rises above or falls below
+it; that 8-symbol pattern names the landform. The result is categorical and scale-explicit:
+search_distance sets the size of the landform, so a ridge at 100 m is a slope at 2 km.
+
+Parameters:
+- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres
+- search_distance (int, optional): Look-out radius in cells (default 10); sets the landform size
+- flatness_deg (float, optional): Angle in degrees below which a ray counts as level (default 1)
+- skip_distance (int, optional): Ignore this many cells next to the centre, to suppress noise (default 0)
+- return_pattern (bool, optional): Also write the ternary pattern code per cell, for diagnosis
+- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory
+
+Returns:
+- path (str): Categorical raster, values 1-10
+- classes (dict): code -> name
+- share (dict): fraction of valid cells in each class
+- pattern_path (str): present only when return_pattern is true
+- cell_size_m (dict): Cell size used (degrees are converted to metres)
+''')
+def ras_geomorphons(dem_path: str, search_distance: int = 10, flatness_deg: float = 1.0,
+                    skip_distance: int = 0, return_pattern: bool = False,
+                    out_dir: Optional[str] = None) -> str:
+    try:
+        import os
+
+        if search_distance < 1:
+            raise ValueError("search_distance must be >= 1")
+        if skip_distance < 0 or skip_distance >= search_distance:
+            raise ValueError("skip_distance must be >= 0 and smaller than search_distance")
+        if flatness_deg <= 0:
+            raise ValueError("flatness_deg must be positive")
+
+        dem, transform, crs, profile = _read_dem(dem_path)
+        xres, yres, note = (_cell_size_m(transform, crs) if transform is not None
+                            else (1.0, 1.0, "no georeferencing: cell size assumed to be 1 m"))
+        h, w = dem.shape
+
+        valid = np.isfinite(dem)
+        work = np.where(valid, dem, np.nan)
+
+        tern = _ternary_pattern(work, xres, yres, search_distance, skip_distance,
+                                math.radians(flatness_deg))
+        n_plus = (tern == 1).sum(axis=0).astype(np.int16)
+        n_minus = (tern == -1).sum(axis=0).astype(np.int16)
+        cls = _classify_geomorphons(n_plus, n_minus,
+                                    _segments(tern, 1), _segments(tern, -1))
+        cls[~valid] = 0
+
+        base = out_dir or str(TEMP_DIR)
+        os.makedirs(base, exist_ok=True)
+        paths: Dict[str, str] = {
+            "geomorphons": _write_raster(os.path.join(base, "geomorphons.tif"), cls, profile,
+                                         dtype="uint8"),
+        }
+
+        counts = {name: int((cls == code).sum())
+                  for code, name in enumerate(GEOM_CLASSES, start=1)}
+        total = int(valid.sum()) or 1
+
+        if return_pattern:
+            # Ternary code, base 3, direction 0 as the most significant digit.
+            code = np.zeros((h, w), dtype=np.int32)
+            for k in range(8):
+                code = code * 3 + (tern[k].astype(np.int32) + 1)
+            code[~valid] = -1
+            paths["pattern"] = _write_raster(os.path.join(base, "geomorphon_pattern.tif"),
+                                             code, profile, dtype="int32")
+
+        return json.dumps({
+            "tool": "ras.geomorphons",
+            "path": paths["geomorphons"],
+            "paths": paths,
+            "classes": {str(i): n for i, n in enumerate(GEOM_CLASSES, start=1)},
+            "share": {n: round(counts[n] / total, 4) for n in GEOM_CLASSES},
+            "counts": counts,
+            "params": {"search_distance": search_distance, "flatness_deg": flatness_deg,
+                       "skip_distance": skip_distance},
+            "cell_size_m": {"x": float(xres), "y": float(yres), "note": note},
+            "shape": [int(h), int(w)],
+        }, ensure_ascii=False)
+    except Exception as e:
+        return _error("ras.geomorphons", e, dem_path=dem_path,
+                      search_distance=search_distance, flatness_deg=flatness_deg)
 
 
 def _priority_flood(dem: np.ndarray, epsilon: float) -> Tuple[np.ndarray, int]:

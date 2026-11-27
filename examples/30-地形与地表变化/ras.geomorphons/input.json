@@ -1,0 +1,6 @@
+{
+  "dem_path": "<temp_dir>/dem_flow_crop.tif",
+  "search_distance": 10,
+  "flatness_deg": 1.0,
+  "out_dir": "<temp_dir>/geom10"
+}

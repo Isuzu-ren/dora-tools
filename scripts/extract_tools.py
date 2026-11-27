@@ -37,6 +37,9 @@ EXTRA_META = {
     "ras.catchment": {"relevance": "★★★", "transfer": "A",
                       "usage": "给定出水口反查上游汇水区，洪水预报的单元划分",
                       "dep": "numpy / shapely"},
+    "ras.geomorphons": {"relevance": "★★★", "transfer": "A",
+                        "usage": "10 类地貌单元分类，地貌分区与易发性解释变量",
+                        "dep": "numpy"},
 }
 
 # 功能域（主域唯一）。键为 MCP 工具名，值为域名 key。
@@ -70,7 +73,7 @@ assign("asset",
        "seg.building_destroyed_aerial", "seg.road_intact_aerial")
 assign("terrain", "seg.landslide_ms", "seg.landslide_bitemporal", "seg.vegetation",
        "ras.slope", "ras.hillshade", "ras.terrain", "ras.flow", "ras.contour",
-       "ras.catchment")
+       "ras.catchment", "ras.geomorphons")
 assign("other",
        "seg.lava", "seg.plane", "seg.ship", "seg.vehicle", "seg.pool_aerial",
        "seg.swimming_pool", "seg.playground", "seg.roundabout",

@@ -682,6 +682,59 @@ def _flow_crop(F) -> Path:
     return crop
 
 
+GEOM_COLORS = {1: (232, 230, 223), 2: (150, 40, 40), 3: (198, 74, 44), 4: (226, 145, 60),
+               5: (240, 196, 120), 6: (176, 196, 158), 7: (110, 190, 165), 8: (140, 175, 215),
+               9: (48, 105, 175), 10: (20, 45, 90)}
+
+
+def _geom_overlay(cls: np.ndarray, shade: np.ndarray, dim: float = 0.22) -> np.ndarray:
+    """地貌分类上色后压一层山影，类别之外（0）保持黑色。"""
+    rgb = np.zeros((*cls.shape, 3), np.uint8)
+    for k, c in GEOM_COLORS.items():
+        rgb[cls == k] = c
+    out = (rgb * (1 - dim) + shade[..., None] * dim).astype(np.uint8)
+    out[cls == 0] = 0
+    return out
+
+
+def _shade_of(path: Path) -> np.ndarray:
+    hs = json.loads(E("ras.hillshade")(str(path), 315, 45))
+    hs_path = next(v for k, v in hs.items() if k.endswith("_path") and v)
+    return to_single(read_bands(hs_path), "gray")[..., 0]      # 灰度单通道，供叠加用
+
+
+@example("ras.geomorphons")
+def ex_geomorphons(F):
+    crop = _flow_crop(F)
+    shade = _shade_of(crop)
+
+    out10 = WORK / "tmp" / "geom10"
+    out30 = WORK / "tmp" / "geom30"
+    args = {"dem_path": str(crop), "search_distance": 10, "flatness_deg": 1.0,
+            "out_dir": str(out10)}
+    res = run_tool(E("ras.geomorphons"), **args)
+    res30 = run_tool(E("ras.geomorphons"), dem_path=str(crop), search_distance=30,
+                     flatness_deg=1.0, out_dir=str(out30))
+
+    cls10 = read_bands(res["path"])[0].astype(int)
+    cls30 = read_bands(res30["path"])[0].astype(int)
+
+    top = sorted(res["share"].items(), key=lambda kv: -kv[1])[:3]
+    panels = [("hillshade", shade),
+              ("geomorphons, search 10 cells", _geom_overlay(cls10, shade)),
+              ("geomorphons, search 30 cells", _geom_overlay(cls30, shade))]
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(crop), "terrain"), "out": _grid(panels)},
+                inputs=["同一块 900×900 子区（EPSG:32654，像元 12 m），两个搜索半径"],
+                caption=(f"中：10 格（约 120 m）尺度，坡面 "
+                         f"{res['share']['slope'] * 100:.0f}%、谷 {res['share']['valley'] * 100:.1f}%；"
+                         f"右：30 格（约 360 m）尺度，同一地形被归并成更大的单元"),
+                note=("地貌分类没有「正确答案」，只有「什么尺度上的答案」：`search_distance` 定多大，"
+                      f"被认作脊和谷的东西就多大。这张图里 10 格尺度下前三类是 "
+                      f"{'、'.join(k for k, _ in top)}；放到 30 格，支沟被合并，坡面比例上升、"
+                      "谷和脊的位置往外移。换个尺度再跑一遍，是这类工具的正确用法。"))
+
+
 @example("ras.flow")
 def ex_flow(F):
     crop = _flow_crop(F)

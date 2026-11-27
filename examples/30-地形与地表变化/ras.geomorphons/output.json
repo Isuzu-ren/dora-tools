@@ -1,0 +1,57 @@
+{
+  "tool": "ras.geomorphons",
+  "path": "<temp_dir>/geom10/geomorphons.tif",
+  "paths": {
+    "geomorphons": "<temp_dir>/geom10/geomorphons.tif"
+  },
+  "classes": {
+    "1": "flat",
+    "2": "peak",
+    "3": "ridge",
+    "4": "shoulder",
+    "5": "spur",
+    "6": "slope",
+    "7": "hollow",
+    "8": "footslope",
+    "9": "valley",
+    "10": "pit"
+  },
+  "share": {
+    "flat": 0.0,
+    "peak": 0.0157,
+    "ridge": 0.012,
+    "shoulder": 0.1577,
+    "spur": 0.1486,
+    "slope": 0.3691,
+    "hollow": 0.1378,
+    "footslope": 0.1251,
+    "valley": 0.02,
+    "pit": 0.0139
+  },
+  "counts": {
+    "flat": 28,
+    "peak": 12725,
+    "ridge": 9760,
+    "shoulder": 127768,
+    "spur": 120404,
+    "slope": 298933,
+    "hollow": 111642,
+    "footslope": 101300,
+    "valley": 16167,
+    "pit": 11273
+  },
+  "params": {
+    "search_distance": 10,
+    "flatness_deg": 1.0,
+    "skip_distance": 0
+  },
+  "cell_size_m": {
+    "x": 12.017180807112608,
+    "y": 12.017180807112608,
+    "note": null
+  },
+  "shape": [
+    900,
+    900
+  ]
+}

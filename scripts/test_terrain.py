@@ -211,5 +211,47 @@ from shapely.geometry import shape as _shape  # noqa: E402
 pa_km2 = _shape(gj["features"][0]["geometry"]).area / 1e6
 check("多边形面积 ≈ 0.4096 km²", abs(pa_km2 - 0.4096) / 0.4096 < 0.01, f"{pa_km2:.4f}")
 
+print("\n[13] 地貌分类：平地 / 锥顶 / 坑底 / 脊线 / 谷线 / 均匀坡面，逐类核对中心像元")
+rr_, cc_ = np.mgrid[0:N, 0:N]
+gcases = {
+    "g_flat": (np.full((N, N), 100.0), 1),          # 全平
+    "g_cone": (300 - np.hypot(rr_ - 32, cc_ - 32) * 3.0, 2),      # 峰
+    "g_pit": (np.hypot(rr_ - 32, cc_ - 32) * 3.0, 10),            # 坑
+    "g_ridge": (100 - np.abs(cc_ - 32) * 1.0, 3),   # 东西向山脊，脊线在 col=32
+    "g_valley": (100 + np.abs(cc_ - 32) * 1.0, 9),  # 东西向谷，谷底在 col=32
+    "g_ramp": (cc_ * 1.0, 6),                       # 均匀向东升高
+}
+for gname, (gdem, want) in gcases.items():
+    gd = load(T.ras_geomorphons(write_dem(gname, gdem), search_distance=8,
+                                out_dir=str(TMP / gname)))
+    with rasterio.open(gd["path"]) as s:
+        garr = s.read(1)
+    got = int(garr[32, 32])
+    check(f"{gname[2:]} 中心像元 = {T.GEOM_CLASSES[want - 1]}",
+          got == want, f"得 {T.GEOM_CLASSES[got - 1] if 1 <= got <= 10 else got}")
+    check(f"{gname[2:]} 类别码落在 1..10",
+          set(np.unique(garr[garr > 0]).tolist()) <= set(range(1, 11)),
+          str(np.unique(garr)))
+
+print("\n[14] 地貌分类：参数校验、DEM 空洞、三元模式输出")
+gbad = json.loads(T.ras_geomorphons(vp, search_distance=0))
+check("search_distance=0 返回 error", "error" in gbad, str(gbad)[:60])
+gbad2 = json.loads(T.ras_geomorphons(vp, search_distance=5, skip_distance=5))
+check("skip_distance >= search_distance 返回 error", "error" in gbad2, str(gbad2)[:60])
+
+ghole = vv.copy()
+ghole[20:30, 20:30] = np.nan
+gd = load(T.ras_geomorphons(write_dem("g_hole", ghole), search_distance=8,
+                            out_dir=str(TMP / "g_hole")))
+with rasterio.open(gd["path"]) as s:
+    harr = s.read(1)
+check("空洞处输出 0", bool((harr[20:30, 20:30] == 0).all()), str(np.unique(harr[20:30, 20:30])))
+check("空洞外全是有效类别", bool((harr[10:15, 10:15] > 0).all()))
+
+gp = load(T.ras_geomorphons(vp, search_distance=8, return_pattern=True,
+                            out_dir=str(TMP / "g_pat")))
+check("return_pattern 写出模式栅格", Path(gp["paths"]["pattern"]).exists(), str(gp["paths"]))
+check("share 之和为 1", abs(sum(gp["share"].values()) - 1.0) < 0.01, str(sum(gp["share"].values())))
+
 print(f"\n{'='*46}\n通过 {ok}，失败 {failed}\n")
 raise SystemExit(1 if failed else 0)

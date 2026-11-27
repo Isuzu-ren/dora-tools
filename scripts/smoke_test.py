@@ -109,7 +109,19 @@ def main() -> int:
         print(f"面积不符：{outlet['area_km2']}")
         return 1
 
-    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取四条链可用（未涉及任何模型权重）。")
+    print("\n⑤ ras.geomorphons：均匀坡面上应以「坡」为主")
+    from dora.tools.terrain import ras_geomorphons
+
+    r6 = json.loads(ras_geomorphons(str(dem), search_distance=5))
+    if r6.get("error"):
+        print("地貌分类失败")
+        return 1
+    if r6["share"]["slope"] < 0.5:
+        print(f"均匀坡面上 slope 占比应过半，实得 {r6['share']['slope']:.2f}")
+        return 1
+    print(f"\nslope 占 {r6['share']['slope'] * 100:.0f}%，共 {len(r6['classes'])} 类")
+
+    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取、地貌分类五条链可用（未涉及任何模型权重）。")
     return 0
 
 
