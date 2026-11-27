@@ -222,61 +222,54 @@ def _ternary_pattern(dem: np.ndarray, xres: float, yres: float, search: int,
     """
     h, w = dem.shape
     tern = np.zeros((8, h, w), dtype=np.int8)
+    # The radius is a real distance, as in r.geomorphon: a diagonal ray covers sqrt(2) more
+    # ground per step, so it reaches the radius after fewer steps than a straight one.
+    search_m = search * yres
     for k, (dr, dc, _diag) in enumerate(_GEOM_DIRS):
         up = np.full((h, w), -np.inf)
         down = np.full((h, w), np.inf)
+        step_m = math.hypot(dr * yres, dc * xres)
         for n in range(skip + 1, search + 1):
+            dist = n * step_m
+            if dist >= search_m:
+                break
             nb = _shift(dem, dr * n, dc * n, np.nan)
-            tan = (nb - dem) / (n * math.hypot(dr * yres, dc * xres))
+            tan = (nb - dem) / dist
             up = np.fmax(up, tan)
             down = np.fmin(down, tan)
-        diff = np.arctan(up) - np.arctan(-down)
-        ok = np.isfinite(diff)
-        tern[k] = np.where(ok & (diff > flat_rad), 1,
-                           np.where(ok & (diff < -flat_rad), -1, 0))
+        # Same decision as the anglev1 mode of r.geomorphon: each line of sight is tested
+        # against the threshold on its own, and when both clear it the steeper one wins.
+        zen = np.arctan(up)
+        nad = np.arctan(-down)
+        tern[k] = np.where((zen > flat_rad) & (nad > flat_rad), np.where(zen > nad, 1, -1),
+                           np.where(zen > flat_rad, 1,
+                                    np.where(nad > flat_rad, -1, 0)))
     return tern
 
 
-def _segments(layer: np.ndarray, value: int) -> np.ndarray:
-    """How many separate runs of ``value`` the 8-direction ring contains (1..4)."""
-    hit = layer == value
-    starts = (hit & ~np.roll(hit, 1, axis=0)).sum(axis=0).astype(np.int16)
-    return np.where(hit.all(axis=0), 1, starts)
+# The classification table published with r.geomorphon (legend.png in the module): rows are
+# the number of rays looking down (-), columns the number looking up (+). Only the upper
+# triangle is defined, since the two counts can never sum past 8. Classes:
+# 1 flat, 2 peak, 3 ridge, 4 shoulder, 5 spur, 6 slope, 7 hollow, 8 footslope, 9 valley, 10 pit.
+_GEOM_TABLE = (
+    (1, 1, 1, 8, 8, 9, 9, 9, 10),      # 0 rays down
+    (1, 1, 8, 8, 8, 9, 9, 9),          # 1
+    (1, 4, 6, 6, 7, 7, 9),             # 2
+    (4, 4, 6, 6, 6, 7),                # 3
+    (4, 4, 5, 6, 6),                   # 4
+    (3, 3, 5, 5),                      # 5
+    (3, 3, 3),                         # 6
+    (3, 3),                            # 7
+    (2,),                              # 8
+)
 
 
-def _classify_geomorphons(n_plus: np.ndarray, n_minus: np.ndarray,
-                          seg_plus: np.ndarray, seg_minus: np.ndarray) -> np.ndarray:
-    """Map the line-of-sight pattern to the ten landform codes.
-
-    Counting rays alone cannot tell a ridge from a spur - both look down on 5-6 rays. What
-    separates them is how those rays are grouped: a ridge falls away on two opposite sides
-    (two runs), a spur on three connected sides (one run). The same pairing separates a valley
-    (two runs of rising ground) from a hollow at its head (one run).
-
-    Codes follow the common GIS convention: 1 flat, 2 peak, 3 ridge, 4 shoulder, 5 spur,
-    6 slope, 7 hollow, 8 footslope, 9 valley, 10 pit.
-    """
-    z = 8 - n_plus - n_minus
-    cls = np.full(n_plus.shape, 6, dtype=np.uint8)          # slope by default
-
-    cls[(n_plus == 0) & (n_minus == 0)] = 1                 # flat
-    cls[n_minus == 8] = 2                                   # peak
-    cls[n_plus == 8] = 10                                   # pit
-
-    high = (n_minus >= 5) & (n_minus < 8) & (n_plus <= 2)    # looks down more than it looks up
-    cls[high & (seg_minus == 1)] = 5                        # spur   - one connected drop
-    cls[high & (seg_minus >= 2)] = 3                        # ridge  - drops on two sides
-
-    low = (n_plus >= 5) & (n_plus < 8) & (n_minus <= 2)     # looks up more than it looks down
-    cls[low & (seg_plus == 1)] = 7                          # hollow - one connected rise
-    cls[low & (seg_plus >= 2)] = 9                          # valley - rises on two sides
-
-    # A near-even split is an ordinary slope; only a clear surplus names a shoulder or a
-    # footslope, otherwise the two classes swallow the whole hillside.
-    mixed = (n_plus > 0) & (n_minus > 0) & ~high & ~low
-    cls[mixed & (n_minus - n_plus >= 2)] = 4                # shoulder
-    cls[mixed & (n_plus - n_minus >= 2)] = 8                # footslope
-    return cls
+def _classify_geomorphons(n_plus: np.ndarray, n_minus: np.ndarray) -> np.ndarray:
+    """Look up the landform code from the counts of rising and falling rays."""
+    mat = np.zeros((9, 9), dtype=np.uint8)
+    for m, row in enumerate(_GEOM_TABLE):
+        mat[m, :len(row)] = row
+    return mat[n_minus, n_plus]
 
 
 @mcp.tool(name="ras.geomorphons", description='''
@@ -328,8 +321,7 @@ def ras_geomorphons(dem_path: str, search_distance: int = 10, flatness_deg: floa
                                 math.radians(flatness_deg))
         n_plus = (tern == 1).sum(axis=0).astype(np.int16)
         n_minus = (tern == -1).sum(axis=0).astype(np.int16)
-        cls = _classify_geomorphons(n_plus, n_minus,
-                                    _segments(tern, 1), _segments(tern, -1))
+        cls = _classify_geomorphons(n_plus, n_minus)
         cls[~valid] = 0
 
         base = out_dir or str(TEMP_DIR)
