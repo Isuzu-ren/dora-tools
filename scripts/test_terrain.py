@@ -253,5 +253,15 @@ gp = load(T.ras_geomorphons(vp, search_distance=8, return_pattern=True,
 check("return_pattern 写出模式栅格", Path(gp["paths"]["pattern"]).exists(), str(gp["paths"]))
 check("share 之和为 1", abs(sum(gp["share"].values()) - 1.0) < 0.01, str(sum(gp["share"].values())))
 
+print("\n[15] 地貌查找表：上三角 45 个组合全覆盖，关键格与 r.geomorphon 官方图例一致")
+tab = T._GEOM_TABLE
+check("上三角共 45 个组合", sum(len(r) for r in tab) == 45, str(sum(len(r) for r in tab)))
+check("没有空缺（全部已定义）", all(v for r in tab for v in r), str(tab))
+for (m, p_), want in {(8, 0): 2, (0, 8): 10, (0, 0): 1, (4, 4): 6,
+                      (5, 2): 5, (2, 5): 7, (6, 1): 3, (1, 6): 9}.items():
+    got = int(tab[m][p_])
+    check(f"向下 {m} / 向上 {p_} → {T.GEOM_CLASSES[want - 1]}",
+          got == want, f"得 {T.GEOM_CLASSES[got - 1] if got else got}")
+
 print(f"\n{'='*46}\n通过 {ok}，失败 {failed}\n")
 raise SystemExit(1 if failed else 0)
