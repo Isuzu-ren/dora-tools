@@ -5,7 +5,8 @@
     python scripts/smoke_test.py
 
 会临时造一张 64×64 的 GeoTIFF，依次调用 ras.threshold / ras.area、
-ras.terrain / ras.contour、ras.catchment，逐条核对数值，失败时以非零码退出。
+ras.terrain / ras.contour、ras.catchment、ras.geomorphons、ras.river_network，
+逐条核对数值，失败时以非零码退出。
 """
 from __future__ import annotations
 
@@ -121,7 +122,24 @@ def main() -> int:
         return 1
     print(f"\nslope 占 {r6['share']['slope'] * 100:.0f}%，共 {len(r6['classes'])} 类")
 
-    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取、地貌分类五条链可用（未涉及任何模型权重）。")
+    print("\n⑥ ras.river_network：单向坡上 64 条平行河道互不相通，全部为 1 级")
+    from dora.tools.terrain import ras_river_network
+
+    r7 = json.loads(ras_river_network(str(dem), river_threshold=2))
+    if r7.get("error"):
+        print("河网提取失败")
+        return 1
+    if r7["stats"]["reaches"] != 64 or r7["stats"]["max_strahler"] != 1:
+        print(f"应有 64 条 1 级河段，实得 {r7['stats']['reaches']} 条、最高 "
+              f"{r7['stats']['max_strahler']} 级")
+        return 1
+    # 每行 63 格河段占 62 步 × 10 m，64 行合计 39.68 km
+    if abs(r7["stats"]["total_length_km"] - 39.68) > 0.05:
+        print(f"总长应为 39.68 km，实得 {r7['stats']['total_length_km']}")
+        return 1
+    print(f"\n{r7['stats']['reaches']} 条河段，共 {r7['stats']['total_length_km']} km")
+
+    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取、地貌分类、河网分级六条链可用（未涉及任何模型权重）。")
     return 0
 
 

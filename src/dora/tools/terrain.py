@@ -1,13 +1,14 @@
 """
 Terrain server: geomorphometry tools added on top of the upstream DORA tool library.
 
-Five tools, no model weights, no new third-party dependencies beyond what DORA already
+Six tools, no model weights, no new third-party dependencies beyond what DORA already
 ships (numpy / rasterio / scikit-image / shapely):
 
 - ``ras.terrain``      — slope, aspect, curvature, TRI, TPI and roughness in one pass
 - ``ras.geomorphons``  — the 10 common landform units from line-of-sight patterns
 - ``ras.flow``         — depression filling (priority-flood), D8 flow direction, flow accumulation
 - ``ras.catchment``    — watershed upstream of one or more pour points, as raster + polygon
+- ``ras.river_network``— drainage network as ordered reaches (Strahler) with topology
 - ``ras.contour``      — contour lines as GeoJSON
 
 Conventions follow the common GIS implementations so results are comparable with GDAL
@@ -873,6 +874,297 @@ def ras_catchment(dem_path: str, pour_points: Optional[str] = None, pour_crs: st
         }, ensure_ascii=False)
     except Exception as e:
         return _error("ras.catchment", e, dem_path=dem_path, pour_points=pour_points)
+
+
+def _seg_length_m(coords: np.ndarray, transform, xres: float, yres: float) -> float:
+    """Length of a polyline in metres.
+
+    The coordinates are in the layer CRS, which for a geographic DEM means degrees, so the
+    differences have to go back to pixel offsets first and then through the cell size that
+    :func:`_cell_size_m` converted to metres.
+    """
+    if coords.shape[0] < 2:
+        return 0.0
+    if transform is None:
+        dx = np.diff(coords[:, 0]) * xres
+        dy = np.diff(coords[:, 1]) * yres
+    else:
+        a, b, c, d, e, f = (transform.a, transform.b, transform.c,
+                            transform.d, transform.e, transform.f)
+        det = a * e - b * d
+        x, y = coords[:, 0] - c, coords[:, 1] - f
+        cols = (e * x - b * y) / det
+        rows = (-d * x + a * y) / det
+        dx = np.diff(cols) * xres
+        dy = np.diff(rows) * yres
+    return float(np.hypot(dx, dy).sum())
+
+
+def _cell_xy(transform, rows: np.ndarray, cols: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """Cell-centre coordinates, honouring rotation terms; pixel space if unreferenced."""
+    if transform is None:
+        return cols.astype(np.float64), -rows.astype(np.float64)
+    xs = transform.c + transform.a * cols + transform.b * rows
+    ys = transform.f + transform.d * cols + transform.e * rows
+    return xs.astype(np.float64), ys.astype(np.float64)
+
+
+@mcp.tool(name="ras.river_network", description='''
+Description:
+Vectorise the D8 drainage network into reaches and order them with the Strahler scheme.
+A reach is the chain of cells between two junctions (or between a source and the first
+junction); its order is 1 at a source and, at a confluence, the maximum of the incoming
+orders - raised by one only when every incoming reach shares that order. The result is the
+unit flood routing and water-quality work is built on: each reach carries its order, length,
+drop, slope and upstream area, plus a link to the reach below it.
+
+Parameters:
+- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres
+- min_area_km2 (float, optional): Keep cells draining at least this area (default 1.0 km2)
+- river_threshold (int, optional): Threshold in cells, overrides min_area_km2
+- fill (bool, optional): Fill depressions before routing (default True)
+- simplify_m (float, optional): Douglas-Peucker tolerance for the output lines (default 0)
+- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory
+
+Returns:
+- paths (dict): reaches (GeoJSON), nodes (GeoJSON), Strahler-order raster
+- stats (dict): reach/junction/outlet counts, maximum order, total length
+- by_order (dict): reach count and length per Strahler order
+''')
+def ras_river_network(dem_path: str, min_area_km2: float = 1.0,
+                      river_threshold: Optional[int] = None, fill: bool = True,
+                      simplify_m: float = 0.0, out_dir: Optional[str] = None) -> str:
+    try:
+        if river_threshold is not None and river_threshold < 2:
+            raise ValueError("river_threshold must be >= 2 cells")
+        if river_threshold is None and min_area_km2 <= 0:
+            raise ValueError("min_area_km2 must be positive")
+
+        dem, transform, crs, profile = _read_dem(dem_path)
+        if not np.isfinite(dem).all():
+            dem = np.where(np.isfinite(dem), dem, np.nanmean(dem))
+        xres, yres, note = (_cell_size_m(transform, crs) if transform is not None
+                            else (1.0, 1.0, "no georeferencing: cell size assumed to be 1 m"))
+        cell_area = float(xres * yres)
+
+        if river_threshold is not None:
+            thresh, thresh_by = int(river_threshold), "river_threshold"
+        else:
+            thresh = max(2, int(round(min_area_km2 * 1e6 / cell_area)))
+            thresh_by = "min_area_km2"
+
+        filled, direction, acc, order, _raised = _flow_grids(dem, xres, yres, fill, 1e-4)
+        h, w = filled.shape
+        n = h * w
+        target = _downstream_index(direction)
+        acc_f = acc.ravel()
+        elev_f = filled.ravel()
+        river = acc_f >= thresh
+
+        cells = np.flatnonzero(river)
+        if cells.size < 3:
+            raise ValueError(
+                f"only {cells.size} cell(s) exceed the threshold ({thresh} cells); "
+                f"lower min_area_km2 or river_threshold")
+
+        # In-degree restricted to river cells: a junction is a cell with two or more
+        # inflowing river cells. Accumulation is monotone downstream, so every river cell
+        # drains into another river cell and the mask has no holes.
+        src = cells[target[cells] >= 0]
+        inflow = np.bincount(target[src], minlength=n).astype(np.int64)
+        by_target = np.argsort(target[src], kind="stable")
+        tgt_sorted = target[src][by_target]
+        src_sorted = src[by_target]
+        starts = np.zeros(n + 1, dtype=np.int64)
+        np.cumsum(inflow, out=starts[1:])
+
+        # Walk every cell once, from the highest filled elevation down, and give it the reach
+        # of the cell above it unless it starts a reach itself (a source or a junction).
+        pos = np.empty(n, dtype=np.int64)
+        pos[order] = np.arange(n)
+        reach = np.full(n, -1, dtype=np.int64)
+        heads = np.flatnonzero(river & (inflow != 1))
+        reach[heads] = heads
+        # Every river cell records who drains into it. The cell above may itself be a reach
+        # head (a source or a junction), so this must cover all cells, not only the ones with
+        # a single inflow - otherwise the propagation below reads a -1 sentinel.
+        up_of = np.full(n, -1, dtype=np.int64)
+        up_of[target[src]] = src
+        for idx in order[river[order]]:
+            if reach[idx] < 0:
+                reach[idx] = reach[up_of[idx]]
+
+        # Group cells by reach, keeping each reach's own cells in upstream→downstream order.
+        sel = cells[np.lexsort((pos[cells], reach[cells]))]
+        rid = reach[sel]
+        bounds = np.flatnonzero(np.r_[True, rid[1:] != rid[:-1]])
+        r_head = rid[bounds]
+        r_end = sel[np.r_[bounds[1:] - 1, sel.size - 1]]
+        r_num = np.arange(r_head.size)
+        r_slot = np.full(n, -1, dtype=np.int64)
+        r_slot[r_head] = r_num
+        down_cell = target[r_end]
+        r_down = np.where(down_cell >= 0, r_slot[np.maximum(down_cell, 0)], -1)
+
+        # Strahler and Shreve in topological order. A reach's head always sits higher than
+        # any reach flowing into it, so sorting heads by elevation order is enough.
+        strahler = np.zeros(r_head.size, dtype=np.int32)
+        shreve = np.zeros(r_head.size, dtype=np.int64)
+        for slot in r_num[np.argsort(pos[r_head])]:
+            head = r_head[slot]
+            ups = r_slot[reach[src_sorted[starts[head]:starts[head + 1]]]]
+            if ups.size == 0:
+                strahler[slot], shreve[slot] = 1, 1
+            else:
+                top = int(strahler[ups].max())
+                strahler[slot] = top + 1 if (strahler[ups] == top).all() else top
+                shreve[slot] = int(shreve[ups].sum())
+
+        # Strahler order as a raster, one value per river cell (0 elsewhere).
+        r_slot_of_group = r_slot[r_head]
+        order_raster = np.zeros(n, dtype=np.float32)
+        order_raster[sel] = np.repeat(strahler[r_slot_of_group],
+                                      np.diff(np.r_[bounds, sel.size])).astype(np.float32)
+
+        from shapely.geometry import LineString
+
+        feats, node_feats = [], []
+        by_order: Dict[int, Dict[str, float]] = {}
+        total_length = 0.0
+        for slot in range(r_head.size):
+            b0 = bounds[slot]
+            b1 = bounds[slot + 1] if slot + 1 < bounds.size else sel.size
+            path = sel[b0:b1]
+            rows, cols = path // w, path % w
+            xs, ys = _cell_xy(transform, rows, cols)
+            if path.size == 1:
+                # Two junctions can sit next to each other, which leaves a one-cell reach.
+                # Shapely needs two points, so stretch the line to the cell below (or to a
+                # half-cell stub at a real outlet) instead of dropping the link.
+                nxt = down_cell[slot]
+                if nxt >= 0:
+                    qr, qc = divmod(int(nxt), w)
+                else:
+                    qr, qc = int(rows[0]), int(cols[0]) + 1
+                qx, qy = _cell_xy(transform, np.array([qr]), np.array([qc]))
+                xs, ys = np.r_[xs, qx], np.r_[ys, qy]
+            geom = LineString(np.column_stack([xs, ys]))
+            if simplify_m > 0 and b1 - b0 > 3:
+                geom = geom.simplify(simplify_m, preserve_topology=False)
+                coords = np.asarray(geom.coords)
+            else:
+                coords = np.column_stack([xs, ys])
+            length = _seg_length_m(coords, transform, xres, yres)
+            drop = float(elev_f[r_head[slot]] - elev_f[r_end[slot]])
+            # Straight-line distance between the ends, in the same metre grid.
+            dr = float(rows[-1] - rows[0])
+            dc = float(cols[-1] - cols[0])
+            straight = math.hypot(dc * xres, dr * yres)
+            area = float(acc_f[r_end[slot]] * cell_area / 1e6)
+            k = int(strahler[slot])
+            total_length += length
+            bucket = by_order.setdefault(k, {"reaches": 0, "length_km": 0.0})
+            bucket["reaches"] += 1
+            bucket["length_km"] += length / 1000.0
+
+            feats.append({
+                "type": "Feature",
+                "properties": {
+                    "reach_id": slot + 1,
+                    "strahler": k,
+                    "magnitude": int(shreve[slot]),
+                    "from_type": "source" if inflow[r_head[slot]] == 0 else "junction",
+                    "to_type": "outlet" if r_down[slot] < 0 else "junction",
+                    "downstream_reach": int(r_down[slot] + 1) if r_down[slot] >= 0 else None,
+                    "length_m": round(length, 1),
+                    "drop_m": round(drop, 2),
+                    "mean_slope_deg": round(math.degrees(math.atan2(drop, length)), 3)
+                                      if length > 0 else 0.0,
+                    "upstream_area_km2": round(area, 4),
+                    "sinuosity": round(length / straight, 3) if straight > 0 else None,
+                    "head_elevation_m": round(float(elev_f[r_head[slot]]), 2),
+                    "outlet_elevation_m": round(float(elev_f[r_end[slot]]), 2),
+                },
+                "geometry": {"type": "LineString",
+                             "coordinates": [[round(float(x), 6), round(float(y), 6)]
+                                             for x, y in coords]},
+            })
+
+            hr, hc = divmod(int(r_head[slot]), w)
+            nx, ny = _cell_xy(transform, np.array([hr]), np.array([hc]))
+            n_up = int(inflow[r_head[slot]])
+            node_feats.append({
+                "type": "Feature",
+                "properties": {
+                    "reach_id": slot + 1,
+                    "strahler": k,
+                    "node_type": ("outlet" if r_down[slot] < 0 else
+                                  "junction" if n_up >= 2 else "source"),
+                    "n_upstream": n_up,
+                    "elevation_m": round(float(elev_f[r_head[slot]]), 2),
+                    "upstream_area_km2": round(float(acc_f[r_head[slot]] * cell_area / 1e6), 4),
+                },
+                "geometry": {"type": "Point",
+                             "coordinates": [round(float(nx[0]), 6), round(float(ny[0]), 6)]},
+            })
+
+        import os
+
+        base = out_dir or str(TEMP_DIR)
+        os.makedirs(base, exist_ok=True)
+        crs_name = crs.to_string() if crs is not None else None
+        paths = {}
+        for key, name, features in (("reaches", "river_network.geojson", feats),
+                                    ("nodes", "river_nodes.geojson", node_feats)):
+            dest = os.path.join(base, name)
+            payload = {"type": "FeatureCollection", "name": key,
+                       "crs": {"type": "name", "properties": {"name": crs_name}} if crs_name else None,
+                       "features": features}
+            with open(dest, "w", encoding="utf-8") as f:
+                json.dump(payload, f, ensure_ascii=False)
+            paths[key] = dest
+        paths["strahler"] = _write_raster(os.path.join(base, "river_strahler.tif"),
+                                         order_raster.reshape(h, w), profile)
+
+        # Three independent facts, deliberately not forced to sum to the reach count: a
+        # reach can both collect tributaries and leave the tile, and calling that either a
+        # junction or an outlet would hide the other half.
+        n_outlet = int((r_down < 0).sum())
+        n_junction = int((inflow[r_head] >= 2).sum())
+        n_head = int((inflow[r_head] == 0).sum())
+        warnings = []
+        if n_junction == 0:
+            warnings.append("no confluence in this tile: the network is a single thread, so "
+                            "every reach is order 1 - a larger extent or a lower threshold "
+                            "would show the branching structure")
+        if n_outlet > 1:
+            warnings.append(f"{n_outlet} reaches leave the tile: the network is split by the "
+                            f"tile edge (or by internal sinks), so orders are local to this DEM")
+
+        return json.dumps({
+            "tool": "ras.river_network",
+            "paths": paths,
+            "threshold": {"cells": thresh, "area_km2": round(thresh * cell_area / 1e6, 4),
+                          "set_by": thresh_by},
+            "stats": {
+                "reaches": int(r_head.size),
+                "junctions": n_junction,
+                "outlets": n_outlet,
+                "headwaters": n_head,
+                "max_strahler": int(strahler.max()),
+                "total_length_km": round(total_length / 1000.0, 2),
+                "river_cells": int(cells.size),
+                "max_upstream_area_km2": round(float(acc_f[r_end].max() * cell_area / 1e6), 3),
+            },
+            "by_order": {str(k): {"reaches": v["reaches"], "length_km": round(v["length_km"], 2)}
+                         for k, v in sorted(by_order.items())},
+            "cell_size_m": {"x": float(xres), "y": float(yres), "note": note},
+            "shape": [int(h), int(w)],
+            "warnings": warnings,
+        }, ensure_ascii=False)
+    except Exception as e:
+        return _error("ras.river_network", e, dem_path=dem_path,
+                      min_area_km2=min_area_km2, river_threshold=river_threshold)
 
 
 @mcp.tool(name="ras.contour", description='''

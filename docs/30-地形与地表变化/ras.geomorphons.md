@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| 模块 | `terrain` · `src/dora/tools/terrain.py:306`（64 行） |
+| 模块 | `terrain` · `src/dora/tools/terrain.py:300`（63 行） |
 | 相关性 | ★★★ |
 | 可迁移性 | A |
 | 依赖 | numpy |
@@ -25,8 +25,8 @@
 | 参数 | 类型 | 必填 | 默认 | 说明 |
 |---|---|:-:|---|---|
 | `dem_path` | str | 是 | — | DEM 路径 |
-| `search_distance` | int | 否 | `10` | Look-out radius in cells (default 10); sets the landform size |
-| `flatness_deg` | float | 否 | `1.0` | Angle in degrees below which a ray counts as level (default 1) |
+| `search_distance` | int | 否 | `10` | 搜索半径（格）。它决定「多大的地貌单元」，不是精度参数 |
+| `flatness_deg` | float | 否 | `1.0` | 「多平算平」的阈值（度）。平原区调到 2–3 可减少碎斑 |
 | `skip_distance` | int | 否 | `0` | Ignore this many cells next to the centre, to suppress noise (default 0) |
 | `return_pattern` | bool | 否 | `False` | Also write the ternary pattern code per cell, for diagnosis |
 | `out_dir` | str? | 否 | `None` | Directory for the outputs; defaults to the session temp directory |

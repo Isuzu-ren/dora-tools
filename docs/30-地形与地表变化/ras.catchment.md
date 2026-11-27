@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| 模块 | `terrain` · `src/dora/tools/terrain.py:601`（283 行） |
+| 模块 | `terrain` · `src/dora/tools/terrain.py:594`（283 行） |
 | 相关性 | ★★★ |
 | 可迁移性 | A |
 | 依赖 | numpy / shapely |
@@ -25,11 +25,11 @@
 | 参数 | 类型 | 必填 | 默认 | 说明 |
 |---|---|:-:|---|---|
 | `dem_path` | str | 是 | — | DEM 路径 |
-| `pour_points` | str? | 否 | `None` | "x,y;x,y" - ";", "\|" or whitespace separated. Default: lowest border cell |
-| `pour_crs` | str | 否 | `'same'` | "same" (default) \| "wgs84" \| "pixel" |
-| `snap_radius_m` | float | 否 | `0.0` | Move each point to the highest-accumulation cell within this radius; 0 = exact cell |
+| `pour_points` | str? | 否 | `None` | 出水口坐标，`x,y` 或 `x,y;x,y`；省略则自动取边界最低格 |
+| `pour_crs` | str | 否 | `'same'` | 坐标口径：`same`（与 DEM 同 CRS）/ `wgs84`（经纬度）/ `pixel`（列,行） |
+| `snap_radius_m` | float | 否 | `0.0` | 在半径内把出水口吸附到汇流量最大的格（0 = 不吸附） |
 | `min_area_cells` | int | 否 | `1` | Drop catchments smaller than this and report them (default 1) |
-| `simplify_m` | float | 否 | `0.0` | Douglas-Peucker tolerance for the polygons (default 0 = keep all vertices) |
+| `simplify_m` | float | 否 | `0.0` | 线简化容差（米）。5–15 可抹掉栅格锯齿，几何更干净、长度略短 |
 | `out_dir` | str? | 否 | `None` | Output directory; defaults to the session temp directory |
 | `out_geojson` | str? | 否 | `None` | GeoJSON path for the polygons |
 

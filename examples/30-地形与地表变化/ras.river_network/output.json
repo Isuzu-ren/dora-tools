@@ -1,0 +1,53 @@
+{
+  "tool": "ras.river_network",
+  "paths": {
+    "reaches": "<temp_dir>/river_network.geojson",
+    "nodes": "<temp_dir>/river_nodes.geojson",
+    "strahler": "<temp_dir>/river_strahler.tif"
+  },
+  "threshold": {
+    "cells": 3462,
+    "area_km2": 0.5,
+    "set_by": "min_area_km2"
+  },
+  "stats": {
+    "reaches": 102,
+    "junctions": 48,
+    "outlets": 6,
+    "headwaters": 54,
+    "max_strahler": 4,
+    "total_length_km": 109.89,
+    "river_cells": 8051,
+    "max_upstream_area_km2": 100.95
+  },
+  "by_order": {
+    "1": {
+      "reaches": 54,
+      "length_km": 63.76
+    },
+    "2": {
+      "reaches": 26,
+      "length_km": 27.42
+    },
+    "3": {
+      "reaches": 14,
+      "length_km": 13.54
+    },
+    "4": {
+      "reaches": 8,
+      "length_km": 5.17
+    }
+  },
+  "cell_size_m": {
+    "x": 12.017180807112608,
+    "y": 12.017180807112608,
+    "note": null
+  },
+  "shape": [
+    900,
+    900
+  ],
+  "warnings": [
+    "6 reaches leave the tile: the network is split by the tile edge (or by internal sinks), so orders are local to this DEM"
+  ]
+}

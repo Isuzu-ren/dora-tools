@@ -817,6 +817,104 @@ def ex_catchment(F):
                       "所以面积是**下界**——左边界外还有上游未计入。"))
 
 
+RIV_COLORS = {1: (108, 176, 232), 2: (46, 122, 210), 3: (246, 176, 64),
+              4: (232, 74, 58), 5: (168, 70, 150)}
+RIV_WIDTH = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5}
+
+
+def _order_chart(by_order: dict) -> np.ndarray:
+    """按级数统计长度与段数：一级最多但最碎，能一眼看出「级数跳得慢」。"""
+    import matplotlib  # noqa: PLC0415
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt  # noqa: PLC0415
+
+    ks = sorted(int(k) for k in by_order)
+    lens = [by_order[str(k)]["length_km"] for k in ks]
+    cnts = [by_order[str(k)]["reaches"] for k in ks]
+    fig, ax = plt.subplots(figsize=(4.2, 4.2), dpi=100)
+    bars = ax.barh([f"order {k}" for k in ks], lens,
+                   color=[tuple(c / 255 for c in RIV_COLORS.get(k, (200, 200, 200))) for k in ks],
+                   edgecolor="#22303f", linewidth=0.7)
+    for bar, k, c, L in zip(bars, ks, cnts, lens):
+        ax.text(L + max(lens) * 0.02, bar.get_y() + bar.get_height() / 2,
+                f"n={c}   {L:.1f} km", va="center", fontsize=7.5, color="#22303f")
+    ax.set_xlim(0, max(lens) * 1.5)
+    ax.set_xlabel("total length (km)", fontsize=8)
+    ax.tick_params(labelsize=8)
+    ax.invert_yaxis()
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    fig.tight_layout()
+    fig.canvas.draw()
+    out = np.asarray(fig.canvas.buffer_rgba())[..., :3].copy()
+    plt.close(fig)
+    return out
+
+
+def _draw_reaches(img: np.ndarray, feats: list, tr, halo: bool = True) -> np.ndarray:
+    """按 Strahler 级数上色加粗；先描一圈深色，浅色一级在雪地/天空背景上也看得见。"""
+    canvas = Image.fromarray(img.copy())
+    draw = ImageDraw.Draw(canvas)
+    for f in feats:
+        pr = f["properties"]
+        pts = [tuple(float(v) for v in (~tr * (x, y))) for x, y in f["geometry"]["coordinates"]]
+        if len(pts) < 2:
+            continue
+        col = RIV_COLORS.get(pr["strahler"], (255, 255, 255))
+        wdt = RIV_WIDTH.get(pr["strahler"], 2)
+        if halo:
+            draw.line(pts, fill=(18, 28, 42), width=wdt + 2, joint="curve")
+        draw.line(pts, fill=col, width=wdt, joint="curve")
+    return np.array(canvas)
+
+
+@example("ras.river_network")
+def ex_river_network(F):
+    crop = _flow_crop(F)
+    with rasterio.open(crop) as src:
+        tr = src.transform
+
+    args = {"dem_path": str(crop), "min_area_km2": 0.5, "simplify_m": 5.0}
+    res = run_tool(E("ras.river_network"), **args)
+    feats = json.loads(Path(res["paths"]["reaches"]).read_text(encoding="utf-8"))["features"]
+    nodes = json.loads(Path(res["paths"]["nodes"]).read_text(encoding="utf-8"))["features"]
+    shade = np.repeat(_shade_of(crop)[..., None], 3, axis=2)      # 灰度 -> RGB，供彩色描线
+
+    left = _draw_reaches(shade, feats, tr)
+
+    # 中：节点。汇流点按上游面积给半径，出图口画成方块——它们提示「这里的级数只是图幅内的」
+    right = _draw_reaches(shade, feats, tr, halo=False)
+    canvas = Image.fromarray(right.copy())
+    draw = ImageDraw.Draw(canvas)
+    for f in nodes:
+        pr = f["properties"]
+        px, py = (float(v) for v in (~tr * tuple(f["geometry"]["coordinates"])))
+        if pr["node_type"] == "outlet":
+            draw.rectangle([px - 7, py - 7, px + 7, py + 7],
+                           fill=(238, 60, 48), outline=(255, 255, 255), width=2)
+        else:
+            r = 3.5 + 3.0 * np.log10(pr["upstream_area_km2"] + 1.0)
+            draw.ellipse([px - r, py - r, px + r, py + r],
+                         fill=(255, 246, 214), outline=(30, 40, 55), width=2)
+    right = np.array(canvas)
+
+    st = res["stats"]
+    panels = [("reaches by Strahler order", left),
+              ("nodes: junctions (circles), outlets (squares)", right),
+              ("length and reach count by order", _order_chart(res["by_order"]))]
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(crop), "terrain"), "out": _grid(panels)},
+                inputs=["同一块 900×900 子区（EPSG:32654，像元 12 m）；阈值 0.5 km² 汇水面积"],
+                caption=(f"{st['reaches']} 条河段、共 {st['total_length_km']:.0f} km，最高 "
+                         f"{st['max_strahler']} 级；{st['junctions']} 个汇流点、"
+                         f"{st['outlets']} 处水流出图"),
+                note=("级数不是随便编号：两条一级支流汇成才升到二级，一条一级并入二级仍是二级——"
+                      "只有**两条同级的汇合**才会加一，所以数字跳得很慢，4 级已经代表整幅图的主干。"
+                      f"`magnitude` 是另一个口径（Shreve）：数上游有几条源头，出口处为 {st['headwaters']}，"
+                      "更能反映「汇集了多少条沟」。注意右下方的方块：水从这里流出图幅，"
+                      "边界外的上游没算进来，级数只在图幅内成立。"))
+
+
 @example("ras.contour")
 def ex_contour(F):
     proj = _proj_dem(F)

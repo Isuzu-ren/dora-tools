@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| 模块 | `terrain` · `src/dora/tools/terrain.py:507`（45 行） |
+| 模块 | `terrain` · `src/dora/tools/terrain.py:500`（45 行） |
 | 相关性 | ★★★ |
 | 可迁移性 | A |
 | 依赖 | numpy |
@@ -26,8 +26,8 @@
 |---|---|:-:|---|---|
 | `dem_path` | str | 是 | — | DEM 路径 |
 | `fill` | bool | 否 | `True` | Fill depressions before routing (default True) |
-| `epsilon` | float | 否 | `0.0001` | Elevation increment used to give flats a gradient (default 1e-4 m) |
-| `river_threshold` | int? | 否 | `None` | Extract cells whose accumulation reaches this value |
+| `epsilon` | float | 否 | `0.0001` | 填洼时的抬升步长（米），给平地一个微梯度 |
+| `river_threshold` | int? | 否 | `None` | 以**格数**给的阈值，会覆盖 `min_area_km2`（与 `ras.flow` 口径一致） |
 | `out_dir` | str? | 否 | `None` | Directory for the outputs; defaults to the session temp directory |
 
 ## 输出

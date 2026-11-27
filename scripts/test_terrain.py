@@ -1,4 +1,4 @@
-"""Self-test for the three terrain tools, on synthetic DEMs with a known answer.
+"""Self-test for the extended terrain tools, on synthetic DEMs with a known answer.
 
     uv run --no-project --python <venv>/python.exe scripts/test_terrain.py
 
@@ -262,6 +262,120 @@ for (m, p_), want in {(8, 0): 2, (0, 8): 10, (0, 0): 1, (4, 4): 6,
     got = int(tab[m][p_])
     check(f"向下 {m} / 向上 {p_} → {T.GEOM_CLASSES[want - 1]}",
           got == want, f"得 {T.GEOM_CLASSES[got - 1] if got else got}")
+
+def _fan(lines, n: int) -> np.ndarray:
+    """高程 = min(线高程 + 2 m/格 的横向落差)：水先垂直落向河道，再沿河道走。"""
+    rr, cc = np.mgrid[0:n, 0:n]
+    z = np.full((n, n), 1e6)
+    for r0, c0, r1, c1, z0, z1 in lines:
+        for t in np.linspace(0, 1, 400):
+            z = np.minimum(z, z0 + (z1 - z0) * t + 2.0 * np.hypot(rr - (r0 + (r1 - r0) * t),
+                                                                  cc - (c0 + (c1 - c0) * t)))
+    return z
+
+
+def _river_props(res: dict) -> dict:
+    g = json.loads(Path(res["paths"]["reaches"]).read_text(encoding="utf-8"))
+    return {f["properties"]["reach_id"]: f["properties"] for f in g["features"]}
+
+
+print("\n[16] 河网：Y 形两条一级支流汇成一条二级干流")
+vy = write_dem("riv_y", _fan([(5, 10, 40, 32, 120, 100), (5, 54, 40, 32, 120, 100),
+                              (40, 32, 63, 32, 100, 90)], N))
+ry = load(T.ras_river_network(vy, river_threshold=40, out_dir=str(TMP / "rn_y")))
+py = _river_props(ry)
+check("最大 Strahler = 2", ry["stats"]["max_strahler"] == 2, str(ry["stats"]))
+check("两条一级 + 一条二级", {k: v["reaches"] for k, v in ry["by_order"].items()} == {"1": 2, "2": 1},
+      str(ry["by_order"]))
+check("一个汇流点、一个出口、两个源头",
+      (ry["stats"]["junctions"], ry["stats"]["outlets"], ry["stats"]["headwaters"]) == (1, 1, 2),
+      str(ry["stats"]))
+trunk = [i for i, p in py.items() if p["strahler"] == 2][0]
+check("干流由两条一级支流汇入", sorted(py[i]["strahler"] for i in py if py[i]["downstream_reach"] == trunk) == [1, 1],
+      str([(i, py[i]["strahler"]) for i in py if py[i]["downstream_reach"] == trunk]))
+gap = max(py[i]["outlet_elevation_m"] for i in py if py[i]["downstream_reach"] == trunk) \
+    - py[trunk]["head_elevation_m"]
+check("干流起点紧接支流终点（差一格落差，0–2 m）", 0 <= gap <= 2.0, f"差 {gap:.2f} m")
+check("干流出口面积 = 各支流之和（±2%）",
+      abs(py[trunk]["upstream_area_km2"] * 1e3 - 0.41 * 1e3) < 10, str(py[trunk]["upstream_area_km2"]))
+check("没有图幅截断警告", not ry["warnings"], str(ry["warnings"]))
+
+print("\n[17] 河网：三条一级支流汇入同一点 → 仍为 2 级（取最大，不累加）")
+v3 = write_dem("riv_3", _fan([(5, 5, 45, 32, 150, 110), (5, 32, 45, 32, 150, 110),
+                              (5, 59, 45, 32, 150, 110), (45, 32, 70, 32, 110, 100)], 72))
+r3 = load(T.ras_river_network(v3, river_threshold=40, out_dir=str(TMP / "rn_3")))
+check("最大 Strahler = 2（不是 3）", r3["stats"]["max_strahler"] == 2, str(r3["stats"]["max_strahler"]))
+
+print("\n[18] 河网：两个 Y 再合并 → 3 级；拓扑与 Strahler 自洽")
+v4 = write_dem("riv_4", _fan([(5, 10, 35, 30, 150, 120), (5, 35, 35, 30, 150, 120),
+                              (35, 30, 60, 48, 120, 100), (5, 60, 35, 80, 150, 120),
+                              (5, 85, 35, 80, 150, 120), (35, 80, 60, 48, 120, 100),
+                              (60, 48, 90, 48, 100, 90)], 96))
+r4 = load(T.ras_river_network(v4, river_threshold=40, out_dir=str(TMP / "rn_4")))
+p4 = _river_props(r4)
+check("最大 Strahler = 3", r4["stats"]["max_strahler"] == 3, str(r4["stats"]["max_strahler"]))
+check("只有一个出口", r4["stats"]["outlets"] == 1, str(r4["stats"]["outlets"]))
+ups = {i: [j for j, q in p4.items() if q["downstream_reach"] == i] for i in p4}
+bad_s = [i for i, q in p4.items()
+         if q["strahler"] != (1 if not ups[i] else
+                              (max(p4[j]["strahler"] for j in ups[i]) + (1 if len(
+                                  {p4[j]["strahler"] for j in ups[i]}) == 1 else 0)))]
+bad_m = [i for i, q in p4.items()
+         if q["magnitude"] != (1 if not ups[i] else sum(p4[j]["magnitude"] for j in ups[i]))]
+check("每条河段的级数都等于上游规则", not bad_s, str(bad_s[:5]))
+check("每条河段的 magnitude 等于上游求和", not bad_m, str(bad_m[:5]))
+check("出口 magnitude = 源头条数",
+      p4[[i for i in p4 if p4[i]["downstream_reach"] is None][0]]["magnitude"]
+      == r4["stats"]["headwaters"], str(r4["stats"]))
+cycles = []
+for i in p4:
+    seen, cur = set(), i
+    while cur is not None and cur not in seen:
+        seen.add(cur)
+        cur = p4[cur]["downstream_reach"]
+    if cur is not None:
+        cycles.append(i)
+check("无环、每条河段都能走到出口", not cycles, str(cycles[:5]))
+check("上游面积沿下游单调不减",
+      all(p4[j]["upstream_area_km2"] <= p4[i]["upstream_area_km2"] + 1e-9
+          for i in p4 for j in ups[i]))
+
+print("\n[19] 河网：阈值口径、单河道、错误输入")
+rt = r4["threshold"]
+check("river_threshold 优先，单位是格", rt["cells"] == 40 and rt["set_by"] == "river_threshold", str(rt))
+ra = load(T.ras_river_network(v4, min_area_km2=0.04, out_dir=str(TMP / "rn_area")))
+check("min_area_km2 换算成格（0.04 km² / 100 m² = 400 格）",
+      ra["threshold"]["cells"] == 400 and ra["threshold"]["set_by"] == "min_area_km2",
+      str(ra["threshold"]))
+vflat = write_dem("riv_one", (N - np.arange(N))[:, None] * 0.5
+                  + np.abs(np.arange(N) - 32)[None, :] * 1.0)                # V 形谷：单一河道
+rone = load(T.ras_river_network(vflat, river_threshold=600, out_dir=str(TMP / "rn_one")))
+check("V 形谷只出一条河段，且为 1 级",
+      rone["stats"]["reaches"] == 1 and rone["stats"]["max_strahler"] == 1, str(rone["stats"]))
+check("无汇流时给出提示", any("no confluence" in w for w in rone["warnings"]), str(rone["warnings"]))
+bad = json.loads(T.ras_river_network(v4, river_threshold=100000))
+check("阈值过高返回 error", "error" in bad, str(bad)[:60])
+bad2 = json.loads(T.ras_river_network(v4, river_threshold=1))
+check("river_threshold < 2 返回 error", "error" in bad2, str(bad2)[:60])
+
+print("\n[20] 经纬度 DEM：长度按像元尺寸换米，坡度不会算成 89°")
+n2, cell2 = 48, 0.0003
+row2, col2 = np.mgrid[0:n2, 0:n2]
+z2 = (n2 - row2) * 2.0 + np.abs(col2 - 24) * 12.0            # V 形谷，主河道沿第 24 列向南
+geo = TMP / "riv_geo.tif"
+with rasterio.open(geo, "w", driver="GTiff", height=n2, width=n2, count=1, dtype="float32",
+                   crs="EPSG:4326",
+                   transform=from_origin(141.0, 36.5, cell2, cell2)) as dst:
+    dst.write(z2.astype("float32"), 1)
+rg = load(T.ras_river_network(str(geo), river_threshold=30, out_dir=str(TMP / "rn_geo")))
+pg = _river_props(rg)
+only = list(pg.values())[0]
+yres_m = rg["cell_size_m"]["y"]
+check("识别为经纬度并换算成米", "geographic" in (rg["cell_size_m"]["note"] or ""), str(rg["cell_size_m"]))
+check("长度 = (N-1) × 经向格宽（±2%）",
+      abs(only["length_m"] - (n2 - 1) * yres_m) < 0.02 * (n2 - 1) * yres_m,
+      f"{only['length_m']} vs {(n2 - 1) * yres_m:.1f}")
+check("坡度是度不是 89.99", 0 < only["mean_slope_deg"] < 10, str(only["mean_slope_deg"]))
 
 print(f"\n{'='*46}\n通过 {ok}，失败 {failed}\n")
 raise SystemExit(1 if failed else 0)

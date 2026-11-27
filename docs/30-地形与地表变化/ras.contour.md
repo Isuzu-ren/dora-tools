@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| 模块 | `terrain` · `src/dora/tools/terrain.py:905`（68 行） |
+| 模块 | `terrain` · `src/dora/tools/terrain.py:1162`（68 行） |
 | 相关性 | ★★ |
 | 可迁移性 | A |
 | 依赖 | skimage |
@@ -25,9 +25,9 @@
 | 参数 | 类型 | 必填 | 默认 | 说明 |
 |---|---|:-:|---|---|
 | `dem_path` | str | 是 | — | DEM 路径 |
-| `interval` | float | 是 | — | Vertical interval between contour lines, in DEM units |
+| `interval` | float | 是 | — | 等高距（与 DEM 同单位，通常为米） |
 | `base` | float? | 否 | `None` | First contour level; defaults to the next multiple of interval |
-| `min_length` | float | 否 | `0.0` | Drop lines shorter than this many metres (default 0) |
+| `min_length` | float | 否 | `0.0` | 丢弃短于该长度的线（米） |
 | `out_path` | str? | 否 | `None` | 输出文件路径 |
 
 ## 输出
