@@ -1,7 +1,7 @@
 """
 Terrain server: geomorphometry tools added on top of the upstream DORA tool library.
 
-Six tools, no model weights, no new third-party dependencies beyond what DORA already
+Seven tools, no model weights, no new third-party dependencies beyond what DORA already
 ships (numpy / rasterio / scikit-image / shapely):
 
 - ``ras.terrain``      — slope, aspect, curvature, TRI, TPI and roughness in one pass
@@ -9,6 +9,7 @@ ships (numpy / rasterio / scikit-image / shapely):
 - ``ras.flow``         — depression filling (priority-flood), D8 flow direction, flow accumulation
 - ``ras.catchment``    — watershed upstream of one or more pour points, as raster + polygon
 - ``ras.river_network``— drainage network as ordered reaches (Strahler) with topology
+- ``ras.hand``        — height above nearest drainage, and inundation for a given water stage
 - ``ras.contour``      — contour lines as GeoJSON
 
 Conventions follow the common GIS implementations so results are comparable with GDAL
@@ -1165,6 +1166,163 @@ def ras_river_network(dem_path: str, min_area_km2: float = 1.0,
     except Exception as e:
         return _error("ras.river_network", e, dem_path=dem_path,
                       min_area_km2=min_area_km2, river_threshold=river_threshold)
+
+
+@mcp.tool(name="ras.hand", description='''
+Description:
+Height Above Nearest Drainage (HAND): for every cell, how far it stands above the river it
+actually drains into, and - given one or more water stages - how much of the tile would be
+flooded. This is the DEM-only route to an inundation map: no hydrograph, no roughness, no
+calibration. A cell is counted as flooded when its HAND is below the stage AND it is connected
+to the channel, so a low basin behind a ridge is not flooded just for being low.
+
+Parameters:
+- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres
+- min_area_km2 (float, optional): Cells draining this area count as channel (default 1.0 km2)
+- river_threshold (int, optional): Threshold in cells, overrides min_area_km2
+- stages (str, optional): Water stages above the bed, e.g. "2,5,8"; omit for HAND alone
+- fill (bool, optional): Fill depressions before routing (default True)
+- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory
+
+Returns:
+- paths (dict): HAND raster, plus one inundation raster per stage
+- hand_stats (dict): percentiles of HAND in metres
+- stages (list): per stage - flooded cells, area_km2, share of tile, mean and max depth
+- curve (list): [stage, area_km2] pairs, ready to plot as a stage-area curve
+''')
+def ras_hand(dem_path: str, min_area_km2: float = 1.0, river_threshold: Optional[int] = None,
+             stages: Optional[str] = None, fill: bool = True,
+             out_dir: Optional[str] = None) -> str:
+    try:
+        if river_threshold is not None and river_threshold < 2:
+            raise ValueError("river_threshold must be >= 2 cells")
+        if river_threshold is None and min_area_km2 <= 0:
+            raise ValueError("min_area_km2 must be positive")
+
+        stage_list: List[float] = []
+        for chunk in str(stages or "").replace(";", ",").split(","):
+            if chunk.strip():
+                val = float(chunk)
+                if not val > 0:
+                    raise ValueError("every stage must be positive (metres above the channel bed)")
+                stage_list.append(val)
+        stage_list = sorted(set(stage_list))
+
+        dem, transform, crs, profile = _read_dem(dem_path)
+        if not np.isfinite(dem).all():
+            dem = np.where(np.isfinite(dem), dem, np.nanmean(dem))
+        xres, yres, note = (_cell_size_m(transform, crs) if transform is not None
+                            else (1.0, 1.0, "no georeferencing: cell size assumed to be 1 m"))
+        cell_area = float(xres * yres)
+
+        if river_threshold is not None:
+            thresh, thresh_by = int(river_threshold), "river_threshold"
+        else:
+            thresh = max(2, int(round(min_area_km2 * 1e6 / cell_area)))
+            thresh_by = "min_area_km2"
+
+        filled, direction, acc, order, _raised = _flow_grids(dem, xres, yres, fill, 1e-4)
+        h, w = filled.shape
+        n = h * w
+        target = _downstream_index(direction)
+        elev = filled.ravel()
+        river = acc.ravel() >= thresh
+        if not river.any():
+            raise ValueError(
+                f"no channel cell at {thresh} cells; lower min_area_km2 or river_threshold")
+
+        # Reference surface: the bed elevation of the channel cell each cell eventually drains
+        # into. Walking that with pointer doubling - dest[i] is one step downstream, so
+        # dest[dest] is two, then four - converges in log2(path length) vectorised passes
+        # instead of one Python iteration per cell. Index n is a sink for cells whose flow
+        # path leaves the tile before reaching a channel.
+        dest = np.where(river, np.arange(n),
+                        np.where(target >= 0, target, n)).astype(np.int64)
+        elev_ext = np.r_[elev, np.nan]
+        ptr = np.r_[dest, np.int64(n)]
+        for _ in range(64):
+            nxt = ptr[ptr]
+            if np.array_equal(nxt, ptr):
+                break
+            ptr = nxt
+        ref_arr = elev_ext[ptr[:n]]
+
+        hand = np.clip(elev - ref_arr, 0.0, None)
+        stray = int(np.isnan(hand).sum())        # no channel downstream inside the tile
+
+        base = out_dir or str(TEMP_DIR)
+        import os
+
+        os.makedirs(base, exist_ok=True)
+        paths = {"hand": _write_raster(os.path.join(base, "hand.tif"),
+                                       np.where(np.isnan(hand), -9999.0, hand).reshape(h, w),
+                                       profile)}
+
+        from skimage import measure
+
+        finite = np.isfinite(hand)
+        bank = hand[finite]
+        hand_stats = {
+            "min": 0.0,
+            "p10": round(float(np.percentile(bank, 10)), 2),
+            "p50": round(float(np.percentile(bank, 50)), 2),
+            "p90": round(float(np.percentile(bank, 90)), 2),
+            "p99": round(float(np.percentile(bank, 99)), 2),
+            "max": round(float(bank.max()), 2),
+            "mean": round(float(bank.mean()), 2),
+        }
+
+        stage_rows, curve, warnings = [], [], []
+        for stage in stage_list:
+            low = finite & (hand < stage)
+            # Water spreads sideways, not along the flow path, so a low cell only counts when
+            # it is in the same connected patch as the channel: label the candidate mask with
+            # 8-connectivity and keep the labels that contain at least one river cell.
+            lab = measure.label(low.reshape(h, w), connectivity=2).ravel()
+            keep = np.unique(lab[river & low])
+            wet = np.isin(lab, keep[keep > 0]) & low
+            cells = int(wet.sum())
+            depth = stage - hand[wet]
+            stage_rows.append({
+                "stage_m": stage,
+                "cells": cells,
+                "area_km2": round(cells * cell_area / 1e6, 4),
+                "share_of_tile": round(cells / float(n), 4),
+                "share_of_valid": round(cells / float(finite.sum()), 4),
+                "mean_depth_m": round(float(depth.mean()), 2) if cells else 0.0,
+                "max_depth_m": round(float(depth.max()), 2) if cells else 0.0,
+                "dropped_unconnected_cells": int(low.sum()) - cells,
+            })
+            curve.append([stage, round(cells * cell_area / 1e6, 4)])
+            paths[f"inundation_{stage:g}m"] = _write_raster(
+                os.path.join(base, f"inundation_{stage:g}m.tif"),
+                wet.reshape(h, w).astype(np.uint8), profile, dtype="uint8")
+
+        if stray:
+            warnings.append(
+                f"{stray} cell(s) have no channel downstream inside this tile (edge basins "
+                f"below the threshold); they get no HAND value and are left out of the "
+                f"inundation masks")
+        if stage_list and not any(row["cells"] for row in stage_rows):
+            warnings.append("no cell is flooded at these stages: the stages are measured above "
+                            "the channel bed, so they need to be larger than the local relief")
+
+        return json.dumps({
+            "tool": "ras.hand",
+            "paths": paths,
+            "threshold": {"cells": thresh, "area_km2": round(thresh * cell_area / 1e6, 4),
+                          "set_by": thresh_by},
+            "channel_cells": int(river.sum()),
+            "hand_stats": hand_stats,
+            "stages": stage_rows,
+            "curve": curve,
+            "cell_size_m": {"x": float(xres), "y": float(yres), "note": note},
+            "shape": [int(h), int(w)],
+            "warnings": warnings,
+        }, ensure_ascii=False)
+    except Exception as e:
+        return _error("ras.hand", e, dem_path=dem_path, min_area_km2=min_area_km2,
+                      river_threshold=river_threshold, stages=stages)
 
 
 @mcp.tool(name="ras.contour", description='''

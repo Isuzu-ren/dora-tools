@@ -43,6 +43,9 @@ EXTRA_META = {
     "ras.river_network": {"relevance": "★★★", "transfer": "A",
                           "usage": "河网矢量化为河段并做 Strahler 分级，洪水演进与水质的基本单元",
                           "dep": "numpy / shapely"},
+    "ras.hand": {"relevance": "★★★", "transfer": "A",
+                 "usage": "给定水位出淹没范围与水位–面积曲线，零权重的洪水筛查",
+                 "dep": "numpy / skimage"},
 }
 
 # 功能域（主域唯一）。键为 MCP 工具名，值为域名 key。
@@ -76,7 +79,7 @@ assign("asset",
        "seg.building_destroyed_aerial", "seg.road_intact_aerial")
 assign("terrain", "seg.landslide_ms", "seg.landslide_bitemporal", "seg.vegetation",
        "ras.slope", "ras.hillshade", "ras.terrain", "ras.flow", "ras.contour",
-       "ras.catchment", "ras.geomorphons", "ras.river_network")
+       "ras.catchment", "ras.geomorphons", "ras.river_network", "ras.hand")
 assign("other",
        "seg.lava", "seg.plane", "seg.ship", "seg.vehicle", "seg.pool_aerial",
        "seg.swimming_pool", "seg.playground", "seg.roundabout",

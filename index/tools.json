@@ -6039,7 +6039,7 @@
     "func": "ras_catchment",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 594,
+    "lineno": 595,
     "loc": 283,
     "signature": "dem_path: str, pour_points: Optional[str]=None, pour_crs: str='same', snap_radius_m: float=0.0, min_area_cells: int=1, simplify_m: float=0.0, out_dir: Optional[str]=None, out_geojson: Optional[str]=None",
     "params": [
@@ -6199,7 +6199,7 @@
     "func": "ras_contour",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 1162,
+    "lineno": 1346,
     "loc": 68,
     "signature": "dem_path: str, interval: float, base: Optional[float]=None, min_length: float=0.0, out_path: Optional[str]=None",
     "params": [
@@ -6319,7 +6319,7 @@
     "func": "ras_flow",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 500,
+    "lineno": 501,
     "loc": 45,
     "signature": "dem_path: str, fill: bool=True, epsilon: float=0.0001, river_threshold: Optional[int]=None, out_dir: Optional[str]=None",
     "params": [
@@ -6435,7 +6435,7 @@
     "func": "ras_geomorphons",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 300,
+    "lineno": 301,
     "loc": 63,
     "signature": "dem_path: str, search_distance: int=10, flatness_deg: float=1.0, skip_distance: int=0, return_pattern: bool=False, out_dir: Optional[str]=None",
     "params": [
@@ -6570,6 +6570,140 @@
     ]
   },
   {
+    "name": "ras.hand",
+    "func": "ras_hand",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 1193,
+    "loc": 132,
+    "signature": "dem_path: str, min_area_km2: float=1.0, river_threshold: Optional[int]=None, stages: Optional[str]=None, fill: bool=True, out_dir: Optional[str]=None",
+    "params": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "min_area_km2",
+        "type": "float",
+        "required": false,
+        "default": "1.0"
+      },
+      {
+        "name": "river_threshold",
+        "type": "Optional[int]",
+        "required": false,
+        "default": "None"
+      },
+      {
+        "name": "stages",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      },
+      {
+        "name": "fill",
+        "type": "bool",
+        "required": false,
+        "default": "True"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nHeight Above Nearest Drainage (HAND): for every cell, how far it stands above the river it\nactually drains into, and - given one or more water stages - how much of the tile would be\nflooded. This is the DEM-only route to an inundation map: no hydrograph, no roughness, no\ncalibration. A cell is counted as flooded when its HAND is below the stage AND it is connected\nto the channel, so a low basin behind a ridge is not flooded just for being low.\n\nParameters:\n- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres\n- min_area_km2 (float, optional): Cells draining this area count as channel (default 1.0 km2)\n- river_threshold (int, optional): Threshold in cells, overrides min_area_km2\n- stages (str, optional): Water stages above the bed, e.g. \"2,5,8\"; omit for HAND alone\n- fill (bool, optional): Fill depressions before routing (default True)\n- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory\n\nReturns:\n- paths (dict): HAND raster, plus one inundation raster per stage\n- hand_stats (dict): percentiles of HAND in metres\n- stages (list): per stage - flooded cells, area_km2, share of tile, mean and max depth\n- curve (list): [stage, area_km2] pairs, ready to plot as a stage-area curve",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★★",
+    "transfer": "A",
+    "usage": "给定水位出淹没范围与水位–面积曲线，零权重的洪水筛查",
+    "dep": "numpy / skimage",
+    "domain": "terrain",
+    "has_try": true,
+    "desc_cn": "给定水位出淹没范围与水位–面积曲线，零权重的洪水筛查",
+    "desc_raw": "Height Above Nearest Drainage (HAND): for every cell, how far it stands above the river it actually drains into, and - given one or more water stages - how much of the tile would be flooded. This is the DEM-only route to an inundation map: no hydrograph, no roughness, no calibration. A cell is counted as flooded when its HAND is below the stage AND it is connected to the channel, so a low basin behind a ridge is not flooded just for being low.",
+    "params_doc": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "DEM 路径"
+      },
+      {
+        "name": "min_area_km2",
+        "type": "float",
+        "required": false,
+        "default": "1.0",
+        "desc": "集水面积下限（km²）：一条沟要汇集这么多水才算河。常用 0.5–2"
+      },
+      {
+        "name": "river_threshold",
+        "type": "Optional[int]",
+        "required": false,
+        "default": "None",
+        "desc": "以**格数**给的阈值，会覆盖 `min_area_km2`（与 `ras.flow` 口径一致）"
+      },
+      {
+        "name": "stages",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Water stages above the bed, e.g. \"2,5,8\"; omit for HAND alone"
+      },
+      {
+        "name": "fill",
+        "type": "bool",
+        "required": false,
+        "default": "True",
+        "desc": "Fill depressions before routing (default True)"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Directory for the outputs; defaults to the session temp directory"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "paths",
+        "type": "dict",
+        "desc": "HAND raster, plus one inundation raster per stage"
+      },
+      {
+        "name": "hand_stats",
+        "type": "dict",
+        "desc": "percentiles of HAND in metres"
+      },
+      {
+        "name": "stages",
+        "type": "list",
+        "desc": "per stage - flooded cells, area_km2, share of tile, mean and max depth"
+      },
+      {
+        "name": "curve",
+        "type": "list",
+        "desc": "[stage, area_km2] pairs, ready to plot as a stage-area curve"
+      }
+    ],
+    "boundary": "水位是**相对河底**的，不是绝对高程——换成水位站读数要先减去该河段的河底高程。可信区间是谷底：河漫滩误差小，平原城区因为没有堤防、桥涵、泵站，会明显偏大。实测 900×900 / 81 万像元、0.5 km² 阈值，算 4 个水位共 12 s，其中 12 s 是它和`ras.flow` 共用的填洼与汇流，HAND 本身不到 1 s。图幅内 5.6 万格（7%）在图外才汇入河道，没有 HAND 值、也不参与淹没，所以面积是下限。",
+    "pitfall": "淹没必须**连通河道**才算：被高地围住的低洼地即使 HAND 低也不算淹（工具做了 8 连通筛选，并回报被剔除的格数）。另外 HAND 依赖河网阈值：阈值定得粗，参照的河道就远，淹没范围会偏大；换阈值结果会变，这是设计而不是 bug。",
+    "tip": "`stages` 给一组水位（如 `\"2,5,10,20\"`）一次算完，返回的 `curve` 就是水位–面积曲线，直接拿去做预警阈值。水位从 HAND 分位数起步：p10 大约淹到主要河漫滩，p90 已经漫上坡面。它还能当「相对河谷高度」单独用——做洪水易发性图层比绝对高程有用。",
+    "related": [
+      "ras.river_network",
+      "ras.flow",
+      "ras.terrain",
+      "ras.threshold"
+    ]
+  },
+  {
     "name": "ras.hillshade",
     "func": "ras_hillshade",
     "module": "analysis",
@@ -6685,8 +6819,8 @@
     "func": "ras_river_network",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 910,
-    "loc": 231,
+    "lineno": 935,
+    "loc": 234,
     "signature": "dem_path: str, min_area_km2: float=1.0, river_threshold: Optional[int]=None, fill: bool=True, simplify_m: float=0.0, out_dir: Optional[str]=None",
     "params": [
       {
@@ -6899,7 +7033,7 @@
     "func": "ras_terrain",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 121,
+    "lineno": 122,
     "loc": 74,
     "signature": "dem_path: str, attributes: Optional[str]=None, units: str='degrees', out_dir: Optional[str]=None",
     "params": [

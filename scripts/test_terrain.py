@@ -14,6 +14,7 @@ from pathlib import Path
 import numpy as np
 import rasterio
 from rasterio.transform import from_origin
+from skimage import measure
 
 REPO = Path(__file__).resolve().parents[1]
 TMP = Path(tempfile.mkdtemp(prefix="terrain_test_"))
@@ -376,6 +377,57 @@ check("长度 = (N-1) × 经向格宽（±2%）",
       abs(only["length_m"] - (n2 - 1) * yres_m) < 0.02 * (n2 - 1) * yres_m,
       f"{only['length_m']} vs {(n2 - 1) * yres_m:.1f}")
 check("坡度是度不是 89.99", 0 < only["mean_slope_deg"] < 10, str(only["mean_slope_deg"]))
+
+print("\n[21] HAND：V 形谷上 HAND = 0.5·|列 − 河道列|（有解析解）")
+hz = (N - np.arange(N))[:, None] * 0.1 + np.abs(np.arange(N) - 32)[None, :] * 0.5
+hv = write_dem("hand_v", hz)
+rh = load(T.ras_hand(hv, river_threshold=40, stages="1.7,2.4,3.6", out_dir=str(TMP / "hand_v")))
+with rasterio.open(rh["paths"]["hand"]) as s:
+    hand = s.read(1)
+dc = np.abs(np.arange(N)[None, :] - 32)
+check("河道格 HAND = 0", bool((hand[:, 32] == 0).all()), str(hand[:3, 32]))
+check("HAND = 0.5·|dc|（误差 < 1e-3）", float(np.abs(hand - 0.5 * dc).max()) < 1e-3,
+      f"{np.abs(hand - 0.5 * dc).max():.2e}")
+check("识别出的河道只有 64 格（一列）", rh["channel_cells"] == 64, str(rh["channel_cells"]))
+check("HAND 分位数与解析一致（中位 8 m）", abs(rh["hand_stats"]["p50"] - 8.0) < 0.1,
+      str(rh["hand_stats"]))
+for row, expect_cells in zip(rh["stages"], (448, 576, 960)):
+    check(f"水位 {row['stage_m']} m 淹没 {expect_cells} 格", row["cells"] == expect_cells,
+          str(row["cells"]))
+    check(f"水位 {row['stage_m']} m 面积 = 格数 × 100 m²",
+          abs(row["area_km2"] - expect_cells * 100 / 1e6) < 1e-9, str(row["area_km2"]))
+check("最深水深 = 水位", all(abs(r["max_depth_m"] - r["stage_m"]) < 1e-6 for r in rh["stages"]),
+      str([r["max_depth_m"] for r in rh["stages"]]))
+check("面积随水位单调不减",
+      all(a["cells"] <= b["cells"] for a, b in zip(rh["stages"], rh["stages"][1:])))
+check("没有孤立低地被计入", all(r["dropped_unconnected_cells"] == 0 for r in rh["stages"]),
+      str([r["dropped_unconnected_cells"] for r in rh["stages"]]))
+with rasterio.open(rh["paths"]["inundation_2.4m"]) as s:
+    wet = s.read(1) > 0
+lab = measure.label(wet, connectivity=2)
+river_mask = hand[:, 32] == 0
+check("每个淹没斑块都连着河道",
+      set(np.unique(lab[wet])) == set(np.unique(lab[np.ix_(np.arange(N), [32])])) ,
+      f"{len(set(np.unique(lab[wet])))} 个斑块")
+check("淹没区是 HAND < 水位的子集", bool((hand[wet] < 2.4).all()), "")
+
+print("\n[22] HAND：经纬度 DEM 的面积换算与参数校验")
+rg2 = load(T.ras_hand(str(geo), river_threshold=30, stages="20", out_dir=str(TMP / "hand_geo")))
+with rasterio.open(rg2["paths"]["hand"]) as s:
+    hg = s.read(1)
+dc2 = np.abs(np.arange(n2)[None, :] - 24)
+check("经纬度下 HAND 仍是米（= 12·|dc|）", float(np.abs(hg - 12.0 * dc2).max()) < 1e-3,
+      f"{np.abs(hg - 12.0 * dc2).max():.2e}")
+row = rg2["stages"][0]
+want_area = row["cells"] * rg2["cell_size_m"]["x"] * rg2["cell_size_m"]["y"] / 1e6
+check("面积按换算后的格宽计算", abs(row["area_km2"] - want_area) < 1e-3,
+      f"{row['area_km2']} vs {want_area:.4f}")
+bad3 = json.loads(T.ras_hand(hv, river_threshold=40, stages="0"))
+check("水位必须为正", "error" in bad3, str(bad3)[:60])
+bad4 = json.loads(T.ras_hand(hv, river_threshold=100000))
+check("没有河道格时返回 error", "error" in bad4, str(bad4)[:60])
+bad5 = json.loads(T.ras_hand(hv, river_threshold=1))
+check("river_threshold < 2 返回 error", "error" in bad5, str(bad5)[:60])
 
 print(f"\n{'='*46}\n通过 {ok}，失败 {failed}\n")
 raise SystemExit(1 if failed else 0)

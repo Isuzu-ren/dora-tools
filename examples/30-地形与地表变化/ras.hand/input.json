@@ -1,0 +1,5 @@
+{
+  "dem_path": "<temp_dir>/dem_flow_crop.tif",
+  "min_area_km2": 0.5,
+  "stages": "2,5,10,20"
+}

@@ -915,6 +915,82 @@ def ex_river_network(F):
                       "边界外的上游没算进来，级数只在图幅内成立。"))
 
 
+HAND_STAGES = (2, 5, 10, 20)
+HAND_COLORS = {2: (24, 88, 168), 5: (60, 142, 216), 10: (128, 194, 240), 20: (198, 226, 250)}
+
+
+def _curve_chart(curve: list) -> np.ndarray:
+    """水位–面积曲线：预警要的就是这张图（涨到几米、淹多大）。"""
+    import matplotlib  # noqa: PLC0415
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt  # noqa: PLC0415
+
+    stage = [c[0] for c in curve]
+    area = [c[1] for c in curve]
+    fig, ax = plt.subplots(figsize=(4.2, 4.2), dpi=100)
+    ax.plot(area, stage, "-o", color="#1d5fa8", linewidth=2, markersize=5,
+            markerfacecolor="white", markeredgewidth=1.6)
+    for a, s_ in zip(area, stage):
+        ax.annotate(f"{a:.1f}", (a, s_), textcoords="offset points", xytext=(6, 4), fontsize=7.5,
+                    color="#22303f")
+    ax.set_xlabel("flooded area (km²)", fontsize=8)
+    ax.set_ylabel("water stage (m)", fontsize=8)
+    ax.tick_params(labelsize=8)
+    ax.set_xlim(0, max(area) * 1.25)
+    ax.set_ylim(0, max(stage) * 1.15)
+    ax.grid(True, color="#d8dee6", linewidth=0.6)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    fig.tight_layout()
+    fig.canvas.draw()
+    out = np.asarray(fig.canvas.buffer_rgba())[..., :3].copy()
+    plt.close(fig)
+    return out
+
+
+@example("ras.hand")
+def ex_hand(F):
+    crop = _flow_crop(F)
+    args = {"dem_path": str(crop), "min_area_km2": 0.5,
+            "stages": ",".join(str(s) for s in HAND_STAGES)}
+    res = run_tool(E("ras.hand"), **args)
+
+    hand = read_bands(res["paths"]["hand"])[0].astype(float)
+    shade = np.repeat(_shade_of(crop)[..., None], 3, axis=2)
+
+    # 左：HAND 本身。0 = 河道，往上越远离河道；nodata 涂灰。
+    left = to_single(np.clip(hand, 0, 30), "YlGnBu_r")
+    left[hand < 0] = (232, 232, 232)
+
+    # 中：逐级叠色，大水位先画、小水位后画，得到嵌套的淹没带
+    mid = shade.copy()
+    for stage in sorted(HAND_STAGES, reverse=True):
+        wet = read_bands(res["paths"][f"inundation_{stage}m"])[0] > 0
+        col = np.array(HAND_COLORS[stage])
+        mid[wet] = (shade[wet] * 0.22 + col * 0.78).astype(np.uint8)
+    mid = mid.copy()
+
+    st = res["stages"]
+    panels = [("HAND: metres above nearest drainage", left),
+              ("inundation at 2 / 5 / 10 / 20 m stage", mid),
+              (f"stage-area curve (channel = {res['threshold']['area_km2']:g} km2)", _curve_chart(res["curve"]))]
+    biggest, smallest = st[-1], st[0]
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(crop), "terrain"), "out": _grid(panels)},
+                inputs=["同一块 900×900 子区（EPSG:32654，像元 12 m）；河道取汇水面积 0.5 km² 以上"],
+                caption=(f"{res['channel_cells']} 格河道；水位 {smallest['stage_m']:g} m 淹 "
+                         f"{smallest['area_km2']:.1f} km²（{smallest['share_of_tile'] * 100:.1f}%），"
+                         f"{biggest['stage_m']:g} m 淹 {biggest['area_km2']:.1f} km²"
+                         f"（{biggest['share_of_tile'] * 100:.1f}%）"),
+                note=("左图是 HAND——每个格子「高出它最终汇入的那条河道多少米」，所以它天生就是淹没深度："
+                      "水位涨到 5 m，HAND < 5 的地方就是水面。中图正是这条规则逐级套上去的结果，"
+                      "越靠河道越先淹、淹得越深。"
+                      "这里的水位是**相对河底**的，不是绝对高程；要换成河道水位站读数，把站的水位减去"
+                      "该河段河底高程即可。另有一部分格子没有 HAND 值（涂灰）：它们的水流在图幅外"
+                      "才汇入河道，本图里看不见那条河，只能留空——这也是为什么面积是「至少」而不是「正好」。"
+                      "这套方法是筛查级：静水面、无流速、看不见桥涵和堤防，河漫滩准，平原城区偏大。"))
+
+
 @example("ras.contour")
 def ex_contour(F):
     proj = _proj_dem(F)

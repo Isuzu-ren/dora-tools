@@ -5,7 +5,7 @@
     python scripts/smoke_test.py
 
 会临时造一张 64×64 的 GeoTIFF，依次调用 ras.threshold / ras.area、
-ras.terrain / ras.contour、ras.catchment、ras.geomorphons、ras.river_network，
+ras.terrain / ras.contour、ras.catchment、ras.geomorphons、ras.river_network、ras.hand，
 逐条核对数值，失败时以非零码退出。
 """
 from __future__ import annotations
@@ -139,7 +139,24 @@ def main() -> int:
         return 1
     print(f"\n{r7['stats']['reaches']} 条河段，共 {r7['stats']['total_length_km']} km")
 
-    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取、地貌分类、河网分级六条链可用（未涉及任何模型权重）。")
+    print("\n⑦ ras.hand：高程每列升 1 m，最右列高出河道 1 m，水位 1.5 m 应淹满全图")
+    from dora.tools.terrain import ras_hand
+
+    r8 = json.loads(ras_hand(str(dem), river_threshold=2, stages="1.5"))
+    if r8.get("error"):
+        print("HAND 计算失败")
+        return 1
+    if abs(r8["hand_stats"]["max"] - 1.0) > 1e-6 or r8["channel_cells"] != 4032:
+        print(f"HAND 最大值应为 1 m、河道应为 4032 格，实得 "
+              f"{r8['hand_stats']['max']} / {r8['channel_cells']}")
+        return 1
+    flooded = r8["stages"][0]["cells"]
+    if flooded != 4096:
+        print(f"水位 1.5 m 应淹满 4096 格，实得 {flooded}")
+        return 1
+    print(f"\nHAND 最大 {r8['hand_stats']['max']} m，水位 1.5 m 淹没 {flooded} 格")
+
+    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取、地貌分类、河网分级、HAND 七条链可用（未涉及任何模型权重）。")
     return 0
 
 

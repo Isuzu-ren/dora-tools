@@ -1,0 +1,85 @@
+{
+  "tool": "ras.hand",
+  "paths": {
+    "hand": "<temp_dir>/hand.tif",
+    "inundation_2m": "<temp_dir>/inundation_2m.tif",
+    "inundation_5m": "<temp_dir>/inundation_5m.tif",
+    "inundation_10m": "<temp_dir>/inundation_10m.tif",
+    "inundation_20m": "<temp_dir>/inundation_20m.tif"
+  },
+  "threshold": {
+    "cells": 3462,
+    "area_km2": 0.5,
+    "set_by": "min_area_km2"
+  },
+  "channel_cells": 8051,
+  "hand_stats": {
+    "min": 0.0,
+    "p10": 5.0,
+    "p50": 58.0,
+    "p90": 122.0,
+    "p99": 185.0,
+    "max": 267.99,
+    "mean": 62.38
+  },
+  "stages": [
+    {
+      "stage_m": 2.0,
+      "cells": 43010,
+      "area_km2": 6.2112,
+      "share_of_tile": 0.0531,
+      "share_of_valid": 0.0571,
+      "mean_depth_m": 1.12,
+      "max_depth_m": 2.0,
+      "dropped_unconnected_cells": 0
+    },
+    {
+      "stage_m": 5.0,
+      "cells": 75191,
+      "area_km2": 10.8585,
+      "share_of_tile": 0.0928,
+      "share_of_valid": 0.0998,
+      "mean_depth_m": 2.91,
+      "max_depth_m": 5.0,
+      "dropped_unconnected_cells": 0
+    },
+    {
+      "stage_m": 10.0,
+      "cells": 109169,
+      "area_km2": 15.7654,
+      "share_of_tile": 0.1348,
+      "share_of_valid": 0.1448,
+      "mean_depth_m": 6.17,
+      "max_depth_m": 10.0,
+      "dropped_unconnected_cells": 0
+    },
+    "…（共 4 条，此处省略）"
+  ],
+  "curve": [
+    [
+      2.0,
+      6.2112
+    ],
+    [
+      5.0,
+      10.8585
+    ],
+    [
+      10.0,
+      15.7654
+    ],
+    "…（共 4 条，此处省略）"
+  ],
+  "cell_size_m": {
+    "x": 12.017180807112608,
+    "y": 12.017180807112608,
+    "note": null
+  },
+  "shape": [
+    900,
+    900
+  ],
+  "warnings": [
+    "56251 cell(s) have no channel downstream inside this tile (edge basins below the threshold); they get no HAND value and are left out of the inundation masks"
+  ]
+}
