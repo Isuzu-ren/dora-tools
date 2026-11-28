@@ -5,7 +5,8 @@
     python scripts/smoke_test.py
 
 会临时造一张 64×64 的 GeoTIFF，依次调用 ras.threshold / ras.area、
-ras.terrain / ras.contour、ras.catchment、ras.geomorphons、ras.river_network、ras.hand，
+ras.terrain / ras.contour、ras.catchment、ras.geomorphons、ras.river_network、ras.hand、
+ras.index、ras.wetness，
 逐条核对数值，失败时以非零码退出。
 """
 from __future__ import annotations
@@ -156,7 +157,44 @@ def main() -> int:
         return 1
     print(f"\nHAND 最大 {r8['hand_stats']['max']} m，水位 1.5 m 淹没 {flooded} 格")
 
-    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取、地貌分类、河网分级、HAND 七条链可用（未涉及任何模型权重）。")
+    print("\n⑧ ras.index：两波段归一化差值 (A−B)/(A+B)")
+    from dora.tools.terrain import ras_index
+
+    two = TMP / "two.tif"
+    with rasterio.open(two, "w", driver="GTiff", height=64, width=64, count=2, dtype="uint8",
+                       crs="EPSG:32650",
+                       transform=Affine(10.0, 0, 500000, 0, -10.0, 3000000)) as ds:
+        ds.write(arr, 1)
+        ds.write((255 - arr).astype(np.uint8), 2)
+    r9 = json.loads(ras_index(str(two), 1, 2, name="nd"))
+    if r9.get("error"):
+        print("指数计算失败")
+        return 1
+    with rasterio.open(r9["out_path"]) as ds:
+        nd = ds.read(1)
+    want = (0 - 255) / (0 + 255)                      # 第 0 列：A=0, B=255
+    if abs(float(nd[0, 0]) - want) > 1e-6:
+        print(f"第 0 列应为 {want:.4f}，实得 {nd[0, 0]:.4f}")
+        return 1
+    print(f"\n第 0 列 = {nd[0, 0]:.4f}，第 63 列 = {nd[0, 63]:.4f}")
+
+    print("\n⑨ ras.wetness：10% 均匀东坡上 TWI = ln((64−c)·100)")
+    from dora.tools.terrain import ras_wetness
+
+    r10 = json.loads(ras_wetness(str(dem)))
+    if r10.get("error"):
+        print("地形指数计算失败")
+        return 1
+    with rasterio.open(r10["paths"]["twi"]) as ds:
+        twi = ds.read(1)
+    want_twi = math.log((64 - 10) * 100.0)            # c=10：a=54×10 m，tanβ=0.1
+    if abs(float(twi[32, 10]) - want_twi) > 1e-3:
+        print(f"TWI(32,10) 应为 {want_twi:.4f}，实得 {twi[32, 10]:.4f}")
+        return 1
+    print(f"\nTWI(32,10) = {twi[32, 10]:.4f}（解析 {want_twi:.4f}）")
+
+    print("\n冒烟测试通过：阈值→面积、地形因子、等高线、流域提取、地貌分类、河网分级、HAND、"
+          "光谱指数、地形湿度九条链可用（未涉及任何模型权重）。")
     return 0
 
 

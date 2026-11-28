@@ -1,0 +1,51 @@
+{
+  "tool": "ras.wetness",
+  "paths": {
+    "twi": "<temp_dir>/wetness_twi.tif",
+    "spi": "<temp_dir>/wetness_spi.tif",
+    "sti": "<temp_dir>/wetness_sti.tif"
+  },
+  "stats": {
+    "twi": {
+      "min": 1.927,
+      "p5": 3.209,
+      "p50": 4.646,
+      "p95": 9.655,
+      "max": 22.295,
+      "mean": 5.221
+    },
+    "spi": {
+      "min": -3.864,
+      "p5": 0.124,
+      "p50": 2.791,
+      "p95": 5.656,
+      "max": 13.472,
+      "mean": 2.774
+    },
+    "sti": {
+      "min": 0.004,
+      "p5": 0.587,
+      "p50": 9.093,
+      "p95": 41.54,
+      "max": 3840.665,
+      "mean": 15.297
+    }
+  },
+  "params": {
+    "specific_area": "a = cells x cell size (metres)",
+    "cell_size_m": 12.017,
+    "min_slope_deg": 0.1,
+    "cells_at_slope_floor": 11653,
+    "filled": true
+  },
+  "cell_size_m": {
+    "x": 12.017180807112608,
+    "y": 12.017180807112608,
+    "note": null
+  },
+  "shape": [
+    900,
+    900
+  ],
+  "warnings": []
+}

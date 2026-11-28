@@ -1,0 +1,5 @@
+{
+  "dem_path": "<temp_dir>/dem_flow_crop.tif",
+  "indices": "twi,spi,sti",
+  "min_slope_deg": 0.1
+}

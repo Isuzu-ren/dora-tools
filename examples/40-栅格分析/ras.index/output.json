@@ -1,0 +1,26 @@
+{
+  "tool": "ras.index",
+  "out_path": "<temp_dir>/ndvi.tif",
+  "name": "ndvi",
+  "bands": [
+    8,
+    4
+  ],
+  "formula": "(band8 - band4) / (band8 + band4)",
+  "stats": {
+    "min": -0.4945,
+    "p5": 0.1429,
+    "p50": 0.4568,
+    "p95": 0.6134,
+    "max": 0.8364,
+    "mean": 0.4244,
+    "valid_ratio": 0.9982,
+    "share_negative": 0.0043,
+    "share_positive": 0.9956
+  },
+  "shape": [
+    1384,
+    1922
+  ],
+  "warnings": []
+}

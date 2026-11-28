@@ -1,0 +1,7 @@
+{
+  "image_path": "<DORA_DATA>/images/landslide4sense/Japan_all_14_sentinel.tif",
+  "band_a": 8,
+  "band_b": 4,
+  "name": "ndvi",
+  "out_path": "<temp_dir>/ndvi.tif"
+}

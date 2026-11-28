@@ -429,5 +429,73 @@ check("没有河道格时返回 error", "error" in bad4, str(bad4)[:60])
 bad5 = json.loads(T.ras_hand(hv, river_threshold=1))
 check("river_threshold < 2 返回 error", "error" in bad5, str(bad5)[:60])
 
+print("\n[23] ras.index：两波段归一化差值，值域与 NoData 处理")
+n3 = 24
+nir = np.full((n3, n3), 0.6, dtype="float32")
+red = np.full((n3, n3), 0.2, dtype="float32")
+red[4:8, 4:8] = -0.6                              # 与 NIR 相加为 0 → 比值无定义
+two = TMP / "two_band.tif"
+with rasterio.open(two, "w", driver="GTiff", height=n3, width=n3, count=2, dtype="float32",
+                   crs="EPSG:32654",
+                   transform=from_origin(500000, 4000000, CELL, CELL)) as dst:
+    dst.write(nir, 1)
+    dst.write(red, 2)
+ri = load(T.ras_index(str(two), 1, 2, name="ndvi"))
+with rasterio.open(ri["out_path"]) as s:
+    idx = s.read(1)
+check("(0.6-0.2)/(0.6+0.2) = 0.5", bool((idx[np.isfinite(idx)] == 0.5).all()),
+      str(np.unique(idx[np.isfinite(idx)])))
+check("和为 0 的 16 格写成 NoData", int(np.isnan(idx).sum()) == 16, str(int(np.isnan(idx).sum())))
+check("统计只算有效像元", ri["stats"]["valid_ratio"] == round((n3 * n3 - 16) / (n3 * n3), 4),
+      str(ri["stats"]["valid_ratio"]))
+ri2 = load(T.ras_index(str(two), 2, 1, name="ndvi_rev"))
+with rasterio.open(ri2["out_path"]) as s:
+    idx2 = s.read(1)
+check("交换两波段变号", bool((idx2[np.isfinite(idx2)] == -0.5).all()))
+san = load(T.ras_index(str(two), 1, 2, name="NDVI 2024/11"))
+check("name 被清洗成合法文件名", "/" not in san["name"] and " " not in san["name"], san["name"])
+check("波段越界报错", "error" in json.loads(T.ras_index(str(two), 1, 9)))
+check("同一波段报错", "error" in json.loads(T.ras_index(str(two), 2, 2)))
+
+print("\n[24] ras.wetness：均匀东坡上 TWI/SPI/STI 与解析式逐格一致")
+wplane = np.tile(np.arange(N) * CELL * 0.1, (N, 1))
+rw = load(T.ras_wetness(write_dem("wet_plane", wplane), out_dir=str(TMP / "wet_p")))
+twi = read_bands = None
+with rasterio.open(rw["paths"]["twi"]) as s:
+    twi = s.read(1)
+with rasterio.open(rw["paths"]["spi"]) as s:
+    spi = s.read(1)
+with rasterio.open(rw["paths"]["sti"]) as s:
+    sti = s.read(1)
+cols = np.arange(2, N - 2)
+a_spec = (N - cols) * CELL                              # a = 汇流格数 × 格宽
+exp_twi = np.log(a_spec / 0.1)[None, :].repeat(N - 4, axis=0)
+exp_spi = np.log(a_spec * 0.1)[None, :].repeat(N - 4, axis=0)
+exp_sti = ((a_spec / 22.13) ** 0.6
+           * (np.sin(np.arctan(0.1)) / 0.0896) ** 1.3)[None, :].repeat(N - 4, axis=0)
+check("TWI = ln(a / tanβ)（误差 < 1e-3）", float(np.abs(twi[2:-2, 2:-2] - exp_twi).max()) < 1e-3,
+      f"{np.abs(twi[2:-2, 2:-2] - exp_twi).max():.2e}")
+check("SPI = ln(a · tanβ)（误差 < 1e-3）", float(np.abs(spi[2:-2, 2:-2] - exp_spi).max()) < 1e-3,
+      f"{np.abs(spi[2:-2, 2:-2] - exp_spi).max():.2e}")
+check("STI = (a/22.13)^0.6 (sinβ/0.0896)^1.3（误差 < 1e-3）",
+      float(np.abs(sti[2:-2, 2:-2] - exp_sti).max()) < 1e-3,
+      f"{np.abs(sti[2:-2, 2:-2] - exp_sti).max():.2e}")
+check("解析坡面上没有格子触到坡度下限", rw["params"]["cells_at_slope_floor"] == 0,
+      str(rw["params"]["cells_at_slope_floor"]))
+
+rwf = load(T.ras_wetness(write_dem("wet_flat", np.full((N, N), 100.0)),
+                         out_dir=str(TMP / "wet_f")))
+with rasterio.open(rwf["paths"]["twi"]) as s:
+    ftwi = s.read(1)
+check("平地上全部触限", rwf["params"]["cells_at_slope_floor"] == N * N,
+      str(rwf["params"]["cells_at_slope_floor"]))
+check("平地上结果仍是有限值", bool(np.isfinite(ftwi).all()))
+check("触限比例高时给出警告", any("slope floor" in w for w in rwf["warnings"]), str(rwf["warnings"]))
+rwt = load(T.ras_wetness(write_dem("wet_sub", wplane), indices="twi", out_dir=str(TMP / "wet_s")))
+check("indices 只出请求的指数", list(rwt["paths"]) == ["twi"], str(rwt["paths"]))
+check("未知指数报错", "error" in json.loads(T.ras_wetness(write_dem("wet_bad", wplane), indices="tpi")))
+check("min_slope_deg <= 0 报错",
+      "error" in json.loads(T.ras_wetness(write_dem("wet_bad2", wplane), min_slope_deg=0)))
+
 print(f"\n{'='*46}\n通过 {ok}，失败 {failed}\n")
 raise SystemExit(1 if failed else 0)

@@ -1,6 +1,6 @@
-# 115 件工具总表
+# 117 件工具总表
 
-其中上游 DORA 108 件，本仓库新增 7 件（标 ★）。
+其中上游 DORA 108 件，本仓库新增 9 件（标 ★）。
 按功能域排序。完整字段见 `index/tools.json`，可交互版本见 `index/index.html`。
 
 | # | 域 | 工具 | 相关性 | 可迁移性 | 用途 |
@@ -74,49 +74,51 @@
 | 67 | 40-栅格分析 | [`ras.diff`](../docs/40-栅格分析/ras.diff.md) | ★★★ | A | 多期差值、DSM−DEM 求相对高度 |
 | 68 | 40-栅格分析 | [`ras.focal_stats`](../docs/40-栅格分析/ras.focal_stats.md) | ★★★ | A | 热点检测、平滑、DEM 局部粗糙度 |
 | 69 | 40-栅格分析 | [`ras.grid_windows`](../docs/40-栅格分析/ras.grid_windows.md) | ★★★ | A | 面雨量/旱情分区统计的基础 |
-| 70 | 40-栅格分析 | [`ras.reproject`](../docs/40-栅格分析/ras.reproject.md) | ★★★ | A | 多源数据统一坐标系（国产影像常为 CGCS2000） |
-| 71 | 40-栅格分析 | [`ras.resample`](../docs/40-栅格分析/ras.resample.md) | ★★★ | A | 统一 GSD：模型对分辨率敏感，这一步不能省 |
-| 72 | 40-栅格分析 | [`ras.sample_point`](../docs/40-栅格分析/ras.sample_point.md) | ★★ | A | 站点/断面取值 |
-| 73 | 40-栅格分析 | [`ras.sample_points`](../docs/40-栅格分析/ras.sample_points.md) | ★★ | A | 水文站点批量采样 |
-| 74 | 40-栅格分析 | [`ras.stats`](../docs/40-栅格分析/ras.stats.md) | ★★★ | A | 水位/温度/降水量的区域统计 |
-| 75 | 40-栅格分析 | [`ras.threshold`](../docs/40-栅格分析/ras.threshold.md) | ★★★ | A | 最通用的一招：LST/NDVI/水深/降水栅格都能阈值化 |
-| 76 | 40-栅格分析 | [`ras.vectorize`](../docs/40-栅格分析/ras.vectorize.md) | ★★★ | A | 淹没范围出图、与行政区叠加的前提 |
-| 77 | 30-地形与地表变化 | [`ras.catchment`](../docs/30-地形与地表变化/ras.catchment.md) ★ | ★★★ | A | 给定出水口反查上游汇水区，洪水预报的单元划分 |
-| 78 | 30-地形与地表变化 | [`ras.contour`](../docs/30-地形与地表变化/ras.contour.md) ★ | ★★ | A | 等高线出图、坡度分级底图 |
-| 79 | 30-地形与地表变化 | [`ras.flow`](../docs/30-地形与地表变化/ras.flow.md) ★ | ★★★ | A | 填洼→流向→汇流，流域提取与洪水演进的前置 |
-| 80 | 30-地形与地表变化 | [`ras.geomorphons`](../docs/30-地形与地表变化/ras.geomorphons.md) ★ | ★★★ | A | 10 类地貌单元分类，地貌分区与易发性解释变量 |
-| 81 | 30-地形与地表变化 | [`ras.hand`](../docs/30-地形与地表变化/ras.hand.md) ★ | ★★★ | A | 给定水位出淹没范围与水位–面积曲线，零权重的洪水筛查 |
-| 82 | 30-地形与地表变化 | [`ras.hillshade`](../docs/30-地形与地表变化/ras.hillshade.md) | ★★★ | A | 地形地貌可视化、滑坡/泥石流易发性底图 |
-| 83 | 30-地形与地表变化 | [`ras.river_network`](../docs/30-地形与地表变化/ras.river_network.md) ★ | ★★★ | A | 河网矢量化为河段并做 Strahler 分级，洪水演进与水质的基本单元 |
-| 84 | 30-地形与地表变化 | [`ras.slope`](../docs/30-地形与地表变化/ras.slope.md) | ★★★ | A | 坡度是滑坡模型与汇流分析的基础因子 |
-| 85 | 30-地形与地表变化 | [`ras.terrain`](../docs/30-地形与地表变化/ras.terrain.md) ★ | ★★★ | A | 一次出坡度/坡向/曲率/TRI/TPI/粗糙度，地形地貌分析的地基 |
-| 86 | 30-地形与地表变化 | [`seg.landslide_bitemporal`](../docs/30-地形与地表变化/seg.landslide_bitemporal.md) | ★★★ | B（未实测） | 无 DEM 时的替代路径 |
-| 87 | 30-地形与地表变化 | [`seg.landslide_ms`](../docs/30-地形与地表变化/seg.landslide_ms.md) | ★★★ | C（14 波段归一化） | 地形地貌变化主力；必须 14 波段 |
-| 88 | 30-地形与地表变化 | [`seg.vegetation`](../docs/30-地形与地表变化/seg.vegetation.md) | ★★★ | B（仅单期） | 旱情：植被覆盖变化、受旱耕地识别 |
-| 89 | 50-矢量与空间关系 | [`vec.buffer`](../docs/50-矢量与空间关系/vec.buffer.md) | ★★★ | A | 河道缓冲带、溃堤影响带、河岸带 |
-| 90 | 50-矢量与空间关系 | [`vec.build_graph`](../docs/50-矢量与空间关系/vec.build_graph.md) | ★★ | A | 通行能力建模 |
-| 91 | 50-矢量与空间关系 | [`vec.centroid`](../docs/50-矢量与空间关系/vec.centroid.md) | ★★ | A | 灾情中心点 |
-| 92 | 50-矢量与空间关系 | [`vec.clip`](../docs/50-矢量与空间关系/vec.clip.md) | ★★ | A | 裁到流域/行政区边界 |
-| 93 | 50-矢量与空间关系 | [`vec.connected_components`](../docs/50-矢量与空间关系/vec.connected_components.md) | ★★ | A | 数淹没片数、损毁建筑栋数 |
-| 94 | 50-矢量与空间关系 | [`vec.convex_hull`](../docs/50-矢量与空间关系/vec.convex_hull.md) | ★★ | A | 灾害影响范围包络 |
-| 95 | 50-矢量与空间关系 | [`vec.dissolve`](../docs/50-矢量与空间关系/vec.dissolve.md) | ★★★ | A | 把破碎淹没斑块合成连片淹没区 |
-| 96 | 50-矢量与空间关系 | [`vec.filter_by_area`](../docs/50-矢量与空间关系/vec.filter_by_area.md) | ★★★ | A | 去掉掩膜噪点，几乎每步都用 |
-| 97 | 50-矢量与空间关系 | [`vec.filter_by_attribute`](../docs/50-矢量与空间关系/vec.filter_by_attribute.md) | ★★ | A | 按地类/行政区代码筛选 |
-| 98 | 50-矢量与空间关系 | [`vec.filter_by_distance`](../docs/50-矢量与空间关系/vec.filter_by_distance.md) | ★★ | A | 以水库/险工段为中心的影响范围筛选 |
-| 99 | 50-矢量与空间关系 | [`vec.graph_shortest_path`](../docs/50-矢量与空间关系/vec.graph_shortest_path.md) | ★★ | A | 抢险/撤离路径规划 |
-| 100 | 50-矢量与空间关系 | [`vec.intersect`](../docs/50-矢量与空间关系/vec.intersect.md) | ★★★ | A | 淹没范围 ∩ 耕地/居民地/行政区 |
-| 101 | 50-矢量与空间关系 | [`vec.kbuffer`](../docs/50-矢量与空间关系/vec.kbuffer.md) | ★★ | A | 分级影响区（100/500/1000 m） |
-| 102 | 50-矢量与空间关系 | [`vec.length`](../docs/50-矢量与空间关系/vec.length.md) | ★★ | A | 河道长度、道路淹没长度 |
-| 103 | 50-矢量与空间关系 | [`vec.max_polygon`](../docs/50-矢量与空间关系/vec.max_polygon.md) | ★★ | A | 找主淹没区/最大灾区 |
-| 104 | 50-矢量与空间关系 | [`vec.nearest`](../docs/50-矢量与空间关系/vec.nearest.md) | ★★ | A | 受灾点最近的安置点/物资库 |
-| 105 | 50-矢量与空间关系 | [`vec.perimeter`](../docs/50-矢量与空间关系/vec.perimeter.md) | ★★ | A | 水域岸线长度 |
-| 106 | 50-矢量与空间关系 | [`vec.pixel_to_world`](../docs/50-矢量与空间关系/vec.pixel_to_world.md) | ★★ | A | 把图上位置转成可上报的坐标 |
-| 107 | 50-矢量与空间关系 | [`vec.point_in_polygon`](../docs/50-矢量与空间关系/vec.point_in_polygon.md) | ★★★ | A | 站点/村庄是否位于淹没区或风险区 |
-| 108 | 50-矢量与空间关系 | [`vec.raster_stats`](../docs/50-矢量与空间关系/vec.raster_stats.md) | ★★★ | A | 流域内平均降水、行政区平均 LST、耕地平均 NDVI |
-| 109 | 50-矢量与空间关系 | [`vec.repair_min_edges`](../docs/50-矢量与空间关系/vec.repair_min_edges.md) | ★★ | A | 断路情况下最小抢通方案 |
-| 110 | 50-矢量与空间关系 | [`vec.road_centerline_extraction`](../docs/50-矢量与空间关系/vec.road_centerline_extraction.md) | ★★ | A | 路网骨架，用于通行分析 |
-| 111 | 50-矢量与空间关系 | [`vec.simplify`](../docs/50-矢量与空间关系/vec.simplify.md) | ★★ | A | 矢量过大时压缩，便于发布 |
-| 112 | 50-矢量与空间关系 | [`vec.voronoi`](../docs/50-矢量与空间关系/vec.voronoi.md) | ★ | A | 物资投放点/水文站服务范围 |
-| 113 | 10-水体与淹没 | [`seg.flood`](../docs/10-水体与淹没/seg.flood.md) | ★★★ | C（跨分辨率失效） | 洪水淹没范围主入口；两次水体推理再相减 |
-| 114 | 10-水体与淹没 | [`seg.reservoir`](../docs/10-水体与淹没/seg.reservoir.md) | ★★★ | C（14 波段归一化） | 干旱核心：水域面积萎缩监测；需 14 波段输入 |
-| 115 | 10-水体与淹没 | [`seg.water_aerial`](../docs/10-水体与淹没/seg.water_aerial.md) | ★★★ | C（0.03 m 航拍） | 应急航拍精细淹没边界 |
+| 70 | 40-栅格分析 | [`ras.index`](../docs/40-栅格分析/ras.index.md) ★ | ★★★ | A | 任意两波段的归一化差值指数（NDVI/NDWI/NDMI/NBR），干旱监测的基础算子 |
+| 71 | 40-栅格分析 | [`ras.reproject`](../docs/40-栅格分析/ras.reproject.md) | ★★★ | A | 多源数据统一坐标系（国产影像常为 CGCS2000） |
+| 72 | 40-栅格分析 | [`ras.resample`](../docs/40-栅格分析/ras.resample.md) | ★★★ | A | 统一 GSD：模型对分辨率敏感，这一步不能省 |
+| 73 | 40-栅格分析 | [`ras.sample_point`](../docs/40-栅格分析/ras.sample_point.md) | ★★ | A | 站点/断面取值 |
+| 74 | 40-栅格分析 | [`ras.sample_points`](../docs/40-栅格分析/ras.sample_points.md) | ★★ | A | 水文站点批量采样 |
+| 75 | 40-栅格分析 | [`ras.stats`](../docs/40-栅格分析/ras.stats.md) | ★★★ | A | 水位/温度/降水量的区域统计 |
+| 76 | 40-栅格分析 | [`ras.threshold`](../docs/40-栅格分析/ras.threshold.md) | ★★★ | A | 最通用的一招：LST/NDVI/水深/降水栅格都能阈值化 |
+| 77 | 40-栅格分析 | [`ras.vectorize`](../docs/40-栅格分析/ras.vectorize.md) | ★★★ | A | 淹没范围出图、与行政区叠加的前提 |
+| 78 | 30-地形与地表变化 | [`ras.catchment`](../docs/30-地形与地表变化/ras.catchment.md) ★ | ★★★ | A | 给定出水口反查上游汇水区，洪水预报的单元划分 |
+| 79 | 30-地形与地表变化 | [`ras.contour`](../docs/30-地形与地表变化/ras.contour.md) ★ | ★★ | A | 等高线出图、坡度分级底图 |
+| 80 | 30-地形与地表变化 | [`ras.flow`](../docs/30-地形与地表变化/ras.flow.md) ★ | ★★★ | A | 填洼→流向→汇流，流域提取与洪水演进的前置 |
+| 81 | 30-地形与地表变化 | [`ras.geomorphons`](../docs/30-地形与地表变化/ras.geomorphons.md) ★ | ★★★ | A | 10 类地貌单元分类，地貌分区与易发性解释变量 |
+| 82 | 30-地形与地表变化 | [`ras.hand`](../docs/30-地形与地表变化/ras.hand.md) ★ | ★★★ | A | 给定水位出淹没范围与水位–面积曲线，零权重的洪水筛查 |
+| 83 | 30-地形与地表变化 | [`ras.hillshade`](../docs/30-地形与地表变化/ras.hillshade.md) | ★★★ | A | 地形地貌可视化、滑坡/泥石流易发性底图 |
+| 84 | 30-地形与地表变化 | [`ras.river_network`](../docs/30-地形与地表变化/ras.river_network.md) ★ | ★★★ | A | 河网矢量化为河段并做 Strahler 分级，洪水演进与水质的基本单元 |
+| 85 | 30-地形与地表变化 | [`ras.slope`](../docs/30-地形与地表变化/ras.slope.md) | ★★★ | A | 坡度是滑坡模型与汇流分析的基础因子 |
+| 86 | 30-地形与地表变化 | [`ras.terrain`](../docs/30-地形与地表变化/ras.terrain.md) ★ | ★★★ | A | 一次出坡度/坡向/曲率/TRI/TPI/粗糙度，地形地貌分析的地基 |
+| 87 | 30-地形与地表变化 | [`ras.wetness`](../docs/30-地形与地表变化/ras.wetness.md) ★ | ★★★ | A | TWI/SPI/STI 地形水文指数：内涝易发、土壤水分、侵蚀解释变量 |
+| 88 | 30-地形与地表变化 | [`seg.landslide_bitemporal`](../docs/30-地形与地表变化/seg.landslide_bitemporal.md) | ★★★ | B（未实测） | 无 DEM 时的替代路径 |
+| 89 | 30-地形与地表变化 | [`seg.landslide_ms`](../docs/30-地形与地表变化/seg.landslide_ms.md) | ★★★ | C（14 波段归一化） | 地形地貌变化主力；必须 14 波段 |
+| 90 | 30-地形与地表变化 | [`seg.vegetation`](../docs/30-地形与地表变化/seg.vegetation.md) | ★★★ | B（仅单期） | 旱情：植被覆盖变化、受旱耕地识别 |
+| 91 | 50-矢量与空间关系 | [`vec.buffer`](../docs/50-矢量与空间关系/vec.buffer.md) | ★★★ | A | 河道缓冲带、溃堤影响带、河岸带 |
+| 92 | 50-矢量与空间关系 | [`vec.build_graph`](../docs/50-矢量与空间关系/vec.build_graph.md) | ★★ | A | 通行能力建模 |
+| 93 | 50-矢量与空间关系 | [`vec.centroid`](../docs/50-矢量与空间关系/vec.centroid.md) | ★★ | A | 灾情中心点 |
+| 94 | 50-矢量与空间关系 | [`vec.clip`](../docs/50-矢量与空间关系/vec.clip.md) | ★★ | A | 裁到流域/行政区边界 |
+| 95 | 50-矢量与空间关系 | [`vec.connected_components`](../docs/50-矢量与空间关系/vec.connected_components.md) | ★★ | A | 数淹没片数、损毁建筑栋数 |
+| 96 | 50-矢量与空间关系 | [`vec.convex_hull`](../docs/50-矢量与空间关系/vec.convex_hull.md) | ★★ | A | 灾害影响范围包络 |
+| 97 | 50-矢量与空间关系 | [`vec.dissolve`](../docs/50-矢量与空间关系/vec.dissolve.md) | ★★★ | A | 把破碎淹没斑块合成连片淹没区 |
+| 98 | 50-矢量与空间关系 | [`vec.filter_by_area`](../docs/50-矢量与空间关系/vec.filter_by_area.md) | ★★★ | A | 去掉掩膜噪点，几乎每步都用 |
+| 99 | 50-矢量与空间关系 | [`vec.filter_by_attribute`](../docs/50-矢量与空间关系/vec.filter_by_attribute.md) | ★★ | A | 按地类/行政区代码筛选 |
+| 100 | 50-矢量与空间关系 | [`vec.filter_by_distance`](../docs/50-矢量与空间关系/vec.filter_by_distance.md) | ★★ | A | 以水库/险工段为中心的影响范围筛选 |
+| 101 | 50-矢量与空间关系 | [`vec.graph_shortest_path`](../docs/50-矢量与空间关系/vec.graph_shortest_path.md) | ★★ | A | 抢险/撤离路径规划 |
+| 102 | 50-矢量与空间关系 | [`vec.intersect`](../docs/50-矢量与空间关系/vec.intersect.md) | ★★★ | A | 淹没范围 ∩ 耕地/居民地/行政区 |
+| 103 | 50-矢量与空间关系 | [`vec.kbuffer`](../docs/50-矢量与空间关系/vec.kbuffer.md) | ★★ | A | 分级影响区（100/500/1000 m） |
+| 104 | 50-矢量与空间关系 | [`vec.length`](../docs/50-矢量与空间关系/vec.length.md) | ★★ | A | 河道长度、道路淹没长度 |
+| 105 | 50-矢量与空间关系 | [`vec.max_polygon`](../docs/50-矢量与空间关系/vec.max_polygon.md) | ★★ | A | 找主淹没区/最大灾区 |
+| 106 | 50-矢量与空间关系 | [`vec.nearest`](../docs/50-矢量与空间关系/vec.nearest.md) | ★★ | A | 受灾点最近的安置点/物资库 |
+| 107 | 50-矢量与空间关系 | [`vec.perimeter`](../docs/50-矢量与空间关系/vec.perimeter.md) | ★★ | A | 水域岸线长度 |
+| 108 | 50-矢量与空间关系 | [`vec.pixel_to_world`](../docs/50-矢量与空间关系/vec.pixel_to_world.md) | ★★ | A | 把图上位置转成可上报的坐标 |
+| 109 | 50-矢量与空间关系 | [`vec.point_in_polygon`](../docs/50-矢量与空间关系/vec.point_in_polygon.md) | ★★★ | A | 站点/村庄是否位于淹没区或风险区 |
+| 110 | 50-矢量与空间关系 | [`vec.raster_stats`](../docs/50-矢量与空间关系/vec.raster_stats.md) | ★★★ | A | 流域内平均降水、行政区平均 LST、耕地平均 NDVI |
+| 111 | 50-矢量与空间关系 | [`vec.repair_min_edges`](../docs/50-矢量与空间关系/vec.repair_min_edges.md) | ★★ | A | 断路情况下最小抢通方案 |
+| 112 | 50-矢量与空间关系 | [`vec.road_centerline_extraction`](../docs/50-矢量与空间关系/vec.road_centerline_extraction.md) | ★★ | A | 路网骨架，用于通行分析 |
+| 113 | 50-矢量与空间关系 | [`vec.simplify`](../docs/50-矢量与空间关系/vec.simplify.md) | ★★ | A | 矢量过大时压缩，便于发布 |
+| 114 | 50-矢量与空间关系 | [`vec.voronoi`](../docs/50-矢量与空间关系/vec.voronoi.md) | ★ | A | 物资投放点/水文站服务范围 |
+| 115 | 10-水体与淹没 | [`seg.flood`](../docs/10-水体与淹没/seg.flood.md) | ★★★ | C（跨分辨率失效） | 洪水淹没范围主入口；两次水体推理再相减 |
+| 116 | 10-水体与淹没 | [`seg.reservoir`](../docs/10-水体与淹没/seg.reservoir.md) | ★★★ | C（14 波段归一化） | 干旱核心：水域面积萎缩监测；需 14 波段输入 |
+| 117 | 10-水体与淹没 | [`seg.water_aerial`](../docs/10-水体与淹没/seg.water_aerial.md) | ★★★ | C（0.03 m 航拍） | 应急航拍精细淹没边界 |

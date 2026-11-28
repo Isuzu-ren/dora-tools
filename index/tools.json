@@ -5326,6 +5326,112 @@
     "related": []
   },
   {
+    "name": "ras.index",
+    "func": "ras_index",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 231,
+    "loc": 62,
+    "signature": "image_path: str, band_a: int, band_b: int, name: str='index', out_path: Optional[str]=None",
+    "params": [
+      {
+        "name": "image_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "band_a",
+        "type": "int",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "band_b",
+        "type": "int",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": false,
+        "default": "'index'"
+      },
+      {
+        "name": "out_path",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nNormalised-difference index from any two bands of a multi-band raster: (A - B) / (A + B).\nOne operator covers NDVI (NIR, red), NDWI (green, NIR or NIR, SWIR), NDMI (NIR, SWIR1),\nNBR (NIR, SWIR2) and NDBI (SWIR1, NIR) - the drought-side backbone the library otherwise\nlacks. The ratio is scale invariant, so digital numbers and reflectance give the same values,\nand no threshold has to be calibrated per scene.\n\nParameters:\n- image_path (str): Multi-band raster (GeoTIFF / PNG)\n- band_a (int): First band, 1-based - the \"positive\" band (NIR for NDVI)\n- band_b (int): Second band, 1-based (red for NDVI)\n- name (str, optional): Label for the output file and the report, e.g. \"ndvi\"\n- out_path (str, optional): Output GeoTIFF path\n\nReturns:\n- out_path (str), name (str), bands (list[int])\n- stats (dict): percentiles, share of valid pixels, share negative / positive",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★★",
+    "transfer": "A",
+    "usage": "任意两波段的归一化差值指数（NDVI/NDWI/NDMI/NBR），干旱监测的基础算子",
+    "dep": "numpy / rasterio",
+    "domain": "raster",
+    "has_try": true,
+    "desc_cn": "任意两波段的归一化差值指数（NDVI/NDWI/NDMI/NBR），干旱监测的基础算子",
+    "desc_raw": "Normalised-difference index from any two bands of a multi-band raster: (A - B) / (A + B). One operator covers NDVI (NIR, red), NDWI (green, NIR or NIR, SWIR), NDMI (NIR, SWIR1), NBR (NIR, SWIR2) and NDBI (SWIR1, NIR) - the drought-side backbone the library otherwise lacks. The ratio is scale invariant, so digital numbers and reflectance give the same values, and no threshold has to be calibrated per scene.",
+    "params_doc": [
+      {
+        "name": "image_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "输入栅格路径（GeoTIFF / PNG；PNG 无地理参考）"
+      },
+      {
+        "name": "band_a",
+        "type": "int",
+        "required": true,
+        "default": null,
+        "desc": "A 使用的波段号"
+      },
+      {
+        "name": "band_b",
+        "type": "int",
+        "required": true,
+        "default": null,
+        "desc": "B 使用的波段号"
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "required": false,
+        "default": "'index'",
+        "desc": "名称"
+      },
+      {
+        "name": "out_path",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "输出文件路径"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "stats",
+        "type": "dict",
+        "desc": "percentiles, share of valid pixels, share negative / positive"
+      }
+    ],
+    "boundary": "指数只比两个波段，**波段号要按数据源的排列给**，不是卫星的波段名：这块数据是 B1..B12 顺序，所以近红外是第 8 个。分母为 0（两波段同时为 0）的地方输出 NoData。实测这块景 NDVI 中位 +0.46、负值只占 0.4% 的像元（水面、阴影、云）。",
+    "pitfall": "归一化差值**不能跨传感器直接比大小**：Sentinel-2 与 Landsat 8 的 NDVI 量级接近但不相等，做时序要先确认同源。也不要把它当物理量——它是比值，不是反射率，更不是覆盖率。",
+    "tip": "常用波段对：NDVI (NIR, 红)、NDWI (绿, NIR)、NDMI (NIR, SWIR1)、NBR (NIR, SWIR2)、NDBI (SWIR1, NIR)。干旱监测要看 NDVI 与多年同期的**距平**，不是绝对值——单期 0.4 在南方是稀疏植被、在北方是茂密植被。",
+    "related": [
+      "ras.threshold",
+      "ras.stats",
+      "seg.vegetation",
+      "ras.clip"
+    ]
+  },
+  {
     "name": "ras.reproject",
     "func": "ras_reproject",
     "module": "analysis",
@@ -6039,7 +6145,7 @@
     "func": "ras_catchment",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 595,
+    "lineno": 692,
     "loc": 283,
     "signature": "dem_path: str, pour_points: Optional[str]=None, pour_crs: str='same', snap_radius_m: float=0.0, min_area_cells: int=1, simplify_m: float=0.0, out_dir: Optional[str]=None, out_geojson: Optional[str]=None",
     "params": [
@@ -6199,7 +6305,7 @@
     "func": "ras_contour",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 1346,
+    "lineno": 1552,
     "loc": 68,
     "signature": "dem_path: str, interval: float, base: Optional[float]=None, min_length: float=0.0, out_path: Optional[str]=None",
     "params": [
@@ -6319,7 +6425,7 @@
     "func": "ras_flow",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 501,
+    "lineno": 598,
     "loc": 45,
     "signature": "dem_path: str, fill: bool=True, epsilon: float=0.0001, river_threshold: Optional[int]=None, out_dir: Optional[str]=None",
     "params": [
@@ -6435,7 +6541,7 @@
     "func": "ras_geomorphons",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 301,
+    "lineno": 398,
     "loc": 63,
     "signature": "dem_path: str, search_distance: int=10, flatness_deg: float=1.0, skip_distance: int=0, return_pattern: bool=False, out_dir: Optional[str]=None",
     "params": [
@@ -6574,8 +6680,8 @@
     "func": "ras_hand",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 1193,
-    "loc": 132,
+    "lineno": 1290,
+    "loc": 133,
     "signature": "dem_path: str, min_area_km2: float=1.0, river_threshold: Optional[int]=None, stages: Optional[str]=None, fill: bool=True, out_dir: Optional[str]=None",
     "params": [
       {
@@ -6819,7 +6925,7 @@
     "func": "ras_river_network",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 935,
+    "lineno": 1032,
     "loc": 234,
     "signature": "dem_path: str, min_area_km2: float=1.0, river_threshold: Optional[int]=None, fill: bool=True, simplify_m: float=0.0, out_dir: Optional[str]=None",
     "params": [
@@ -7033,8 +7139,8 @@
     "func": "ras_terrain",
     "module": "terrain",
     "source": "src/dora/tools/terrain.py",
-    "lineno": 122,
-    "loc": 74,
+    "lineno": 138,
+    "loc": 72,
     "signature": "dem_path: str, attributes: Optional[str]=None, units: str='degrees', out_dir: Optional[str]=None",
     "params": [
       {
@@ -7129,6 +7235,122 @@
       "ras.hillshade",
       "ras.flow",
       "ras.diff"
+    ]
+  },
+  {
+    "name": "ras.wetness",
+    "func": "ras_wetness",
+    "module": "terrain",
+    "source": "src/dora/tools/terrain.py",
+    "lineno": 1446,
+    "loc": 85,
+    "signature": "dem_path: str, indices: str='twi,spi,sti', min_slope_deg: float=0.1, fill: bool=True, out_dir: Optional[str]=None",
+    "params": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null
+      },
+      {
+        "name": "indices",
+        "type": "str",
+        "required": false,
+        "default": "'twi,spi,sti'"
+      },
+      {
+        "name": "min_slope_deg",
+        "type": "float",
+        "required": false,
+        "default": "0.1"
+      },
+      {
+        "name": "fill",
+        "type": "bool",
+        "required": false,
+        "default": "True"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None"
+      }
+    ],
+    "docstring": "Description:\nTopographic wetness (TWI), stream-power (SPI) and sediment-transport (STI) indices from one DEM.\nAll three are built on the same two inputs: the specific catchment area a - upslope area per\nunit contour width, so a = cells x cell size - and the slope beta. TWI = ln(a / tan b) marks\nwhere water collects (wet ground, waterlogging, wetland); SPI = ln(a * tan b) marks where flow\nconcentrates and detaches soil; STI = (a/22.13)^0.6 (sin b/0.0896)^1.3 is the RUSLE\nsediment-transport term. Flats get a slope floor so the logarithms stay finite.\n\nParameters:\n- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres\n- indices (str, optional): Comma-separated subset of twi,spi,sti (default all three)\n- min_slope_deg (float, optional): Slope floor in degrees (default 0.1) - keeps ln() finite\n- fill (bool, optional): Fill depressions before accumulating (default True)\n- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory\n\nReturns:\n- paths (dict): One GeoTIFF per index\n- stats (dict): percentiles per index\n- params (dict): a definition, cell size, and how many cells hit the slope floor",
+    "artifacts": [],
+    "guarded": false,
+    "origin": "extension",
+    "relevance": "★★★",
+    "transfer": "A",
+    "usage": "TWI/SPI/STI 地形水文指数：内涝易发、土壤水分、侵蚀解释变量",
+    "dep": "numpy",
+    "domain": "terrain",
+    "has_try": true,
+    "desc_cn": "TWI/SPI/STI 地形水文指数：内涝易发、土壤水分、侵蚀解释变量",
+    "desc_raw": "Topographic wetness (TWI), stream-power (SPI) and sediment-transport (STI) indices from one DEM. All three are built on the same two inputs: the specific catchment area a - upslope area per unit contour width, so a = cells x cell size - and the slope beta. TWI = ln(a / tan b) marks where water collects (wet ground, waterlogging, wetland); SPI = ln(a * tan b) marks where flow concentrates and detaches soil; STI = (a/22.13)^0.6 (sin b/0.0896)^1.3 is the RUSLE sediment-transport term. Flats get a slope floor so the logarithms stay finite.",
+    "params_doc": [
+      {
+        "name": "dem_path",
+        "type": "str",
+        "required": true,
+        "default": null,
+        "desc": "DEM 路径"
+      },
+      {
+        "name": "indices",
+        "type": "str",
+        "required": false,
+        "default": "'twi,spi,sti'",
+        "desc": "Comma-separated subset of twi,spi,sti (default all three)"
+      },
+      {
+        "name": "min_slope_deg",
+        "type": "float",
+        "required": false,
+        "default": "0.1",
+        "desc": "Slope floor in degrees (default 0.1) - keeps ln() finite"
+      },
+      {
+        "name": "fill",
+        "type": "bool",
+        "required": false,
+        "default": "True",
+        "desc": "Fill depressions before accumulating (default True)"
+      },
+      {
+        "name": "out_dir",
+        "type": "Optional[str]",
+        "required": false,
+        "default": "None",
+        "desc": "Directory for the outputs; defaults to the session temp directory"
+      }
+    ],
+    "returns_doc": [
+      {
+        "name": "paths",
+        "type": "dict",
+        "desc": "One GeoTIFF per index"
+      },
+      {
+        "name": "stats",
+        "type": "dict",
+        "desc": "percentiles per index"
+      },
+      {
+        "name": "params",
+        "type": "dict",
+        "desc": "a definition, cell size, and how many cells hit the slope floor"
+      }
+    ],
+    "boundary": "三个指数都是**相对量**，同一景内可比、跨景不可比：TWI 的绝对值取决于 a 的定义（这里 a = 格数 × 格宽，单位米），换个实现会整体平移一个常数。平地上坡度趋零，靠 `min_slope_deg` 兜底，此时结果由下限决定而不是地形；工具会回报触限格数。实测这块 900×900 子区有 11 653 格（1.4%）触限，集中在河谷底与填洼后的平地上——这些格的 TWI 是「下限值」而不是地形值，读图时要留意。解析坡面上三个指数与公式误差 < 1e-6。",
+    "pitfall": "坡度用的是**原始 DEM**而不是填洼后的——否则洼地被抹平，TWI 在洼地里反而偏低，正好把最该高的地方压低。另外 D8 单流向在平缓区会出现平行流线伪影（与汇流面同源），TWI 会呈细条纹，属于方法本身的限制，不是 bug。",
+    "tip": "用法：TWI 取高分位（p90 以上）圈「易积水、湿地」，SPI 取高分位圈「冲刷带」，STI 与 TWI 叠起来能区分「湿但不冲」和「又湿又冲」。三个都适合当滑坡、内涝模型的解释变量。",
+    "related": [
+      "ras.flow",
+      "ras.terrain",
+      "ras.hand",
+      "ras.catchment"
     ]
   },
   {

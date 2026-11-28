@@ -46,6 +46,12 @@ EXTRA_META = {
     "ras.hand": {"relevance": "★★★", "transfer": "A",
                  "usage": "给定水位出淹没范围与水位–面积曲线，零权重的洪水筛查",
                  "dep": "numpy / skimage"},
+    "ras.wetness": {"relevance": "★★★", "transfer": "A",
+                    "usage": "TWI/SPI/STI 地形水文指数：内涝易发、土壤水分、侵蚀解释变量",
+                    "dep": "numpy"},
+    "ras.index": {"relevance": "★★★", "transfer": "A",
+                  "usage": "任意两波段的归一化差值指数（NDVI/NDWI/NDMI/NBR），干旱监测的基础算子",
+                  "dep": "numpy / rasterio"},
 }
 
 # 功能域（主域唯一）。键为 MCP 工具名，值为域名 key。
@@ -79,7 +85,8 @@ assign("asset",
        "seg.building_destroyed_aerial", "seg.road_intact_aerial")
 assign("terrain", "seg.landslide_ms", "seg.landslide_bitemporal", "seg.vegetation",
        "ras.slope", "ras.hillshade", "ras.terrain", "ras.flow", "ras.contour",
-       "ras.catchment", "ras.geomorphons", "ras.river_network", "ras.hand")
+       "ras.catchment", "ras.geomorphons", "ras.river_network", "ras.hand",
+       "ras.wetness")
 assign("other",
        "seg.lava", "seg.plane", "seg.ship", "seg.vehicle", "seg.pool_aerial",
        "seg.swimming_pool", "seg.playground", "seg.roundabout",

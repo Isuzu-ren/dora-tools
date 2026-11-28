@@ -735,6 +735,53 @@ def ex_geomorphons(F):
                       "谷和脊的位置往外移。换个尺度再跑一遍，是这类工具的正确用法。"))
 
 
+def _fixed_rgb(v: np.ndarray, cmap: str, lo: float, hi: float,
+               gamma: float = 1.0) -> np.ndarray:
+    """固定值域上色：指数类要能对着色标读数值，不能按百分位拉伸。
+
+    gamma > 1 把大段低值压到接近背景色，只让真正高出阈值的部分显色——NDWI 用它把地面纹理
+    压掉、只留水面。
+    """
+    import matplotlib  # noqa: PLC0415
+    n = np.nan_to_num(np.clip((v - lo) / (hi - lo), 0, 1)) ** gamma
+    return (matplotlib.colormaps[cmap](n)[..., :3] * 255).astype(np.uint8)
+
+
+@example("ras.index")
+def ex_index(F):
+    src = F["geo"]                                   # 12 波段 Sentinel-2：B1..B12
+    out_dir = WORK / "tmp"
+    args = {"image_path": str(src), "band_a": 8, "band_b": 4, "name": "ndvi",
+            "out_path": str(out_dir / "ndvi.tif")}
+    res = run_tool(E("ras.index"), **args)
+    ndvi = read_bands(res["out_path"])[0]
+
+    # 同一景再算一次 NDWI，只换波段号
+    ndwi_res = run_tool(E("ras.index"), image_path=str(src), band_a=3, band_b=8,
+                        name="ndwi", out_path=str(out_dir / "ndwi.tif"))
+    ndwi = read_bands(ndwi_res["out_path"])[0]
+
+    rgb = to_rgb(read_bands(src), order=(3, 2, 1))   # B4 / B3 / B2 真彩
+
+    panels = [("true colour (B4 / B3 / B2)", rgb),
+              ("NDVI = (B8-B4)/(B8+B4)", _fixed_rgb(ndvi, "RdYlGn", -0.3, 0.9)),
+              ("NDWI = (B3-B8)/(B3+B8)", _fixed_rgb(ndwi, "Blues", -0.6, 0.1, gamma=3.0))]
+    st = res["stats"]
+    return dict(args=args, result=res,
+                figures={"in": rgb, "out": _grid(panels)},
+                inputs=["同一景 12 波段 Sentinel-2（EPSG:4326，1384×1922）；波段按 B1..B12 排列"],
+                caption=(f"NDVI 中位 {st['p50']:+.2f}（p5 {st['p5']:+.2f} ~ p95 {st['p95']:+.2f}），"
+                         f"NDWI 中位 {ndwi_res['stats']['p50']:+.2f}；负 NDVI 只占 "
+                         f"{st['share_negative'] * 100:.1f}% 的像元"),
+                note=("归一化差值只做一件事：`(A−B)/(A+B)`，所以它**对量纲免疫**——数字量（DN）和反射率算出来"
+                      "完全一样，不需要逐景定标。这也是它比阈值法稳的原因。"
+                      "换指数就是换波段号：NDVI 用 (NIR, 红)，NDWI 用 (绿, NIR)，NDMI 用 (NIR, SWIR1)，"
+                      "NBR 用 (NIR, SWIR2)。"
+                      "请注意波段号是**按数据源的排法**给的，不是按卫星波段名——这块数据是 B1..B12 顺序，"
+                      f"所以 B8 是第 8 个。算出来负 NDVI 的那 {st['share_negative'] * 100:.1f}% 像元是水面、"
+                      "阴影和云，正好可以和淹没范围对照。"))
+
+
 @example("ras.flow")
 def ex_flow(F):
     crop = _flow_crop(F)
@@ -989,6 +1036,31 @@ def ex_hand(F):
                       "该河段河底高程即可。另有一部分格子没有 HAND 值（涂灰）：它们的水流在图幅外"
                       "才汇入河道，本图里看不见那条河，只能留空——这也是为什么面积是「至少」而不是「正好」。"
                       "这套方法是筛查级：静水面、无流速、看不见桥涵和堤防，河漫滩准，平原城区偏大。"))
+
+
+@example("ras.wetness")
+def ex_wetness(F):
+    crop = _flow_crop(F)
+    args = {"dem_path": str(crop), "indices": "twi,spi,sti", "min_slope_deg": 0.1}
+    res = run_tool(E("ras.wetness"), **args)
+    twi = read_bands(res["paths"]["twi"])[0]
+    spi = read_bands(res["paths"]["spi"])[0]
+    sti = read_bands(res["paths"]["sti"])[0]
+
+    panels = [("TWI = ln(a / tan b): wetness", to_single(twi, "YlGnBu")),
+              ("SPI = ln(a * tan b): stream power", to_single(spi, "YlOrRd")),
+              ("STI: sediment transport", to_single(sti, "magma"))]
+    return dict(args=args, result=res,
+                figures={"in": to_single(read_bands(crop), "terrain"), "out": _grid(panels)},
+                inputs=["同一块 900×900 子区（EPSG:32654，像元 12 m）"],
+                caption=(f"TWI 中位 {res['stats']['twi']['p50']:.1f}（p95 {res['stats']['twi']['p95']:.1f}），"
+                         f"SPI 中位 {res['stats']['spi']['p50']:.1f}；"
+                         f"{res['params']['cells_at_slope_floor']} 格触到坡度下限"),
+                note=("三个指数共用两个输入：汇流面积 a（每单位等高线宽度的上游面积，单位米）和坡度 β，"
+                      "所以一次算完最省。分工是：**TWI 看「水在哪积」**（蓝色沿沟谷），"
+                      "**SPI 看「水在哪冲」**（红色沿陡沟），**STI 看「泥沙往哪走」**。"
+                      "TWI 是相对量，同一景内可比、跨景不可比——它的绝对值取决于 a 的定义（这里用 a = 格数 × 格宽）。"
+                      "平地会触发 `min_slope_deg` 下限，此时指数由下限而非地形决定，工具会回报触限格数。"))
 
 
 @example("ras.contour")

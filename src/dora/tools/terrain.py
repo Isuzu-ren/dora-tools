@@ -25,6 +25,7 @@ using the scene's mean latitude and reports the cell size it used.
 import heapq
 import json
 import math
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
@@ -100,6 +101,21 @@ def _stats(a: np.ndarray) -> Dict[str, float]:
     return {"min": float(v.min()), "max": float(v.max()), "mean": float(v.mean())}
 
 
+def _horn_gradients(dem: np.ndarray, xres: float, yres: float) -> Tuple[np.ndarray, np.ndarray]:
+    """Horn 3x3 gradients: the weights GDAL gdaldem uses, kept in one place so slope,
+    aspect and the wetness indices cannot drift apart."""
+    filled = np.where(np.isfinite(dem), dem, np.nanmean(dem))
+    p = np.pad(filled, 1, mode="edge")
+    h, w = dem.shape
+    win = lambda dr, dc: p[1 + dr:1 + dr + h, 1 + dc:1 + dc + w]  # noqa: E731
+    z1, z2, z3 = win(-1, -1), win(-1, 0), win(-1, 1)
+    z4, z6 = win(0, -1), win(0, 1)
+    z7, z8, z9 = win(1, -1), win(1, 0), win(1, 1)
+    dzdx = ((z3 + 2 * z6 + z9) - (z1 + 2 * z4 + z7)) / (8 * xres)
+    dzdy = ((z7 + 2 * z8 + z9) - (z1 + 2 * z2 + z3)) / (8 * yres)
+    return dzdx, dzdy
+
+
 @mcp.tool(name="ras.terrain", description='''
 Description:
 Derive terrain attributes from a DEM in one pass: slope, aspect, curvature, TRI, TPI and roughness.
@@ -137,16 +153,14 @@ def ras_terrain(dem_path: str, attributes: Optional[str] = None, units: str = "d
             xres, yres, note = _cell_size_m(transform, crs)
 
         # Horn 3x3: the same weights GDAL gdaldem uses by default.
+        dzdx, dzdy = _horn_gradients(dem, xres, yres)
         filled = np.where(np.isfinite(dem), dem, np.nanmean(dem))
-        p = np.pad(filled, 1, mode="edge")
         h, w = dem.shape
+        p = np.pad(filled, 1, mode="edge")
         win = lambda dr, dc: p[1 + dr:1 + dr + h, 1 + dc:1 + dc + w]  # noqa: E731
         z1, z2, z3 = win(-1, -1), win(-1, 0), win(-1, 1)
         z4, z6 = win(0, -1), win(0, 1)
         z7, z8, z9 = win(1, -1), win(1, 0), win(1, 1)
-
-        dzdx = ((z3 + 2 * z6 + z9) - (z1 + 2 * z4 + z7)) / (8 * xres)
-        dzdy = ((z7 + 2 * z8 + z9) - (z1 + 2 * z2 + z3)) / (8 * yres)
         slope_rad = np.arctan(np.hypot(dzdx, dzdy))
         # `dzdy` here is (south - north); the downslope bearing clockwise from north is
         # atan2(-dzdx, dzdy), which gives 90 deg on a plane falling to the east.
@@ -193,6 +207,89 @@ def ras_terrain(dem_path: str, attributes: Optional[str] = None, units: str = "d
         }, ensure_ascii=False)
     except Exception as e:
         return _error("ras.terrain", e, dem_path=dem_path, attributes=attributes)
+
+
+@mcp.tool(name="ras.index", description='''
+Description:
+Normalised-difference index from any two bands of a multi-band raster: (A - B) / (A + B).
+One operator covers NDVI (NIR, red), NDWI (green, NIR or NIR, SWIR), NDMI (NIR, SWIR1),
+NBR (NIR, SWIR2) and NDBI (SWIR1, NIR) - the drought-side backbone the library otherwise
+lacks. The ratio is scale invariant, so digital numbers and reflectance give the same values,
+and no threshold has to be calibrated per scene.
+
+Parameters:
+- image_path (str): Multi-band raster (GeoTIFF / PNG)
+- band_a (int): First band, 1-based - the "positive" band (NIR for NDVI)
+- band_b (int): Second band, 1-based (red for NDVI)
+- name (str, optional): Label for the output file and the report, e.g. "ndvi"
+- out_path (str, optional): Output GeoTIFF path
+
+Returns:
+- out_path (str), name (str), bands (list[int])
+- stats (dict): percentiles, share of valid pixels, share negative / positive
+''')
+def ras_index(image_path: str, band_a: int, band_b: int, name: str = "index",
+              out_path: Optional[str] = None) -> str:
+    try:
+        import rasterio
+
+        if not (isinstance(band_a, int) and isinstance(band_b, int)):
+            raise ValueError("band_a and band_b must be integers (1-based)")
+        if band_a == band_b:
+            raise ValueError("band_a and band_b must differ; the same band gives 0 everywhere")
+
+        with rasterio.open(image_path) as src:
+            if not (1 <= band_a <= src.count and 1 <= band_b <= src.count):
+                raise ValueError(f"band out of range: the image has {src.count} band(s)")
+            a = src.read(band_a).astype(np.float64)
+            b = src.read(band_b).astype(np.float64)
+            profile = src.profile.copy()
+
+        denom = a + b
+        valid = np.isfinite(a) & np.isfinite(b) & (denom != 0)
+        index = np.full(a.shape, np.nan, dtype=np.float64)
+        index[valid] = np.clip((a[valid] - b[valid]) / denom[valid], -1.0, 1.0)
+
+        label = re.sub(r"[^A-Za-z0-9_.-]+", "_", str(name or "index")).strip("_") or "index"
+        dest = out_path or f"{str(TEMP_DIR)}/{label}.tif"
+        import os
+
+        os.makedirs(os.path.dirname(dest) or ".", exist_ok=True)
+        profile.update(count=1, dtype="float32", compress="deflate", nodata=float("nan"))
+        with rasterio.open(dest, "w", **profile) as dst:
+            dst.write(index.astype(np.float32), 1)
+
+        vals = index[valid]
+        n = index.size
+        stats = {
+            "min": round(float(vals.min()), 4) if vals.size else None,
+            "p5": round(float(np.percentile(vals, 5)), 4) if vals.size else None,
+            "p50": round(float(np.percentile(vals, 50)), 4) if vals.size else None,
+            "p95": round(float(np.percentile(vals, 95)), 4) if vals.size else None,
+            "max": round(float(vals.max()), 4) if vals.size else None,
+            "mean": round(float(vals.mean()), 4) if vals.size else None,
+            "valid_ratio": round(float(vals.size) / n, 4),
+            "share_negative": round(float((vals < 0).mean()), 4) if vals.size else None,
+            "share_positive": round(float((vals > 0).mean()), 4) if vals.size else None,
+        }
+        warnings = []
+        if stats["valid_ratio"] < 0.9:
+            warnings.append(
+                f"only {stats['valid_ratio'] * 100:.1f}% of pixels are valid: the rest are "
+                f"nodata or have a zero sum (A + B = 0), where the ratio is undefined")
+
+        return json.dumps({
+            "tool": "ras.index",
+            "out_path": dest,
+            "name": label,
+            "bands": [band_a, band_b],
+            "formula": f"(band{band_a} - band{band_b}) / (band{band_a} + band{band_b})",
+            "stats": stats,
+            "shape": [int(index.shape[0]), int(index.shape[1])],
+            "warnings": warnings,
+        }, ensure_ascii=False)
+    except Exception as e:
+        return _error("ras.index", e, image_path=image_path, band_a=band_a, band_b=band_b)
 
 
 # Geomorphon directions, clockwise from north: (drow, dcol, is_diagonal).
@@ -1323,6 +1420,114 @@ def ras_hand(dem_path: str, min_area_km2: float = 1.0, river_threshold: Optional
     except Exception as e:
         return _error("ras.hand", e, dem_path=dem_path, min_area_km2=min_area_km2,
                       river_threshold=river_threshold, stages=stages)
+
+
+@mcp.tool(name="ras.wetness", description='''
+Description:
+Topographic wetness (TWI), stream-power (SPI) and sediment-transport (STI) indices from one DEM.
+All three are built on the same two inputs: the specific catchment area a - upslope area per
+unit contour width, so a = cells x cell size - and the slope beta. TWI = ln(a / tan b) marks
+where water collects (wet ground, waterlogging, wetland); SPI = ln(a * tan b) marks where flow
+concentrates and detaches soil; STI = (a/22.13)^0.6 (sin b/0.0896)^1.3 is the RUSLE
+sediment-transport term. Flats get a slope floor so the logarithms stay finite.
+
+Parameters:
+- dem_path (str): Path to a single-band DEM (GeoTIFF); elevation in metres
+- indices (str, optional): Comma-separated subset of twi,spi,sti (default all three)
+- min_slope_deg (float, optional): Slope floor in degrees (default 0.1) - keeps ln() finite
+- fill (bool, optional): Fill depressions before accumulating (default True)
+- out_dir (str, optional): Directory for the outputs; defaults to the session temp directory
+
+Returns:
+- paths (dict): One GeoTIFF per index
+- stats (dict): percentiles per index
+- params (dict): a definition, cell size, and how many cells hit the slope floor
+''')
+def ras_wetness(dem_path: str, indices: str = "twi,spi,sti", min_slope_deg: float = 0.1,
+                fill: bool = True, out_dir: Optional[str] = None) -> str:
+    try:
+        wanted = [i.strip().lower() for i in (indices or "").split(",") if i.strip()]
+        unknown = [i for i in wanted if i not in ("twi", "spi", "sti")]
+        if unknown:
+            raise ValueError(f"unknown index {unknown}; choose from twi, spi, sti")
+        if not wanted:
+            raise ValueError("indices must name at least one of twi, spi, sti")
+        if min_slope_deg <= 0:
+            raise ValueError("min_slope_deg must be positive")
+
+        dem, transform, crs, profile = _read_dem(dem_path)
+        if not np.isfinite(dem).all():
+            dem = np.where(np.isfinite(dem), dem, np.nanmean(dem))
+        xres, yres, note = (_cell_size_m(transform, crs) if transform is not None
+                            else (1.0, 1.0, "no georeferencing: cell size assumed to be 1 m"))
+
+        filled, _direction, acc, _order, _raised = _flow_grids(dem, xres, yres, fill, 1e-4)
+
+        # a = upslope area per unit contour width. For a square grid that is (cells x cell
+        # area) / cell size = cells x cell size, in metres - the convention Moore et al. use,
+        # which is why TWI from this tool is comparable to SAGA / WhiteboxTools output.
+        cell_m = 0.5 * (xres + yres)
+        spec_area = acc * cell_m
+
+        dzdx, dzdy = _horn_gradients(dem, xres, yres)        # slope from the raw DEM, not the
+        slope_rad = np.arctan(np.hypot(dzdx, dzdy))          # filled one: filling flattens pits
+        floor = math.radians(min_slope_deg)
+        clipped = int((slope_rad < floor).sum())
+        slope_use = np.maximum(slope_rad, floor)
+        tan_b = np.tan(slope_use)
+        sin_b = np.sin(slope_use)
+
+        out: Dict[str, np.ndarray] = {}
+        if "twi" in wanted:
+            out["twi"] = np.log(spec_area / tan_b)
+        if "spi" in wanted:
+            out["spi"] = np.log(spec_area * tan_b)
+        if "sti" in wanted:
+            out["sti"] = (spec_area / 22.13) ** 0.6 * (sin_b / 0.0896) ** 1.3
+
+        base = out_dir or str(TEMP_DIR)
+        import os
+
+        os.makedirs(base, exist_ok=True)
+        paths, stats = {}, {}
+        for key, arr in out.items():
+            arr = np.where(np.isfinite(dem), arr, np.nan)
+            arr = np.where(np.isfinite(arr), arr, np.nan)
+            paths[key] = _write_raster(os.path.join(base, f"wetness_{key}.tif"), arr, profile)
+            vals = arr[np.isfinite(arr)]
+            stats[key] = {
+                "min": round(float(vals.min()), 3),
+                "p5": round(float(np.percentile(vals, 5)), 3),
+                "p50": round(float(np.percentile(vals, 50)), 3),
+                "p95": round(float(np.percentile(vals, 95)), 3),
+                "max": round(float(vals.max()), 3),
+                "mean": round(float(vals.mean()), 3),
+            }
+
+        warnings = []
+        if clipped > 0.2 * dem.size:
+            warnings.append(
+                f"{clipped / dem.size * 100:.0f}% of cells sit below the {min_slope_deg} deg "
+                f"slope floor (flat ground or the depressions filling created): their indices "
+                f"are driven by the floor, not by the terrain")
+
+        return json.dumps({
+            "tool": "ras.wetness",
+            "paths": paths,
+            "stats": stats,
+            "params": {
+                "specific_area": "a = cells x cell size (metres)",
+                "cell_size_m": round(cell_m, 3),
+                "min_slope_deg": min_slope_deg,
+                "cells_at_slope_floor": clipped,
+                "filled": bool(fill),
+            },
+            "cell_size_m": {"x": float(xres), "y": float(yres), "note": note},
+            "shape": [int(dem.shape[0]), int(dem.shape[1])],
+            "warnings": warnings,
+        }, ensure_ascii=False)
+    except Exception as e:
+        return _error("ras.wetness", e, dem_path=dem_path, indices=indices)
 
 
 @mcp.tool(name="ras.contour", description='''
